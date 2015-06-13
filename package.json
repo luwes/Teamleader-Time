@@ -1,0 +1,44 @@
+{
+  "name": "teamleader-time",
+  "version": "0.0.1",
+  "description": "Time tracker app for Teamleader CRM",
+  "main": "index.js",
+  "browser": {
+    "bootstrap": "./node_modules/bootstrap/dist/js/bootstrap.js"
+  },
+  "browserify": {
+    "transform": [ "browserify-shim" ]
+  },
+  "browserify-shim": {
+    "bootstrap": {
+      "exports": "bootstrap",
+      "depends": [
+        "jquery:jQuery"
+      ]
+    }
+  },
+  "devDependencies": {
+    "babelify": "^6.1.2",
+    "browserify": "^10.2.1",
+    "browserify-shim": "^3.8.7",
+    "gulp": "^3.8.11",
+    "gulp-autoprefixer": "^2.3.0",
+    "gulp-if": "^1.2.5",
+    "gulp-load-plugins": "^0.10.0",
+    "gulp-sass": "^2.0.1",
+    "gulp-uglify": "^1.2.0",
+    "gulp-util": "^3.0.4",
+    "minimist": "^1.1.1",
+    "node-webkit-builder": "^1.0.11",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.2.1"
+  },
+  "dependencies": {
+    "jquery": "^2.1.4",
+    "bootstrap": "^3.3.4",
+    "react": "^0.13.3",
+    "react-localstorage": "^0.2.3",
+    "react-router": "^0.13.3"
+  }
+}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Teamleader Time</title>
+    <link rel="stylesheet" href="css/font-awesome.css">
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+		<script>
+			var nodeRequire = require;
+			global.document = window.document;
+			global.navigator = window.navigator;
+			global.localStorage = window.localStorage;
+		</script>
+
+		<script src="js/winstate.js"></script>
+		<script src="js/lib.js"></script>
+		<script src="js/app.js"></script>
+
+		<script>
+			var gulp = require('gulp');
+			gulp.task('reload', function () {
+			  if (location) location.reload();
+			});
+
+			gulp.watch('**/*.{js,html,css}', ['reload']);
+		</script>
+  </body>
+</html>
