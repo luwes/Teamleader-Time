@@ -110,6 +110,7 @@ var ProjectSelectInputContainer = React.createClass({
 				pageno: 0
 			},
 			success: (string) => {
+				console.log(string)
 				//reviver function to rename keys
 				var data = JSON.parse(string, function(prop, val) {
 					switch (prop) {
@@ -240,7 +241,6 @@ var MilestoneTasksSelectInputContainer = React.createClass({
 						milestone_id: nextProps.milestone
 					},
 					success: (string) => {
-						console.log(string)
 						//reviver function to rename keys
 						var data = JSON.parse(string, function(prop, val) {
 							switch (prop) {
@@ -261,14 +261,28 @@ var MilestoneTasksSelectInputContainer = React.createClass({
 							}
 						}
 
-						if (data.length > 0) {
+						var appSettings = JSON.parse(localStorage.getItem('settings'));
+						if (appSettings && appSettings.userName) {
+							for (var i = data.length-1; i >= 0; i--) {
+								if (data[i].owner_name != appSettings.userName) {
+									data.splice(i, 1);
+								}
+							}
+						}
 
+						if (data.length > 0) {
 							data.push({ value: 'new', label: 'New task...' });
 							this.setState({
 								tasks: data,
 								milestoneTask: data[0].value
 							});
 							this.props.onMilestoneTaskChange(data[0].value);
+						} else {
+							this.setState({
+								tasks: [],
+								milestoneTask: 0
+							});
+							this.props.onMilestoneTaskChange(0);
 						}
 		      }
 				});

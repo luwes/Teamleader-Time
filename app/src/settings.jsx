@@ -14,7 +14,7 @@ var SelectInput = require('./select-input');
 
 var Settings = React.createClass({
 	displayName: 'settings',
-	//mixins: [LocalStorageMixin],
+	mixins: [LocalStorageMixin],
 
 	getInitialState: function() {
 		return {
@@ -61,11 +61,13 @@ var SettingsForm = React.createClass({
 
 		var container = this.refs.userSelectInputContainer;
 		var select = container.refs.userSelect;
+		var selectNode = React.findDOMNode(select);
 
 		this.props.onSettingsSubmit({
 			groupId: groupId,
 			groupSecret: groupSecret,
-			userId: select ? React.findDOMNode(select).value : 0
+			userId: select ? selectNode.value : 0,
+			userName: select ? $(selectNode).find('option:selected').text() : ''
 		});
 
 		return;
@@ -117,7 +119,6 @@ var UserSelectInputContainer = React.createClass({
 			Util.apiRequest({
 				url: '/getUsers.php',
 				success: (string) => {
-					console.log(string)
 					//reviver function to rename keys
 					var data = JSON.parse(string, function(prop, val) {
 						switch (prop) {
