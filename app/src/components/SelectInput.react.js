@@ -1,6 +1,6 @@
 
 var React = require('react');
-var Util = require('./util');
+var Util = require('../util');
 
 var SelectInput = React.createClass({
 

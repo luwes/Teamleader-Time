@@ -13,14 +13,14 @@ class Util {
 				dataType: 'text',
 				data: {
 					api_group: appSettings.groupId,
-					api_secret: appSettings.groupSecret,
+					api_secret: appSettings.groupSecret
 				},
 	      error: function(xhr, status, err) {
 					console.error(options.url, status, err.toString());
 	      }
 			};
 
-			var settings = $.extend(true, options, defaults);
+			var settings = $.extend(true, defaults, options);
 			$.ajax('https://www.teamleader.be/api' + options.url, settings);
 		}
 	}

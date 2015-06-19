@@ -7,7 +7,9 @@
     "bootstrap": "./node_modules/bootstrap/dist/js/bootstrap.js"
   },
   "browserify": {
-    "transform": [ "browserify-shim" ]
+    "transform": [
+      "browserify-shim"
+    ]
   },
   "browserify-shim": {
     "bootstrap": {
@@ -21,7 +23,7 @@
     "babelify": "^6.1.2",
     "browserify": "^10.2.1",
     "browserify-shim": "^3.8.7",
-    "gulp": "^3.8.11",
+    "gulp": "^3.9.0",
     "gulp-autoprefixer": "^2.3.0",
     "gulp-if": "^1.2.5",
     "gulp-load-plugins": "^0.10.0",
@@ -35,8 +37,9 @@
     "watchify": "^3.2.1"
   },
   "dependencies": {
-    "jquery": "^2.1.4",
     "bootstrap": "^3.3.4",
+    "flux": "^2.0.3",
+    "jquery": "^2.1.4",
     "react": "^0.13.3",
     "react-localstorage": "^0.2.3",
     "react-router": "^0.13.3"

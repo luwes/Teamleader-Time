@@ -4,13 +4,12 @@ var React = require('react');
 
 var Router = require('react-router');
 var Link = Router.Link;
-var Route = Router.Route;
 
 var LocalStorageMixin = require('react-localstorage');
 
-var Util = require('./util');
-var TextInput = require('./text-input');
-var SelectInput = require('./select-input');
+var Util = require('../util');
+var TextInput = require('./TextInput.react');
+var SelectInput = require('./SelectInput.react');
 
 var Settings = React.createClass({
 	displayName: 'settings',
@@ -114,10 +113,15 @@ var UserSelectInputContainer = React.createClass({
   },
 
 	componentWillReceiveProps: function(nextProps) {
+		
 		if (nextProps.groupId && nextProps.groupSecret) {
 
 			Util.apiRequest({
 				url: '/getUsers.php',
+				data: {
+					api_group: nextProps.groupId,
+					api_secret: nextProps.groupSecret
+				},
 				success: (string) => {
 					//reviver function to rename keys
 					var data = JSON.parse(string, function(prop, val) {

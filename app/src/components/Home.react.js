@@ -2,9 +2,9 @@
 var $ = require('jquery');
 var React = require('react');
 
-var Util = require('./util');
-var TextInput = require('./text-input');
-var SelectInput = require('./select-input');
+var Util = require('../util');
+var TextInput = require('./TextInput.react');
+var SelectInput = require('./SelectInput.react');
 
 var Home = React.createClass({
 
@@ -30,12 +30,17 @@ var HomeForm = React.createClass({
 			milestone: 0,
 			milestoneTask: 0,
 			contactOrCompany: '',
-			contactOrCompanyId: 0
+			contactOrCompanyId: 0,
+			taskTypesLookup: []
 		}
 	},
 
 	handleSubmit: function(e) {
 		e.preventDefault();
+
+	},
+
+	handleTaskTypesLoaded: function(taskTypes) {
 
 	},
 
@@ -80,11 +85,18 @@ var HomeForm = React.createClass({
 		return (
 			<form className="form-horizontal" onSubmit={this.handleSubmit}>
 
-				<ProjectSelectInputContainer onProjectChange={this.handleProjectChange} />
+				<ProjectSelectContainer onProjectChange={this.handleProjectChange} />
 
-				<MilestoneSelectInputContainer project={this.state.project} onMilestoneChange={this.handleMilestoneChange} />
+				<MilestoneSelectContainer 
+					project={this.state.project} 
+					onMilestoneChange={this.handleMilestoneChange} 
+				/>
 
-				<MilestoneTasksSelectInputContainer milestone={this.state.milestone} onMilestoneTaskChange={this.handleMilestoneTaskChange} />
+				<TaskSelectContainer 
+					milestone={this.state.milestone} 
+					onTaskTypesLoaded={this.handleTaskTypesLoaded} 
+					onMilestoneTaskChange={this.handleMilestoneTaskChange} 
+				/>
 
 			  <div className="btn-toolbar">
 					<button type="submit" className="btn btn-primary btn-sm start-timer-btn">Start timer</button> 
@@ -94,7 +106,7 @@ var HomeForm = React.createClass({
 	}
 });
 
-var ProjectSelectInputContainer = React.createClass({
+var ProjectSelectContainer = React.createClass({
 
 	getInitialState: function() {
 		return {
@@ -150,7 +162,7 @@ var ProjectSelectInputContainer = React.createClass({
 	}
 });
 
-var MilestoneSelectInputContainer = React.createClass({
+var MilestoneSelectContainer = React.createClass({
 
 	getDefaultProps: function() {
 		return {
@@ -218,7 +230,7 @@ var MilestoneSelectInputContainer = React.createClass({
 	}
 });
 
-var MilestoneTasksSelectInputContainer = React.createClass({
+var TaskSelectContainer = React.createClass({
 
 	getDefaultProps: function() {
 		return {
@@ -241,6 +253,7 @@ var MilestoneTasksSelectInputContainer = React.createClass({
 						milestone_id: nextProps.milestone
 					},
 					success: (string) => {
+						console.log(string)
 						//reviver function to rename keys
 						var data = JSON.parse(string, function(prop, val) {
 							switch (prop) {
@@ -315,7 +328,7 @@ var MilestoneTasksSelectInputContainer = React.createClass({
 					<div className="form-group">
 					  <label className="col-xs-3 control-label" htmlFor="task-type">Type</label>
 					  <div className="col-xs-6">
-					  	<TaskSelectInputContainer />
+					  	<TaskTypeSelectContainer />
 					  </div>
 					</div>
 					<div className="form-group">
@@ -329,7 +342,7 @@ var MilestoneTasksSelectInputContainer = React.createClass({
 	}
 });
 
-var TaskSelectInputContainer = React.createClass({
+var TaskTypeSelectContainer = React.createClass({
 
 	getInitialState: function() {
 		return {

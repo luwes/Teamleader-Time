@@ -13,7 +13,7 @@ var babelify = require("babelify");
 
 var paths = {
 		sass: 'app/sass/**/*',
-		js: 'app/src/app.jsx'
+		js: 'app/src/app.js'
 };
 
 var packageJson = require('./package.json');
