@@ -5,39 +5,36 @@ var React = require('react');
 var Router = require('react-router');
 var Link = Router.Link;
 
-var LocalStorageMixin = require('react-localstorage');
+var SettingsStore = require('../stores/SettingsStore');
+var SettingsUsersStore = require('../stores/SettingsUsersStore');
+var SettingsActions = require('../actions/SettingsActions');
 
 var Util = require('../util');
 var TextInput = require('./TextInput.react');
 var SelectInput = require('./SelectInput.react');
 
 var Settings = React.createClass({
-	displayName: 'settings',
-	mixins: [LocalStorageMixin],
 
 	getInitialState: function() {
-		return {
-			groupId: '',
-			groupSecret: '',
-			userId: 0,
-			userName: ''
-		};
+		return SettingsStore.getSettings();
   },
 
-	handleSettingsSubmit: function(settings) {
-		this.setState({
-			groupId: settings.groupId,
-			groupSecret: settings.groupSecret,
-			userId: settings.userId,
-			userName: settings.userName
-		});
-	},
+  _onChange: function() {
+    this.setState(SettingsStore.getSettings());
+  },
+
+  componentDidMount: function() {
+  	SettingsStore.addChangeListener(this._onChange);
+  },
+
+  componentWillUnmount: function() {
+  	SettingsStore.removeChangeListener(this._onChange);
+  },
 
 	render: function() {
 		return (
 			<div className="settings">
 				<SettingsForm 
-					onSettingsSubmit={this.handleSettingsSubmit} 
 					groupId={this.state.groupId}
 					groupSecret={this.state.groupSecret}
 					userId={this.state.userId}
@@ -62,7 +59,7 @@ var SettingsForm = React.createClass({
 		var select = container.refs.userSelect;
 		var selectNode = React.findDOMNode(select);
 
-		this.props.onSettingsSubmit({
+		SettingsActions.saveSettings({
 			groupId: groupId,
 			groupSecret: groupSecret,
 			userId: select ? selectNode.value : 0,
@@ -73,24 +70,25 @@ var SettingsForm = React.createClass({
 	},
 
 	render: function() {
+
+		//console.log(this.props.groupId)
+
 		return (
 			<form className="form-horizontal" onSubmit={this.handleSubmit}>
 			  <div className="form-group">
 			    <label className="col-xs-3 control-label" htmlFor="group-id">Group ID</label>
 			    <div className="col-xs-6">
-			    	<TextInput id="group-id" ref="groupId" savedValue={this.props.groupId} />
+			    	<TextInput id="group-id" ref="groupId" defaultValue={this.props.groupId} />
 			    </div>
 			  </div>
 			  <div className="form-group">
 			    <label className="col-xs-3 control-label" htmlFor="group-secret">Group Secret</label>
 			    <div className="col-xs-6">
-			    	<TextInput id="group-secret" ref="groupSecret" savedValue={this.props.groupSecret} />
+			    	<TextInput id="group-secret" ref="groupSecret" defaultValue={this.props.groupSecret} />
 			    </div>
 			  </div>
 			  <UserSelectInputContainer 
 			  	ref="userSelectInputContainer"
-			    groupId={this.props.groupId} 
-			    groupSecret={this.props.groupSecret} 
 			    userId={this.props.userId}
 				/>
 			  <div className="btn-toolbar">
@@ -103,44 +101,29 @@ var SettingsForm = React.createClass({
 });
 
 var UserSelectInputContainer = React.createClass({
-	displayName: 'settings-users',
-	mixins: [LocalStorageMixin],
 
-	getInitialState: function() {
+	getUsersState: function() {
 		return {
-			users: []
-		};
-  },
-
-	componentWillReceiveProps: function(nextProps) {
-		
-		if (nextProps.groupId && nextProps.groupSecret) {
-
-			Util.apiRequest({
-				url: '/getUsers.php',
-				data: {
-					api_group: nextProps.groupId,
-					api_secret: nextProps.groupSecret
-				},
-				success: (string) => {
-					//reviver function to rename keys
-					var data = JSON.parse(string, function(prop, val) {
-						switch (prop) {
-							case 'id':
-								this.value = val;
-								return;
-							case 'name':
-								this.label = val;
-								return;
-							default:
-								return val;
-						}
-					});
-					this.setState({ users: data });
-	      }
-			});
+			'users': SettingsUsersStore.getUsers()
 		}
 	},
+
+	getInitialState: function() {
+		return this.getUsersState();
+  },
+
+  _onChange: function() {
+    this.setState(this.getUsersState());
+  },
+
+  componentDidMount: function() {
+  	SettingsActions.getUsers();
+  	SettingsUsersStore.addChangeListener(this._onChange);
+  },
+
+  componentWillUnmount: function() {
+  	SettingsUsersStore.removeChangeListener(this._onChange);
+  },
 
 	render: function() {
 		if (this.state.users.length === 0) return null;

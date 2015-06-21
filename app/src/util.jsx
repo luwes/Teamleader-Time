@@ -1,28 +1,31 @@
 
 var $ = require('jquery');
 
+var SettingsStore = require('./stores/SettingsStore');
+
 class Util {
 	
 	static apiRequest(options) {
 
-		var appSettings = JSON.parse(localStorage.getItem('settings'));
+		var defaults = {
+			type: 'POST',
+			dataType: 'text',
+			data: {},
+      error: function(xhr, status, err) {
+				console.error(options.url, status, err.toString());
+      }
+		};
+
+		var appSettings = SettingsStore.getSettings();
 		if (appSettings) {
-
-			var defaults = {
-				type: 'POST',
-				dataType: 'text',
-				data: {
-					api_group: appSettings.groupId,
-					api_secret: appSettings.groupSecret
-				},
-	      error: function(xhr, status, err) {
-					console.error(options.url, status, err.toString());
-	      }
+			defaults.data = {
+				api_group: appSettings.groupId,
+				api_secret: appSettings.groupSecret
 			};
-
-			var settings = $.extend(true, defaults, options);
-			$.ajax('https://www.teamleader.be/api' + options.url, settings);
 		}
+
+		var settings = $.extend(true, defaults, options);
+		$.ajax('https://www.teamleader.be/api' + options.url, settings);
 	}
 
 	static htmlEntities(string) {
