@@ -1,5 +1,4 @@
 
-var $ = require('jquery');
 var EventEmitter = require('events').EventEmitter;
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');

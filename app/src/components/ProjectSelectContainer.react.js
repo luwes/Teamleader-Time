@@ -9,7 +9,8 @@ var ProjectSelectContainer = React.createClass({
 
 	getProjectsState: function() {
 		return {
-			projects: ProjectStore.getProjects()
+			projects: ProjectStore.getProjects(),
+			project: ProjectStore.getProject()
 		}
 	},
 
@@ -40,7 +41,13 @@ var ProjectSelectContainer = React.createClass({
 		  <div className="form-group">
 		    <label className="col-xs-3 control-label" htmlFor="project">Project</label>
 		    <div className="col-xs-6">
-					<SelectInput id="project" ref="project" options={this.state.projects} onChange={this.handleChange} />
+					<SelectInput 
+						id="project" 
+						ref="project" 
+						value={this.state.project}
+						options={this.state.projects} 
+						onChange={this.handleChange} 
+					/>
 				</div>
 			</div>
 		);
