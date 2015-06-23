@@ -52,7 +52,6 @@ class SettingsStore extends EventEmitter {
 	}
 
 	getSettings() {
-		console.log(JSON.parse(localStorage.getItem('settings')))
 		return JSON.parse(localStorage.getItem('settings')) || {};
 	}
 }

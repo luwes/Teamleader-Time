@@ -16,13 +16,13 @@ var DefaultRoute = Router.DefaultRoute;
 var Route = Router.Route;
 
 var TeamleaderTimeApp = require('./components/TeamleaderTimeApp.react');
-var Home = require('./components/Home.react');
+var Tracker = require('./components/Tracker.react');
 var Settings = require('./components/Settings.react');
 
 var routes = (
   <Route name="app" path="/" handler={TeamleaderTimeApp}>
     <Route name="settings" handler={Settings}/>
-    <DefaultRoute name="home" handler={Home}/>
+    <DefaultRoute name="tracker" handler={Tracker}/>
   </Route>
 );
 

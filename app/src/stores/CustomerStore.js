@@ -3,29 +3,25 @@ var $ = require('jquery');
 var EventEmitter = require('events').EventEmitter;
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
-var SettingsConstants = require('../constants/SettingsConstants');
-var SettingsActions = require('../actions/SettingsActions');
-
-var SettingsStore = require('./SettingsStore');
+var TrackerConstants = require('../constants/TrackerConstants');
+var TrackerActions = require('../actions/TrackerActions');
 
 var _dispatchToken;
-var _users = [];
+var _contactOrCompany;
+var _contactOrCompanyId;
 
-class SettingsUsersStore extends EventEmitter {
+class CustomerStore extends EventEmitter {
 
 	constructor() {
 		super();
+
 		_dispatchToken = AppDispatcher.register((action) => {
 
 			switch (action.type) {
 
-				case SettingsConstants.SAVE_SETTINGS:
-					AppDispatcher.waitFor([SettingsStore.getDispatchToken()]);
-					SettingsActions.getUsers();
-					break;
-
-				case SettingsConstants.RECEIVE_USERS:
-					_users = action.data;
+				case TrackerConstants.SET_CONTACT_OR_COMPANY:
+					_contactOrCompany = action.option;
+					_contactOrCompanyId = action.id;
 					this.emitChange();
 					break;
 
@@ -55,9 +51,14 @@ class SettingsUsersStore extends EventEmitter {
 		return _dispatchToken;
 	}
 
-	getUsers() {
-		return _users;
+	getContactOrCompany() {
+		return _contactOrCompany;
 	}
+
+	getContactOrCompanyId() {
+		return _contactOrCompanyId;
+	}
+	
 }
 
-module.exports = new SettingsUsersStore();
+module.exports = new CustomerStore();

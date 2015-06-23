@@ -25,7 +25,9 @@ class Util {
 		}
 
 		var settings = $.extend(true, defaults, options);
-		$.ajax('https://www.teamleader.be/api' + options.url, settings);
+		if (settings.data.api_group && settings.data.api_secret) {
+			$.ajax('https://www.teamleader.be/api' + options.url, settings);
+		}
 	}
 
 	static htmlEntities(string) {

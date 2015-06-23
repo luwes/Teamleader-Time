@@ -3,15 +3,14 @@ var $ = require('jquery');
 var EventEmitter = require('events').EventEmitter;
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
-var SettingsConstants = require('../constants/SettingsConstants');
-var SettingsActions = require('../actions/SettingsActions');
-
-var SettingsStore = require('./SettingsStore');
+var TrackerConstants = require('../constants/TrackerConstants');
+var TrackerActions = require('../actions/TrackerActions');
 
 var _dispatchToken;
-var _users = [];
+var _projects = [];
+var _selected;
 
-class SettingsUsersStore extends EventEmitter {
+class ProjectStore extends EventEmitter {
 
 	constructor() {
 		super();
@@ -19,14 +18,18 @@ class SettingsUsersStore extends EventEmitter {
 
 			switch (action.type) {
 
-				case SettingsConstants.SAVE_SETTINGS:
-					AppDispatcher.waitFor([SettingsStore.getDispatchToken()]);
-					SettingsActions.getUsers();
+				case TrackerConstants.RECEIVE_PROJECTS:
+					_projects = action.data;
+					this.emitChange();
 					break;
 
-				case SettingsConstants.RECEIVE_USERS:
-					_users = action.data;
+				case TrackerConstants.SET_PROJECT:
+					_selected = parseInt(action.id);
+					console.log('project', _selected);
 					this.emitChange();
+
+    			TrackerActions.getProjectDetails(_selected);
+					TrackerActions.getMilestones(_selected);
 					break;
 
 				default:
@@ -55,9 +58,13 @@ class SettingsUsersStore extends EventEmitter {
 		return _dispatchToken;
 	}
 
-	getUsers() {
-		return _users;
+	getProjects() {
+		return _projects;
+	}
+
+	getProject() {
+		return _selected;
 	}
 }
 
-module.exports = new SettingsUsersStore();
+module.exports = new ProjectStore();

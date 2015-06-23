@@ -93,7 +93,7 @@ var SettingsForm = React.createClass({
 				/>
 			  <div className="btn-toolbar">
 					<button type="submit" data-loading-text="Loading..." className="btn btn-primary btn-sm save-settings-btn">Save</button> 
-					<Link to="home" className="btn btn-default btn-sm back-settings-btn">Back</Link>
+					<Link to="tracker" className="btn btn-default btn-sm back-settings-btn">Back</Link>
 				</div>
 			</form>
 		);
