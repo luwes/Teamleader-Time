@@ -1,10 +1,11 @@
 
-var $ = require('jquery');
-var assign = require('object-assign');
+import $ from 'jquery';
+import assign from 'object-assign';
 
-var EventEmitter = require('events').EventEmitter;
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var SettingsConstants = require('../constants/SettingsConstants');
+import { EventEmitter } from 'events';
+import AppDispatcher from '../dispatcher/AppDispatcher';
+import SettingsConstants from '../constants/SettingsConstants';
+
 
 function _setSettings(data) {
 	var settings = $.extend({}, SettingsStore.getSettings(), data);
@@ -49,4 +50,4 @@ SettingsStore.dispatchToken = AppDispatcher.register(action => {
 
 });
 
-module.exports = SettingsStore;
+export default SettingsStore;

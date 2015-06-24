@@ -1,9 +1,10 @@
 
-var React = require('react');
+import React from 'react';
 
-var TrackerActions = require('../actions/TrackerActions');
-var ProjectStore = require('../stores/ProjectStore');
-var SelectInput = require('./SelectInput.react');
+import { getProjects, setProject } from '../actions/TrackerActions';
+import ProjectStore from '../stores/ProjectStore';
+import SelectInput from './SelectInput.react';
+
 
 var ProjectSelectContainer = React.createClass({
 
@@ -23,7 +24,7 @@ var ProjectSelectContainer = React.createClass({
   },
 
   componentDidMount: function() {
-  	TrackerActions.getProjects();
+  	getProjects();
   	ProjectStore.addChangeListener(this._onChange);
   },
 
@@ -33,7 +34,7 @@ var ProjectSelectContainer = React.createClass({
 
 	handleChange: function(event) {
 		var target = event.currentTarget;
-		TrackerActions.setProject(target.value);
+		setProject(target.value);
 	},
 
 	render: function() {
@@ -54,4 +55,4 @@ var ProjectSelectContainer = React.createClass({
 	}
 });
 
-module.exports = ProjectSelectContainer;
+export default ProjectSelectContainer;

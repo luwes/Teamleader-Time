@@ -1,7 +1,7 @@
 
-var keyMirror = require('keymirror');
+import keyMirror from 'keymirror';
 
-module.exports = keyMirror({
+export default keyMirror({
 	RECEIVE_PROJECTS: null,
 	RECEIVE_MILESTONES: null,
 	RECEIVE_MILESTONE_TASKS: null,

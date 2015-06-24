@@ -1,11 +1,12 @@
 
-var React = require('react');
+import React from 'react';
 
-var TrackerActions = require('../actions/TrackerActions');
-var MilestoneStore = require('../stores/MilestoneStore');
-var MilestoneTaskStore = require('../stores/MilestoneTaskStore');
-var SelectInput = require('./SelectInput.react');
-var TaskTypeSelectContainer = require('./TaskTypeSelectContainer.react');
+import { getMilestoneTasks, setMilestoneTask } from '../actions/TrackerActions';
+import MilestoneStore from '../stores/MilestoneStore';
+import MilestoneTaskStore from '../stores/MilestoneTaskStore';
+import SelectInput from './SelectInput.react';
+import TaskTypeSelectContainer from './TaskTypeSelectContainer.react';
+
 
 var TaskSelectContainer = React.createClass({
 
@@ -25,7 +26,7 @@ var TaskSelectContainer = React.createClass({
   },
 
   componentDidMount: function() {
-  	TrackerActions.getMilestoneTasks(MilestoneStore.getMilestone());
+  	getMilestoneTasks(MilestoneStore.getMilestone());
   	MilestoneTaskStore.addChangeListener(this._onChange);
   },
 
@@ -35,7 +36,7 @@ var TaskSelectContainer = React.createClass({
 
 	handleChange: function(event) {
 		var target = event.currentTarget;
-		TrackerActions.setMilestoneTask(target.value);
+		setMilestoneTask(target.value);
 	},
 
 	render: function() {
@@ -74,4 +75,4 @@ var TaskSelectContainer = React.createClass({
 	}
 });
 
-module.exports = TaskSelectContainer;
+export default TaskSelectContainer;

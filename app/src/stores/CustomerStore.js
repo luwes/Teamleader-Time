@@ -1,10 +1,10 @@
 
-var assign = require('object-assign');
-var EventEmitter = require('events').EventEmitter;
+import assign from 'object-assign';
+import { EventEmitter } from 'events';
 
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var TrackerConstants = require('../constants/TrackerConstants');
-var TrackerActions = require('../actions/TrackerActions');
+import AppDispatcher from '../dispatcher/AppDispatcher';
+import TrackerConstants from '../constants/TrackerConstants';
+
 
 var _contactOrCompany;
 var _contactOrCompanyId;
@@ -51,4 +51,4 @@ CustomerStore.dispatchToken = AppDispatcher.register(action => {
 
 });
 
-module.exports = CustomerStore;
+export default CustomerStore;

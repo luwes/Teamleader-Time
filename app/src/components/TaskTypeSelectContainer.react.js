@@ -1,8 +1,9 @@
 
-var React = require('react');
+import React from 'react';
 
-var Util = require('../util');
-var SelectInput = require('./SelectInput.react');
+import { apiRequest } from '../util';
+import SelectInput from './SelectInput.react';
+
 
 var TaskTypeSelectContainer = React.createClass({
 
@@ -13,7 +14,7 @@ var TaskTypeSelectContainer = React.createClass({
 	},
 	componentDidMount: function() {
 
-		Util.apiRequest({
+		apiRequest({
 			url: '/getTaskTypes.php',
 			success: (string) => {
 				//reviver function to rename keys
@@ -40,4 +41,4 @@ var TaskTypeSelectContainer = React.createClass({
 	}
 });
 
-module.exports = TaskTypeSelectContainer;
+export default TaskTypeSelectContainer;

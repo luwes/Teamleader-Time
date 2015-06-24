@@ -1,6 +1,7 @@
 
-var React = require('react');
-var Util = require('../util');
+import React from 'react';
+import { htmlEntities } from '../util';
+
 
 var SelectInput = React.createClass({
 
@@ -8,7 +9,7 @@ var SelectInput = React.createClass({
 
   	var optionNodes = this.props.options.map(function(option) {
       return (
-      	<option key={option.value} value={option.value} >{Util.htmlEntities(option.label)}</option>
+      	<option key={option.value} value={option.value} >{htmlEntities(option.label)}</option>
       );
   	});
 
@@ -23,4 +24,4 @@ var SelectInput = React.createClass({
 	}
 });
 
-module.exports = SelectInput;
+export default SelectInput;

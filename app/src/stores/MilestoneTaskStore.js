@@ -1,10 +1,11 @@
 
-var assign = require('object-assign');
-var EventEmitter = require('events').EventEmitter;
+import assign from 'object-assign';
+import { EventEmitter } from 'events';
 
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var TrackerConstants = require('../constants/TrackerConstants');
-var MilestoneStore = require('../stores/MilestoneStore');
+import AppDispatcher from '../dispatcher/AppDispatcher';
+import TrackerConstants from '../constants/TrackerConstants';
+import MilestoneStore from '../stores/MilestoneStore';
+
 
 var _tasks = [];
 var _selected;
@@ -69,4 +70,4 @@ MilestoneTaskStore.dispatchToken = AppDispatcher.register(action => {
 });
 
 
-module.exports = MilestoneTaskStore;
+export default MilestoneTaskStore;

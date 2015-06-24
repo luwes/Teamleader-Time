@@ -10,7 +10,7 @@ try {
   console.log(ex.message);
 }
 
-var React = require('react');
+import React from 'react';
 var Router = require('react-router');
 var DefaultRoute = Router.DefaultRoute;
 var Route = Router.Route;

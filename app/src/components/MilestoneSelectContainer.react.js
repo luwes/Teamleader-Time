@@ -1,10 +1,11 @@
 
-var React = require('react');
+import React from 'react';
 
-var TrackerActions = require('../actions/TrackerActions');
-var ProjectStore = require('../stores/ProjectStore');
-var MilestoneStore = require('../stores/MilestoneStore');
-var SelectInput = require('./SelectInput.react');
+import { getMilestones, setMilestone } from '../actions/TrackerActions';
+import ProjectStore from '../stores/ProjectStore';
+import MilestoneStore from '../stores/MilestoneStore';
+import SelectInput from './SelectInput.react';
+
 
 var MilestoneSelectContainer = React.createClass({
 
@@ -24,7 +25,7 @@ var MilestoneSelectContainer = React.createClass({
   },
 
   componentDidMount: function() {
-  	TrackerActions.getMilestones(ProjectStore.getProject());
+  	getMilestones(ProjectStore.getProject());
   	MilestoneStore.addChangeListener(this._onChange);
   },
 
@@ -34,7 +35,7 @@ var MilestoneSelectContainer = React.createClass({
 
 	handleChange: function(event) {
 		var target = event.currentTarget;
-		TrackerActions.setMilestone(target.value);
+		setMilestone(target.value);
 	},
 
 	render: function() {
@@ -56,4 +57,4 @@ var MilestoneSelectContainer = React.createClass({
 	}
 });
 
-module.exports = MilestoneSelectContainer;
+export default MilestoneSelectContainer;

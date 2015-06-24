@@ -1,14 +1,13 @@
 
-var React = require('react');
+import React from 'react';
+import Router, { Link } from 'react-router';
 
-var Router = require('react-router');
-var Link = Router.Link;
+import SettingsStore from '../stores/SettingsStore';
+import SettingsUsersStore from '../stores/SettingsUsersStore';
+import { getUsers } from '../actions/SettingsActions';
 
-var SettingsStore = require('../stores/SettingsStore');
-var SettingsUsersStore = require('../stores/SettingsUsersStore');
-var SettingsActions = require('../actions/SettingsActions');
+import SelectInput from './SelectInput.react';
 
-var SelectInput = require('./SelectInput.react');
 
 var UserSelectContainer = React.createClass({
 
@@ -27,7 +26,7 @@ var UserSelectContainer = React.createClass({
   },
 
   componentDidMount: function() {
-  	SettingsActions.getUsers();
+  	getUsers();
   	SettingsUsersStore.addChangeListener(this._onChange);
   },
 
@@ -53,4 +52,4 @@ var UserSelectContainer = React.createClass({
 	}
 });
 
-module.exports = UserSelectContainer;
+export default UserSelectContainer;

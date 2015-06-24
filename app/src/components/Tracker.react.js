@@ -1,14 +1,15 @@
 
-var React = require('react');
+import React from 'react';
 
-var CustomerStore = require('../stores/CustomerStore');
-var ProjectStore = require('../stores/ProjectStore');
-var MilestoneStore = require('../stores/MilestoneStore');
-var MilestoneTaskStore = require('../stores/MilestoneTaskStore');
+import CustomerStore from '../stores/CustomerStore';
+import ProjectStore from '../stores/ProjectStore';
+import MilestoneStore from '../stores/MilestoneStore';
+import MilestoneTaskStore from '../stores/MilestoneTaskStore';
 
-var ProjectSelectContainer = require('./ProjectSelectContainer.react');
-var MilestoneSelectContainer = require('./MilestoneSelectContainer.react');
-var TaskSelectContainer = require('./TaskSelectContainer.react');
+import ProjectSelectContainer from './ProjectSelectContainer.react';
+import MilestoneSelectContainer from './MilestoneSelectContainer.react';
+import TaskSelectContainer from './TaskSelectContainer.react';
+
 
 var Tracker = React.createClass({
 
@@ -52,4 +53,4 @@ var Tracker = React.createClass({
 	}
 });
 
-module.exports = Tracker
+export default Tracker

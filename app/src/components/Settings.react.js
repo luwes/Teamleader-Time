@@ -1,17 +1,15 @@
 
-var $ = require('jquery');
-var React = require('react');
+import $ from 'jquery';
+import React from 'react';
+import Router, { Link } from 'react-router';
 
-var Router = require('react-router');
-var Link = Router.Link;
+import SettingsStore from '../stores/SettingsStore';
+import SettingsUsersStore from '../stores/SettingsUsersStore';
+import SettingsActions from '../actions/SettingsActions';
+import TextInput from './TextInput.react';
+import SelectInput from './SelectInput.react';
+import UserSelectContainer from './UserSelectContainer.react';
 
-var Util = require('../util');
-var SettingsStore = require('../stores/SettingsStore');
-var SettingsUsersStore = require('../stores/SettingsUsersStore');
-var SettingsActions = require('../actions/SettingsActions');
-var TextInput = require('./TextInput.react');
-var SelectInput = require('./SelectInput.react');
-var UserSelectContainer = require('./UserSelectContainer.react');
 
 var Settings = React.createClass({
 
@@ -84,4 +82,4 @@ var Settings = React.createClass({
 	}
 });
 
-module.exports = Settings;
+export default Settings;

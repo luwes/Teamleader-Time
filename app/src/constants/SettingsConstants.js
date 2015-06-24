@@ -1,7 +1,7 @@
 
-var keyMirror = require('keymirror');
+import keyMirror from 'keymirror';
 
-module.exports = keyMirror({
+export default keyMirror({
 	SAVE_SETTINGS: null,
 	RECEIVE_USERS: null
 });

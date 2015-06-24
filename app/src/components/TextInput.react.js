@@ -1,5 +1,6 @@
 
-var React = require('react');
+import React from 'react';
+
 
 var TextInput = React.createClass({
 
@@ -29,4 +30,4 @@ var TextInput = React.createClass({
 	}
 });
 
-module.exports = TextInput;
+export default TextInput;

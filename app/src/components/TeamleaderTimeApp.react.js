@@ -1,11 +1,9 @@
 
-var React = require('react');
-var Router = require('react-router');
-var Link = Router.Link;
-var RouteHandler = Router.RouteHandler;
+import React from 'react';
+import Router, { Link, RouteHandler } from 'react-router';
 
-var EventEmitter = require('events').EventEmitter;
-var Dispatcher = require('flux').Dispatcher;
+import { EventEmitter } from 'events';
+import { Dispatcher } from 'flux';
 
 
 var TeamleaderTimeApp = React.createClass({
@@ -28,4 +26,4 @@ var TeamleaderTimeApp = React.createClass({
   }
 });
 
-module.exports = TeamleaderTimeApp;
+export default TeamleaderTimeApp;

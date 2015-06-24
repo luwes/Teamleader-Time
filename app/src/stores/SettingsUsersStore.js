@@ -1,12 +1,13 @@
 
-var assign = require('object-assign');
-var EventEmitter = require('events').EventEmitter;
+import assign from 'object-assign';
+import { EventEmitter } from 'events';
 
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var SettingsConstants = require('../constants/SettingsConstants');
-var SettingsActions = require('../actions/SettingsActions');
+import AppDispatcher from '../dispatcher/AppDispatcher';
+import SettingsConstants from '../constants/SettingsConstants';
+import { getUsers } from '../actions/SettingsActions';
 
-var SettingsStore = require('./SettingsStore');
+import SettingsStore from './SettingsStore';
+
 
 var _users = [];
 
@@ -38,7 +39,7 @@ SettingsUsersStore.dispatchToken = AppDispatcher.register(action => {
 
 		case SettingsConstants.SAVE_SETTINGS:
 			AppDispatcher.waitFor([SettingsStore.dispatchToken]);
-			SettingsActions.getUsers();
+			getUsers();
 			break;
 
 		case SettingsConstants.RECEIVE_USERS:
@@ -52,4 +53,4 @@ SettingsUsersStore.dispatchToken = AppDispatcher.register(action => {
 
 });
 
-module.exports = SettingsUsersStore;
+export default SettingsUsersStore;

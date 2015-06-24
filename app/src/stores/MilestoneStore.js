@@ -1,11 +1,12 @@
 
-var assign = require('object-assign');
-var EventEmitter = require('events').EventEmitter;
+import assign from 'object-assign';
+import { EventEmitter } from 'events';
 
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var TrackerConstants = require('../constants/TrackerConstants');
-var TrackerActions = require('../actions/TrackerActions');
-var ProjectStore = require('../stores/ProjectStore');
+import AppDispatcher from '../dispatcher/AppDispatcher';
+import TrackerConstants from '../constants/TrackerConstants';
+import { getMilestoneTasks } from '../actions/TrackerActions';
+import ProjectStore from '../stores/ProjectStore';
+
 
 var _milestones = [];
 var _selected;
@@ -55,7 +56,7 @@ MilestoneStore.dispatchToken = AppDispatcher.register(action => {
 			}
 			MilestoneStore.emitChange();
 
-			TrackerActions.getMilestoneTasks(_selected);
+			getMilestoneTasks(_selected);
 			break;
 
 		case TrackerConstants.SET_MILESTONE:
@@ -63,7 +64,7 @@ MilestoneStore.dispatchToken = AppDispatcher.register(action => {
 			console.log('milestone', _selected);
 			MilestoneStore.emitChange();
 
-			TrackerActions.getMilestoneTasks(_selected);
+			getMilestoneTasks(_selected);
 			break;
 
 		default:
@@ -72,4 +73,4 @@ MilestoneStore.dispatchToken = AppDispatcher.register(action => {
 
 });
 
-module.exports = MilestoneStore;
+export default MilestoneStore;
