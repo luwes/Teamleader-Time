@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { htmlEntities } from '../util';
+import { htmlEntities } from '../utils/Utils';
 
 
 var SelectInput = React.createClass({

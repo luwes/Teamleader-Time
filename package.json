@@ -44,6 +44,7 @@
     "object-assign": "^3.0.0",
     "react": "^0.13.3",
     "react-localstorage": "^0.2.3",
-    "react-router": "^0.13.3"
+    "react-router": "^0.13.3",
+    "underscore": "^1.8.3"
   }
 }

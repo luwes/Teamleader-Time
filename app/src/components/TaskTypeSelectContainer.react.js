@@ -1,7 +1,7 @@
 
 import React from 'react';
 
-import { apiRequest } from '../util';
+import { apiRequest } from '../utils/Utils';
 import SelectInput from './SelectInput.react';
 
 

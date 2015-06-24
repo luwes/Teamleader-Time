@@ -1,6 +1,5 @@
 
-import assign from 'object-assign';
-import { EventEmitter } from 'events';
+import { createStore } from '../utils/StoreUtils';
 
 import AppDispatcher from '../dispatcher/AppDispatcher';
 import TrackerConstants from '../constants/TrackerConstants';
@@ -10,28 +9,13 @@ import MilestoneStore from '../stores/MilestoneStore';
 var _tasks = [];
 var _selected;
 
-var MilestoneTaskStore  = assign({}, EventEmitter.prototype, {
+var MilestoneTaskStore  = createStore({
 
-  // Emit Change event
-  emitChange: function() {
-    this.emit('change');
-  },
-
-  // Add change listener
-  addChangeListener: function(callback) {
-    this.on('change', callback);
-  },
-
-  // Remove change listener
-  removeChangeListener: function(callback) {
-    this.removeListener('change', callback);
-  },
-
-	getMilestoneTasks: function() {
+	getMilestoneTasks() {
 		return _tasks;
 	},
 
-	getMilestoneTask: function() {
+	getMilestoneTask() {
 		return _selected;
 	}
 });

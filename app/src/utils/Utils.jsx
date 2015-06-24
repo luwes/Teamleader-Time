@@ -1,6 +1,6 @@
 
 import $ from 'jquery';
-import SettingsStore from './stores/SettingsStore';
+import SettingsStore from '../stores/SettingsStore';
 	
 export function apiRequest(options) {
 

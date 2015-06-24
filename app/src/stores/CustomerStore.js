@@ -1,6 +1,5 @@
 
-import assign from 'object-assign';
-import { EventEmitter } from 'events';
+import { createStore } from '../utils/StoreUtils';
 
 import AppDispatcher from '../dispatcher/AppDispatcher';
 import TrackerConstants from '../constants/TrackerConstants';
@@ -9,28 +8,13 @@ import TrackerConstants from '../constants/TrackerConstants';
 var _contactOrCompany;
 var _contactOrCompanyId;
 
-var CustomerStore = assign({}, EventEmitter.prototype, {
+var CustomerStore = createStore({
 
-  // Emit Change event
-  emitChange: function() {
-    this.emit('change');
-  },
-
-  // Add change listener
-  addChangeListener: function(callback) {
-    this.on('change', callback);
-  },
-
-  // Remove change listener
-  removeChangeListener: function(callback) {
-    this.removeListener('change', callback);
-  },
-
-	getContactOrCompany: function() {
+	getContactOrCompany() {
 		return _contactOrCompany;
 	},
 
-	getContactOrCompanyId: function() {
+	getContactOrCompanyId() {
 		return _contactOrCompanyId;
 	}
 });

@@ -1,8 +1,7 @@
 
 import $ from 'jquery';
-import assign from 'object-assign';
+import { createStore } from '../utils/StoreUtils';
 
-import { EventEmitter } from 'events';
 import AppDispatcher from '../dispatcher/AppDispatcher';
 import SettingsConstants from '../constants/SettingsConstants';
 
@@ -12,24 +11,9 @@ function _setSettings(data) {
 	localStorage.setItem('settings', JSON.stringify(settings));
 }
 
-var SettingsStore  = assign({}, EventEmitter.prototype, {
+var SettingsStore  = createStore({
 
-  // Emit Change event
-  emitChange: function() {
-    this.emit('change');
-  },
-
-  // Add change listener
-  addChangeListener: function(callback) {
-    this.on('change', callback);
-  },
-
-  // Remove change listener
-  removeChangeListener: function(callback) {
-    this.removeListener('change', callback);
-  },
-
-	getSettings: function() {
+	getSettings() {
 		return JSON.parse(localStorage.getItem('settings')) || {};
 	}
 });

@@ -5,7 +5,7 @@ import Router, { Link } from 'react-router';
 
 import SettingsStore from '../stores/SettingsStore';
 import SettingsUsersStore from '../stores/SettingsUsersStore';
-import SettingsActions from '../actions/SettingsActions';
+import { saveSettings } from '../actions/SettingsActions';
 import TextInput from './TextInput.react';
 import SelectInput from './SelectInput.react';
 import UserSelectContainer from './UserSelectContainer.react';
@@ -42,7 +42,7 @@ var Settings = React.createClass({
 		var select = container.refs.userSelect;
 		var selectNode = React.findDOMNode(select);
 
-		SettingsActions.saveSettings({
+		saveSettings({
 			groupId: groupId,
 			groupSecret: groupSecret,
 			userId: select ? selectNode.value : 0,

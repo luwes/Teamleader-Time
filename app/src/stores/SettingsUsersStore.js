@@ -1,6 +1,5 @@
 
-import assign from 'object-assign';
-import { EventEmitter } from 'events';
+import { createStore } from '../utils/StoreUtils';
 
 import AppDispatcher from '../dispatcher/AppDispatcher';
 import SettingsConstants from '../constants/SettingsConstants';
@@ -11,24 +10,9 @@ import SettingsStore from './SettingsStore';
 
 var _users = [];
 
-var SettingsUsersStore  = assign({}, EventEmitter.prototype, {
+var SettingsUsersStore  = createStore({
 
-  // Emit Change event
-  emitChange: function() {
-    this.emit('change');
-  },
-
-  // Add change listener
-  addChangeListener: function(callback) {
-    this.on('change', callback);
-  },
-
-  // Remove change listener
-  removeChangeListener: function(callback) {
-    this.removeListener('change', callback);
-  },
-
-	getUsers: function() {
+	getUsers() {
 		return _users;
 	}
 });
