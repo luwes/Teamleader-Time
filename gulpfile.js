@@ -95,7 +95,7 @@ gulp.task('default', ['sass', 'appjs', 'watch'], function() {
 	    platforms: [ 'osx', 'win' ],
 	    buildDir: './dist',
 	    buildType: 'versioned',
-	    version: 'v0.12.1',
+	    version: 'v0.12.2',
 	    argv: minimist(process.argv.slice(2))
 	});
 

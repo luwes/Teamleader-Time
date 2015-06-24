@@ -1,63 +1,54 @@
 
+var assign = require('object-assign');
 var EventEmitter = require('events').EventEmitter;
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var TrackerConstants = require('../constants/TrackerConstants');
 var TrackerActions = require('../actions/TrackerActions');
 
-var _dispatchToken;
 var _contactOrCompany;
 var _contactOrCompanyId;
 
-class CustomerStore extends EventEmitter {
-
-	constructor() {
-		super();
-
-		_dispatchToken = AppDispatcher.register((action) => {
-
-			switch (action.type) {
-
-				case TrackerConstants.SET_CONTACT_OR_COMPANY:
-					_contactOrCompany = action.option;
-					_contactOrCompanyId = action.id;
-					this.emitChange();
-					break;
-
-				default:
-					//no op
-			}
-
-		});
-	}
+var CustomerStore = assign({}, EventEmitter.prototype, {
 
   // Emit Change event
-  emitChange() {
+  emitChange: function() {
     this.emit('change');
-  }
+  },
 
   // Add change listener
-  addChangeListener(callback) {
+  addChangeListener: function(callback) {
     this.on('change', callback);
-  }
+  },
 
   // Remove change listener
-  removeChangeListener(callback) {
+  removeChangeListener: function(callback) {
     this.removeListener('change', callback);
-  }
+  },
 
-	getDispatchToken() {
-		return _dispatchToken;
-	}
-
-	getContactOrCompany() {
+	getContactOrCompany: function() {
 		return _contactOrCompany;
-	}
+	},
 
-	getContactOrCompanyId() {
+	getContactOrCompanyId: function() {
 		return _contactOrCompanyId;
 	}
-	
-}
+});
 
-module.exports = new CustomerStore();
+CustomerStore.dispatchToken = AppDispatcher.register((action) => {
+
+	switch (action.type) {
+
+		case TrackerConstants.SET_CONTACT_OR_COMPANY:
+			_contactOrCompany = action.option;
+			_contactOrCompanyId = action.id;
+			CustomerStore.emitChange();
+			break;
+
+		default:
+			//no op
+	}
+
+});
+
+module.exports = CustomerStore;

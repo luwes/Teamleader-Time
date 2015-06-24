@@ -1,5 +1,5 @@
 
-var $ = require('jquery');
+var assign = require('object-assign');
 var EventEmitter = require('events').EventEmitter;
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
@@ -7,78 +7,69 @@ var TrackerConstants = require('../constants/TrackerConstants');
 var TrackerActions = require('../actions/TrackerActions');
 var ProjectStore = require('../stores/ProjectStore');
 
-var _dispatchToken;
 var _milestones = [];
 var _selected;
 
-class MilestoneStore extends EventEmitter {
-
-	constructor() {
-		super();
-		_dispatchToken = AppDispatcher.register((action) => {
-
-			switch (action.type) {
-
-				case TrackerConstants.SET_PROJECT:
-					AppDispatcher.waitFor([ProjectStore.getDispatchToken()]);
-					_milestones = [];
-					_selected = 0;
-					this.emitChange();
-					break;
-
-				case TrackerConstants.RECEIVE_MILESTONES:
-					_milestones = action.data;
-					if (_milestones.length > 0) {
-						_selected = parseInt(_milestones[0].value);
-						console.log('milestone', _selected);
-					}
-					this.emitChange();
-
-					TrackerActions.getMilestoneTasks(_selected);
-					break;
-
-				case TrackerConstants.SET_MILESTONE:
-					_selected = parseInt(action.id);
-					console.log('milestone', _selected);
-					this.emitChange();
-
-					TrackerActions.getMilestoneTasks(_selected);
-					break;
-
-				default:
-					//no op
-			}
-
-		});
-	}
+var MilestoneStore = assign({}, EventEmitter.prototype, {
 
   // Emit Change event
-  emitChange() {
+  emitChange: function() {
     this.emit('change');
-  }
+  },
 
   // Add change listener
-  addChangeListener(callback) {
+  addChangeListener: function(callback) {
     this.on('change', callback);
-  }
+  },
 
   // Remove change listener
-  removeChangeListener(callback) {
+  removeChangeListener: function(callback) {
     this.removeListener('change', callback);
-  }
+  },
 
-	getDispatchToken() {
-		return _dispatchToken;
-	}
-
-	getMilestones() {
+	getMilestones: function() {
 		return _milestones;
-	}
+	},
 
-	getMilestone() {
+	getMilestone: function() {
 		return _selected;
 	}
+});
 
-}
+MilestoneStore.dispatchToken = AppDispatcher.register((action) => {
 
-module.exports = new MilestoneStore();
+	switch (action.type) {
+
+		case TrackerConstants.SET_PROJECT:
+			AppDispatcher.waitFor([ProjectStore.dispatchToken]);
+			_milestones = [];
+			_selected = 0;
+			MilestoneStore.emitChange();
+			break;
+
+		case TrackerConstants.RECEIVE_MILESTONES:
+			_milestones = action.data;
+			if (_milestones.length > 0) {
+				_selected = parseInt(_milestones[0].value);
+				console.log('milestone', _selected);
+			}
+			MilestoneStore.emitChange();
+
+			TrackerActions.getMilestoneTasks(_selected);
+			break;
+
+		case TrackerConstants.SET_MILESTONE:
+			_selected = parseInt(action.id);
+			console.log('milestone', _selected);
+			MilestoneStore.emitChange();
+
+			TrackerActions.getMilestoneTasks(_selected);
+			break;
+
+		default:
+			//no op
+	}
+
+});
+
+module.exports = MilestoneStore;

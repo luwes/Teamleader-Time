@@ -1,69 +1,62 @@
 
+var assign = require('object-assign');
 var EventEmitter = require('events').EventEmitter;
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var TrackerConstants = require('../constants/TrackerConstants');
 var TrackerActions = require('../actions/TrackerActions');
 
-var _dispatchToken;
 var _projects = [];
 var _selected;
 
-class ProjectStore extends EventEmitter {
-
-	constructor() {
-		super();
-		_dispatchToken = AppDispatcher.register((action) => {
-
-			switch (action.type) {
-
-				case TrackerConstants.RECEIVE_PROJECTS:
-					_projects = action.data;
-					this.emitChange();
-					break;
-
-				case TrackerConstants.SET_PROJECT:
-					_selected = parseInt(action.id);
-					console.log('project', _selected);
-					this.emitChange();
-
-    			TrackerActions.getProjectDetails(_selected);
-					TrackerActions.getMilestones(_selected);
-					break;
-
-				default:
-					//no op
-			}
-
-		});
-	}
+var ProjectStore  = assign({}, EventEmitter.prototype, {
 
   // Emit Change event
-  emitChange() {
+  emitChange: function() {
     this.emit('change');
-  }
+  },
 
   // Add change listener
-  addChangeListener(callback) {
+  addChangeListener: function(callback) {
     this.on('change', callback);
-  }
+  },
 
   // Remove change listener
-  removeChangeListener(callback) {
+  removeChangeListener: function(callback) {
     this.removeListener('change', callback);
-  }
+  },
 
-	getDispatchToken() {
-		return _dispatchToken;
-	}
-
-	getProjects() {
+	getProjects: function() {
 		return _projects;
-	}
+	},
 
-	getProject() {
+	getProject: function() {
 		return _selected;
 	}
-}
+});
 
-module.exports = new ProjectStore();
+ProjectStore.dispatchToken = AppDispatcher.register((action) => {
+
+	switch (action.type) {
+
+		case TrackerConstants.RECEIVE_PROJECTS:
+			_projects = action.data;
+			ProjectStore.emitChange();
+			break;
+
+		case TrackerConstants.SET_PROJECT:
+			_selected = parseInt(action.id);
+			console.log('project', _selected);
+			ProjectStore.emitChange();
+
+			TrackerActions.getProjectDetails(_selected);
+			TrackerActions.getMilestones(_selected);
+			break;
+
+		default:
+			//no op
+	}
+
+});
+
+module.exports = ProjectStore;

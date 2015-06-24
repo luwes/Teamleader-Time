@@ -1,4 +1,5 @@
 
+var assign = require('object-assign');
 var EventEmitter = require('events').EventEmitter;
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
@@ -7,56 +8,48 @@ var SettingsActions = require('../actions/SettingsActions');
 
 var SettingsStore = require('./SettingsStore');
 
-var _dispatchToken;
 var _users = [];
 
-class SettingsUsersStore extends EventEmitter {
-
-	constructor() {
-		super();
-		_dispatchToken = AppDispatcher.register((action) => {
-
-			switch (action.type) {
-
-				case SettingsConstants.SAVE_SETTINGS:
-					AppDispatcher.waitFor([SettingsStore.getDispatchToken()]);
-					SettingsActions.getUsers();
-					break;
-
-				case SettingsConstants.RECEIVE_USERS:
-					_users = action.data;
-					this.emitChange();
-					break;
-
-				default:
-					//no op
-			}
-
-		});
-	}
+var SettingsUsersStore  = assign({}, EventEmitter.prototype, {
 
   // Emit Change event
-  emitChange() {
+  emitChange: function() {
     this.emit('change');
-  }
+  },
 
   // Add change listener
-  addChangeListener(callback) {
+  addChangeListener: function(callback) {
     this.on('change', callback);
-  }
+  },
 
   // Remove change listener
-  removeChangeListener(callback) {
+  removeChangeListener: function(callback) {
     this.removeListener('change', callback);
-  }
+  },
 
-	getDispatchToken() {
-		return _dispatchToken;
-	}
-
-	getUsers() {
+	getUsers: function() {
 		return _users;
 	}
-}
+});
 
-module.exports = new SettingsUsersStore();
+SettingsUsersStore.dispatchToken = AppDispatcher.register((action) => {
+
+	switch (action.type) {
+
+		case SettingsConstants.SAVE_SETTINGS:
+			AppDispatcher.waitFor([SettingsStore.dispatchToken]);
+			SettingsActions.getUsers();
+			break;
+
+		case SettingsConstants.RECEIVE_USERS:
+			_users = action.data;
+			SettingsUsersStore.emitChange();
+			break;
+
+		default:
+			//no op
+	}
+
+});
+
+module.exports = SettingsUsersStore;
