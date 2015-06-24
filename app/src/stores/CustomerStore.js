@@ -35,7 +35,7 @@ var CustomerStore = assign({}, EventEmitter.prototype, {
 	}
 });
 
-CustomerStore.dispatchToken = AppDispatcher.register((action) => {
+CustomerStore.dispatchToken = AppDispatcher.register(action => {
 
 	switch (action.type) {
 

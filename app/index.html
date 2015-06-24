@@ -23,7 +23,8 @@
 			  if (location) location.reload();
 			});
 
-			gulp.watch('**/*.{js,html,css}', ['reload']);
+			gulp.watch('js/**/*.js', ['reload']);
+			gulp.watch('**/*.{html,css}', ['reload']);
 		</script>
   </body>
 </html>

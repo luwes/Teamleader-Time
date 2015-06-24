@@ -35,7 +35,7 @@ var ProjectStore  = assign({}, EventEmitter.prototype, {
 	}
 });
 
-ProjectStore.dispatchToken = AppDispatcher.register((action) => {
+ProjectStore.dispatchToken = AppDispatcher.register(action => {
 
 	switch (action.type) {
 

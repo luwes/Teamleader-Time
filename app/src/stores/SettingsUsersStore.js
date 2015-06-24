@@ -32,7 +32,7 @@ var SettingsUsersStore  = assign({}, EventEmitter.prototype, {
 	}
 });
 
-SettingsUsersStore.dispatchToken = AppDispatcher.register((action) => {
+SettingsUsersStore.dispatchToken = AppDispatcher.register(action => {
 
 	switch (action.type) {
 

@@ -34,7 +34,7 @@ var SettingsStore  = assign({}, EventEmitter.prototype, {
 });
 
 
-SettingsStore.dispatchToken = AppDispatcher.register((action) => {
+SettingsStore.dispatchToken = AppDispatcher.register(action => {
 
 	switch (action.type) {
 

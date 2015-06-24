@@ -36,7 +36,7 @@ var MilestoneStore = assign({}, EventEmitter.prototype, {
 	}
 });
 
-MilestoneStore.dispatchToken = AppDispatcher.register((action) => {
+MilestoneStore.dispatchToken = AppDispatcher.register(action => {
 
 	switch (action.type) {
 
