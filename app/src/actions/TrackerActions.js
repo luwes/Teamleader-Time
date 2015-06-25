@@ -1,5 +1,6 @@
 
-import { apiRequest } from '../utils/Utils';
+import { where } from 'underscore';
+import { apiRequest, rekey } from '../utils/Utils';
 import AppDispatcher from '../dispatcher/AppDispatcher';
 import TrackerConstants from '../constants/TrackerConstants';
 
@@ -11,29 +12,17 @@ export function getProjects() {
 			amount: 100,
 			pageno: 0
 		},
-		success: (string) => {
-			//console.log(string)
-			//reviver function to rename keys
-			var data = JSON.parse(string, function(prop, val) {
-				switch (prop) {
-					case 'id':
-						this.value = val;
-						return;
-					case 'title':
-						this.label = val;
-						return;
-					default:
-						return val;
-				}
-			});
-			
-			if (data.length > 0) {
-				data.unshift({ value: 0, label: 'Choose...' });
+		success: (json) => {
+			var options = rekey(json, { id: 'value', title: 'label' });
+			options = where(options, { phase: 'active' });
+
+			if (options.length > 0) {
+				options.unshift({ value: 0, label: 'Choose...' });
 			}
 
 	    AppDispatcher.dispatch({
 	      type: TrackerConstants.RECEIVE_PROJECTS,
-	      data: data
+	      data: options
 	    });
     }
 	});
@@ -53,8 +42,9 @@ export function getProjectDetails(project) {
 			data: {
 				project_id: project
 			},
-			success: (string) => {
-				var data = JSON.parse(string);
+			success: (data) => {
+				console.log(data)
+
 		    AppDispatcher.dispatch({
 		      type: TrackerConstants.SET_CONTACT_OR_COMPANY,
 		      option: data.contact_or_company,
@@ -72,34 +62,16 @@ export function getMilestones(project) {
 			data: {
 				project_id: project
 			},
-			success: (string) => {
-				//reviver function to rename keys
-				var data = JSON.parse(string, function(prop, val) {
-					switch (prop) {
-						case 'id':
-							this.value = val;
-							return;
-						case 'title':
-							this.label = val;
-							return;
-						default:
-							return val;
-					}
-				});
-
-				for (var i = data.length-1; i >= 0; i--) {
-					if (data[i].closed == 1) {
-						data.splice(i, 1);
-					}
-				}
+			success: (json) => {
+				var options = rekey(json, { id: 'value', title: 'label' });
+				options = where(options, { closed: 0 });
 
 		    AppDispatcher.dispatch({
 		      type: TrackerConstants.RECEIVE_MILESTONES,
-		      data: data
+		      data: options
 		    });
       }
 		});
-
 	}
 }
 
@@ -119,47 +91,25 @@ export function getMilestoneTasks(milestone) {
 			data: {
 				milestone_id: milestone
 			},
-			success: (string) => {
-				//reviver function to rename keys
-				var data = JSON.parse(string, function(prop, val) {
-					switch (prop) {
-						case 'id':
-							this.value = val;
-							return;
-						case 'description':
-							this.label = val;
-							return;
-						default:
-							return val;
-					}
-				});
-
-				for (var i = data.length-1; i >= 0; i--) {
-					if (data[i].done == 1) {
-						data.splice(i, 1);
-					}
-				}
+			success: (json) => {
+				var options = rekey(json, { id: 'value', description: 'label' });
+				options = where(options, { done: 0 });
 
 				var appSettings = JSON.parse(localStorage.getItem('settings'));
 				if (appSettings && appSettings.userName) {
-					for (var i = data.length-1; i >= 0; i--) {
-						if (data[i].owner_name != appSettings.userName) {
-							data.splice(i, 1);
-						}
-					}
+					options = where(options, { owner_name: appSettings.userName });
 				}
 
-				if (data.length > 0) {
-					data.push({ value: 'new', label: 'New task...' });
+				if (options.length > 0) {
+					options.push({ value: 'new', label: 'New task...' });
 				}
 
 		    AppDispatcher.dispatch({
 		      type: TrackerConstants.RECEIVE_MILESTONE_TASKS,
-		      data: data
+		      data: options
 		    });
       }
 		});
-
 	}
 }
 

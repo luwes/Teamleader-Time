@@ -9,7 +9,7 @@ var SelectInput = React.createClass({
 
   	var optionNodes = this.props.options.map(function(option) {
       return (
-      	<option key={option.value} value={option.value} >{htmlEntities(option.label)}</option>
+      	<option key={option.value} value={option.value}>{htmlEntities(option.label)}</option>
       );
   	});
 

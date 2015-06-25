@@ -6,7 +6,7 @@ export function apiRequest(options) {
 
 	var defaults = {
 		type: 'POST',
-		dataType: 'text',
+		dataType: 'json',
 		data: {},
     error: function(xhr, status, err) {
 			console.error(options.url, status, err.toString());
@@ -25,6 +25,21 @@ export function apiRequest(options) {
 	if (settings.data.api_group && settings.data.api_secret) {
 		$.ajax('https://www.teamleader.be/api' + options.url, settings);
 	}
+}
+
+export function rekey(arr, lookup) {
+	for (var i = 0; i < arr.length; i++) {
+		var obj = arr[i];
+		for (var fromKey in lookup) {
+			var toKey = lookup[fromKey];
+			var value = obj[fromKey];
+			if (value) {
+				obj[toKey] = value;
+				delete obj[fromKey];
+			}
+		}
+	}
+	return arr;
 }
 
 export function htmlEntities(string) {

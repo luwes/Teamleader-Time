@@ -1,7 +1,7 @@
 
 import React from 'react';
 
-import { apiRequest } from '../utils/Utils';
+import { apiRequest, rekey } from '../utils/Utils';
 import SelectInput from './SelectInput.react';
 
 
@@ -16,20 +16,8 @@ var TaskTypeSelectContainer = React.createClass({
 
 		apiRequest({
 			url: '/getTaskTypes.php',
-			success: (string) => {
-				//reviver function to rename keys
-				var data = JSON.parse(string, function(prop, val) {
-					switch (prop) {
-						case 'id':
-							this.value = val;
-							return;
-						case 'name':
-							this.label = val;
-							return;
-						default:
-							return val;
-					}
-				});
+			success: (options) => {
+				var data = rekey(options, { id: 'value', name: 'label' });
 				this.setState({ taskTypes: data });
       }
 		});
