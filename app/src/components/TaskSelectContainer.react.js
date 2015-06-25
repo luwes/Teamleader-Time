@@ -40,7 +40,7 @@ var TaskSelectContainer = React.createClass({
 	},
 
 	render: function() {
-		if (this.state.tasks.length > 1) {
+		if (this.state.tasks.length > 1 && this.state.task != -1) {
 			return (
 			  <div className="form-group">
 			    <label className="col-xs-3 control-label" htmlFor="milestone-task">Todo</label>

@@ -101,7 +101,7 @@ export function getMilestoneTasks(milestone) {
 				}
 
 				if (options.length > 0) {
-					options.push({ value: 'new', label: 'New task...' });
+					options.push({ value: -1, label: 'New task...' });
 				}
 
 		    AppDispatcher.dispatch({
