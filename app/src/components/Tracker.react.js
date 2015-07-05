@@ -5,6 +5,7 @@ import CustomerStore from '../stores/CustomerStore';
 import ProjectStore from '../stores/ProjectStore';
 import MilestoneStore from '../stores/MilestoneStore';
 import MilestoneTaskStore from '../stores/MilestoneTaskStore';
+import TaskTypeStore from '../stores/TaskTypeStore';
 
 import ProjectSelectContainer from './ProjectSelectContainer.react';
 import MilestoneSelectContainer from './MilestoneSelectContainer.react';
@@ -15,11 +16,12 @@ var Tracker = React.createClass({
 
 	getTrackerState: function() {
 		return {
-			project: ProjectStore.getProject(),
-			milestone: MilestoneStore.getMilestone(),
-			milestoneTask: MilestoneTaskStore.getMilestoneTask(),
+			project: ProjectStore.getProjectId(),
+			milestone: MilestoneStore.getMilestoneId(),
+			milestoneTask: MilestoneTaskStore.getMilestoneTaskId(),
 			contactOrCompany: CustomerStore.getContactOrCompany(),
-			contactOrCompanyId: CustomerStore.getContactOrCompanyId()
+			contactOrCompanyId: CustomerStore.getContactOrCompanyId(),
+			taskType: TaskTypeStore.getTaskType()
 		}
 	},
 

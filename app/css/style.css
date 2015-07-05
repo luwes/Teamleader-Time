@@ -5834,6 +5834,10 @@ button.close {
   padding-bottom: 3px;
   font-size: 12px; }
 
+body {
+  padding-bottom: 20px;
+  background-color: transparent; }
+
 .app {
   position: relative;
   z-index: 1;
@@ -5872,6 +5876,17 @@ button.close {
       -webkit-transition: color 0.5s;
               transition: color 0.5s; }
       .app header .settings-link.active {
+        color: #222; }
+    .app header .dev-link {
+      position: absolute;
+      top: 15px;
+      right: 50px;
+      color: #aaa;
+      font-size: 20px;
+      line-height: 1;
+      -webkit-transition: color 0.5s;
+              transition: color 0.5s; }
+      .app header .dev-link.active {
         color: #222; }
   .app .container {
     padding-bottom: 20px; }

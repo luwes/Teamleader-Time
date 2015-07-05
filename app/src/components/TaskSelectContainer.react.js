@@ -13,7 +13,7 @@ var TaskSelectContainer = React.createClass({
 	getTasksState: function() {
 		return {
 			tasks: MilestoneTaskStore.getMilestoneTasks(),
-			task: MilestoneTaskStore.getMilestoneTask()
+			task: MilestoneTaskStore.getMilestoneTaskId()
 		}
 	},
 
@@ -26,7 +26,7 @@ var TaskSelectContainer = React.createClass({
   },
 
   componentDidMount: function() {
-  	getMilestoneTasks(MilestoneStore.getMilestone());
+  	getMilestoneTasks(MilestoneStore.getMilestoneId());
   	MilestoneTaskStore.addChangeListener(this._onChange);
   },
 

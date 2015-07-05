@@ -16,7 +16,7 @@ var MilestoneStore = createStore({
 		return _milestones;
 	},
 
-	getMilestone() {
+	getMilestoneId() {
 		return _selected;
 	}
 });
@@ -29,11 +29,14 @@ MilestoneStore.dispatchToken = AppDispatcher.register(action => {
 			AppDispatcher.waitFor([ProjectStore.dispatchToken]);
 			_milestones = [];
 			_selected = 0;
-			MilestoneStore.emitChange();
+			if (ProjectStore.getProjectId() == 0) {
+				MilestoneStore.emitChange();
+			}
 			break;
 
 		case TrackerConstants.RECEIVE_MILESTONES:
 			_milestones = action.data;
+			console.log(_milestones);
 			if (_milestones.length > 0) {
 				_selected = parseInt(_milestones[0].value);
 				console.log('milestone', _selected);

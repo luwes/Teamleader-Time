@@ -4,6 +4,8 @@
   "main": "index.html",
   "window": {
     "show": false,
+    "frame": false,
+    "transparent": true,
     "title": "Teamleader Time",
     "position": "center",
     "width": 520,

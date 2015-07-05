@@ -1,5 +1,5 @@
 
-import { apiRequest } from '../utils/Utils';
+import { apiRequest, rekey } from '../utils/Utils';
 import AppDispatcher from '../dispatcher/AppDispatcher';
 import SettingsConstants from '../constants/SettingsConstants';
 

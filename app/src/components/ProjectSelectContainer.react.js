@@ -11,7 +11,7 @@ var ProjectSelectContainer = React.createClass({
 	getProjectsState: function() {
 		return {
 			projects: ProjectStore.getProjects(),
-			project: ProjectStore.getProject()
+			project: ProjectStore.getProjectId()
 		}
 	},
 

@@ -15,7 +15,7 @@ var ProjectStore  = createStore({
 		return _projects;
 	},
 
-	getProject() {
+	getProjectId() {
 		return _selected;
 	}
 });

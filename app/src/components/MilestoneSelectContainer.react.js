@@ -12,7 +12,7 @@ var MilestoneSelectContainer = React.createClass({
 	getMilestonesState: function() {
 		return {
 			milestones: MilestoneStore.getMilestones(),
-			milestone: MilestoneStore.getMilestone()
+			milestone: MilestoneStore.getMilestoneId()
 		}
 	},
 
@@ -25,7 +25,7 @@ var MilestoneSelectContainer = React.createClass({
   },
 
   componentDidMount: function() {
-  	getMilestones(ProjectStore.getProject());
+  	getMilestones(ProjectStore.getProjectId());
   	MilestoneStore.addChangeListener(this._onChange);
   },
 

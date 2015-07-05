@@ -36,6 +36,11 @@
 	font-size: 12px;
 }
 
+body {
+	padding-bottom: 20px;
+	background-color: transparent;
+}
+
 .app {
 	position: relative;
 	z-index: 1;
@@ -71,6 +76,18 @@
 			position: absolute;
 			top: 15px;
 			right: 20px;
+			color: #aaa;
+			font-size: 20px;
+			line-height: 1;
+			transition: color 0.5s;
+			&.active {
+				color: #222;
+			}
+		}
+		.dev-link {
+			position: absolute;
+			top: 15px;
+			right: 50px;
 			color: #aaa;
 			font-size: 20px;
 			line-height: 1;

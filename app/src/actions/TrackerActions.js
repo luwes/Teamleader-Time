@@ -43,7 +43,7 @@ export function getProjectDetails(project) {
 				project_id: project
 			},
 			success: (data) => {
-				console.log(data)
+				//console.log(data)
 
 		    AppDispatcher.dispatch({
 		      type: TrackerConstants.SET_CONTACT_OR_COMPANY,
@@ -119,5 +119,36 @@ export function setMilestoneTask(id) {
     id: id
   });
 }
+
+export function getTaskTypes() {
+	apiRequest({
+		url: '/getTaskTypes.php',
+		success: (json) => {
+			var options = rekey(json, { id: 'value', name: 'label' });
+
+	    AppDispatcher.dispatch({
+	      type: TrackerConstants.RECEIVE_TASK_TYPES,
+	      data: options
+	    });
+	  }
+	});
+}
+
+export function setTaskType(id) {
+  AppDispatcher.dispatch({
+    type: TrackerConstants.SET_TASK_TYPE,
+    id: id
+  });
+}
+
+
+
+
+
+
+
+
+
+
 
 
