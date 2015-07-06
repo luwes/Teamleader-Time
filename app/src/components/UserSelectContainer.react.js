@@ -13,7 +13,7 @@ var UserSelectContainer = React.createClass({
 
 	getUsersState: function() {
 		return {
-			'users': SettingsUsersStore.getUsers()
+			users: SettingsUsersStore.getUsers()
 		}
 	},
 
@@ -22,7 +22,9 @@ var UserSelectContainer = React.createClass({
   },
 
   _onChange: function() {
-    this.setState(this.getUsersState());
+  	if (this.isMounted()) {
+    	this.setState(this.getUsersState());
+    }
   },
 
   componentDidMount: function() {
@@ -43,6 +45,7 @@ var UserSelectContainer = React.createClass({
 		    	<SelectInput 
 		    		id="user-select" 
 		    		ref="userSelect" 
+		    		labelKey="name" 
 		    		options={this.state.users} 
 		    		defaultValue={this.props.userId}
 		    	/>

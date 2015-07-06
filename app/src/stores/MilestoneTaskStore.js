@@ -1,4 +1,5 @@
 
+import { findWhere } from 'underscore';
 import { createStore } from '../utils/StoreUtils';
 
 import AppDispatcher from '../dispatcher/AppDispatcher';
@@ -18,6 +19,15 @@ var MilestoneTaskStore  = createStore({
 
 	getMilestoneTaskId() {
 		return _selected;
+	},
+
+	getMilestoneTask() {
+		return findWhere(_tasks, { id: _selected });
+	},
+
+	getMilestoneTaskDescription() {
+		var task = this.getMilestoneTask();
+		return task ? task.description : null;
 	}
 });
 
@@ -39,7 +49,7 @@ MilestoneTaskStore.dispatchToken = AppDispatcher.register(action => {
 			_tasks = action.data;
 			//console.log(_tasks)
 			if (_tasks.length > 0) {
-				_selected = parseInt(_tasks[0].value);
+				_selected = parseInt(_tasks[0].id);
 				console.log('task', _selected);
 			}
 			MilestoneTaskStore.emitChange();

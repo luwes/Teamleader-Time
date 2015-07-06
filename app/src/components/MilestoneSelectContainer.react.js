@@ -21,7 +21,9 @@ var MilestoneSelectContainer = React.createClass({
 	},
 
   _onChange: function() {
-    this.setState(this.getMilestonesState());
+  	if (this.isMounted()) {
+    	this.setState(this.getMilestonesState());
+    }
   },
 
   componentDidMount: function() {

@@ -11,7 +11,7 @@ var TaskTypeSelectContainer = React.createClass({
 	getTasksState: function() {
 		return {
 			taskTypes: TaskTypeStore.getTaskTypes(),
-			taskType: TaskTypeStore.getTaskType()
+			taskType: TaskTypeStore.getTaskTypeId()
 		}
 	},
 
@@ -20,7 +20,9 @@ var TaskTypeSelectContainer = React.createClass({
 	},
 
   _onChange: function() {
-    this.setState(this.getTasksState());
+  	if (this.isMounted()) {
+    	this.setState(this.getTasksState());
+    }
   },
 
   componentDidMount: function() {
@@ -42,6 +44,7 @@ var TaskTypeSelectContainer = React.createClass({
 			<SelectInput 
 				id="task-type" 
 				ref="taskType" 
+				labelKey="name" 
 				value={this.state.taskType} 
 				options={this.state.taskTypes} 
 				onChange={this.handleChange} 

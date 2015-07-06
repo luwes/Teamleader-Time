@@ -10,5 +10,6 @@ export default keyMirror({
 	SET_MILESTONE: null,
 	SET_MILESTONE_TASK: null,
 	SET_CONTACT_OR_COMPANY: null,
-	SET_TASK_TYPE: null
+	SET_TASK_TYPE: null,
+	SET_TASK_DESCRIPTION: null
 });

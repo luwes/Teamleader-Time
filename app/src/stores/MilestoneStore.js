@@ -1,4 +1,5 @@
 
+import { findWhere } from 'underscore';
 import { createStore } from '../utils/StoreUtils';
 
 import AppDispatcher from '../dispatcher/AppDispatcher';
@@ -18,6 +19,10 @@ var MilestoneStore = createStore({
 
 	getMilestoneId() {
 		return _selected;
+	},
+
+	getMilestone() {
+		return findWhere(_milestones, { id: _selected });
 	}
 });
 
@@ -36,9 +41,9 @@ MilestoneStore.dispatchToken = AppDispatcher.register(action => {
 
 		case TrackerConstants.RECEIVE_MILESTONES:
 			_milestones = action.data;
-			console.log(_milestones);
+			//console.log(_milestones);
 			if (_milestones.length > 0) {
-				_selected = parseInt(_milestones[0].value);
+				_selected = parseInt(_milestones[0].id);
 				console.log('milestone', _selected);
 			}
 			MilestoneStore.emitChange();

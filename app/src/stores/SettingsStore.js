@@ -15,6 +15,10 @@ var SettingsStore  = createStore({
 
 	getSettings() {
 		return JSON.parse(localStorage.getItem('settings')) || {};
+	},
+
+	getUserId() {
+		return parseInt(this.getSettings().userId);
 	}
 });
 

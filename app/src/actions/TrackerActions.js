@@ -13,13 +13,8 @@ export function getProjects() {
 			pageno: 0
 		},
 		success: (json) => {
-			var options = rekey(json, { id: 'value', title: 'label' });
-			options = where(options, { phase: 'active' });
-
-			if (options.length > 0) {
-				options.unshift({ value: 0, label: 'Choose...' });
-			}
-
+			var options = where(json, { phase: 'active' });
+			//console.log(options);
 	    AppDispatcher.dispatch({
 	      type: TrackerConstants.RECEIVE_PROJECTS,
 	      data: options
@@ -44,7 +39,6 @@ export function getProjectDetails(project) {
 			},
 			success: (data) => {
 				//console.log(data)
-
 		    AppDispatcher.dispatch({
 		      type: TrackerConstants.SET_CONTACT_OR_COMPANY,
 		      option: data.contact_or_company,
@@ -63,9 +57,8 @@ export function getMilestones(project) {
 				project_id: project
 			},
 			success: (json) => {
-				var options = rekey(json, { id: 'value', title: 'label' });
-				options = where(options, { closed: 0 });
-
+				var options = where(json, { closed: 0 });
+				//console.log(options);
 		    AppDispatcher.dispatch({
 		      type: TrackerConstants.RECEIVE_MILESTONES,
 		      data: options
@@ -92,16 +85,12 @@ export function getMilestoneTasks(milestone) {
 				milestone_id: milestone
 			},
 			success: (json) => {
-				var options = rekey(json, { id: 'value', description: 'label' });
-				options = where(options, { done: 0 });
+				var options = where(json, { done: 0 });
+				//console.log(options);
 
 				var appSettings = JSON.parse(localStorage.getItem('settings'));
 				if (appSettings && appSettings.userName) {
 					options = where(options, { owner_name: appSettings.userName });
-				}
-
-				if (options.length > 0) {
-					options.push({ value: -1, label: 'New task...' });
 				}
 
 		    AppDispatcher.dispatch({
@@ -123,9 +112,8 @@ export function setMilestoneTask(id) {
 export function getTaskTypes() {
 	apiRequest({
 		url: '/getTaskTypes.php',
-		success: (json) => {
-			var options = rekey(json, { id: 'value', name: 'label' });
-
+		success: (options) => {
+			//console.log(options)
 	    AppDispatcher.dispatch({
 	      type: TrackerConstants.RECEIVE_TASK_TYPES,
 	      data: options
@@ -141,7 +129,12 @@ export function setTaskType(id) {
   });
 }
 
-
+export function setTaskDescription(txt) {
+  AppDispatcher.dispatch({
+    type: TrackerConstants.SET_TASK_DESCRIPTION,
+    txt: txt
+  });
+}
 
 
 

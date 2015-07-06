@@ -6,6 +6,8 @@ import ProjectStore from '../stores/ProjectStore';
 import MilestoneStore from '../stores/MilestoneStore';
 import MilestoneTaskStore from '../stores/MilestoneTaskStore';
 import TaskTypeStore from '../stores/TaskTypeStore';
+import SettingsStore from '../stores/SettingsStore';
+import TaskStore from '../stores/TaskStore';
 
 import ProjectSelectContainer from './ProjectSelectContainer.react';
 import MilestoneSelectContainer from './MilestoneSelectContainer.react';
@@ -21,7 +23,10 @@ var Tracker = React.createClass({
 			milestoneTask: MilestoneTaskStore.getMilestoneTaskId(),
 			contactOrCompany: CustomerStore.getContactOrCompany(),
 			contactOrCompanyId: CustomerStore.getContactOrCompanyId(),
-			taskType: TaskTypeStore.getTaskType()
+			taskType: TaskTypeStore.getTaskTypeId(),
+			userId: SettingsStore.getUserId(),
+			description: MilestoneTaskStore.getMilestoneTaskDescription() || 
+										TaskStore.getTaskDescription()
 		}
 	},
 
@@ -42,7 +47,7 @@ var Tracker = React.createClass({
 
 					<ProjectSelectContainer />
 					<MilestoneSelectContainer />
-					<TaskSelectContainer />
+					<TaskSelectContainer ref="taskSelectContainer" />
 
 				  <div className="btn-toolbar">
 						<button type="submit" className="btn btn-primary btn-sm start-timer-btn">

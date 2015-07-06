@@ -11,11 +11,10 @@ export function saveSettings(data) {
   });
 }
 
-export function getUsers(data) {
+export function getUsers() {
 	apiRequest({
 		url: '/getUsers.php',
-		success: (options) => {
-			var data = rekey(options, { id: 'value', name: 'label' });
+		success: (data) => {
 	  	AppDispatcher.dispatch({
 	  		type: SettingsConstants.RECEIVE_USERS,
 	  		data: data

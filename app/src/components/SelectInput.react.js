@@ -5,11 +5,22 @@ import { htmlEntities } from '../utils/Utils';
 
 var SelectInput = React.createClass({
 
+	getDefaultProps: function() {
+		return {
+			valueKey: 'id',
+			labelKey: 'title'
+		}
+	},
+
 	render: function() {
 
-  	var optionNodes = this.props.options.map(function(option) {
+  	var optionNodes = this.props.options.map(option => {
+  		var value = option[this.props.valueKey];
+  		var label = option[this.props.labelKey];
       return (
-      	<option key={option.value} value={option.value}>{htmlEntities(option.label)}</option>
+      	<option key={value} value={value}>
+      		{htmlEntities(label)}
+      	</option>
       );
   	});
 
