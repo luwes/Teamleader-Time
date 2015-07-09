@@ -31,7 +31,7 @@ ProjectStore.dispatchToken = AppDispatcher.register(action => {
 
 		case TrackerConstants.SET_PROJECT:
 			_selected = parseInt(action.id);
-			console.log('project', _selected);
+			//console.log('project', _selected);
 			ProjectStore.emitChange();
 
 			getProjectDetails(_selected);

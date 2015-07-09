@@ -13,11 +13,11 @@ export function getProjects() {
 			pageno: 0
 		},
 		success: (json) => {
-			var options = where(json, { phase: 'active' });
-			//console.log(options);
+			var data = where(json, { phase: 'active' });
+			//console.log(data);
 	    AppDispatcher.dispatch({
 	      type: TrackerConstants.RECEIVE_PROJECTS,
-	      data: options
+	      data: data
 	    });
     }
 	});
@@ -57,11 +57,11 @@ export function getMilestones(project) {
 				project_id: project
 			},
 			success: (json) => {
-				var options = where(json, { closed: 0 });
-				//console.log(options);
+				var data = where(json, { closed: 0 });
+				//console.log(data);
 		    AppDispatcher.dispatch({
 		      type: TrackerConstants.RECEIVE_MILESTONES,
-		      data: options
+		      data: data
 		    });
       }
 		});
@@ -85,17 +85,18 @@ export function getMilestoneTasks(milestone) {
 				milestone_id: milestone
 			},
 			success: (json) => {
-				var options = where(json, { done: 0 });
-				//console.log(options);
+				var data = where(json, { done: 0 });
+				//console.log(data);
 
+				//todo: filter in view
 				var appSettings = JSON.parse(localStorage.getItem('settings'));
 				if (appSettings && appSettings.userName) {
-					options = where(options, { owner_name: appSettings.userName });
+					data = where(data, { owner_name: appSettings.userName });
 				}
 
 		    AppDispatcher.dispatch({
 		      type: TrackerConstants.RECEIVE_MILESTONE_TASKS,
-		      data: options
+		      data: data
 		    });
       }
 		});
@@ -112,11 +113,11 @@ export function setMilestoneTask(id) {
 export function getTaskTypes() {
 	apiRequest({
 		url: '/getTaskTypes.php',
-		success: (options) => {
-			//console.log(options)
+		success: (data) => {
+			//console.log(data)
 	    AppDispatcher.dispatch({
 	      type: TrackerConstants.RECEIVE_TASK_TYPES,
-	      data: options
+	      data: data
 	    });
 	  }
 	});

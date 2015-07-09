@@ -78,7 +78,7 @@ function bundle2() {
     .pipe(source('app.js'))
     // optional, remove if you don't need to buffer file contents
     .pipe(buffer())
-		//.pipe($.uglify())
+		.pipe($.uglify())
 		.pipe(gulp.dest('app/js'));
 }
 

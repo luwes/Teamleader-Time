@@ -33,14 +33,14 @@ TaskTypeStore.dispatchToken = AppDispatcher.register(action => {
 			_taskTypes = action.data;
 			if (_taskTypes.length > 0) {
 				_selected = parseInt(_taskTypes[0].id);
-				console.log('task_type', _selected);
+				//console.log('task_type', _selected);
 			}
 			TaskTypeStore.emitChange();
 			break;
 
 		case TrackerConstants.SET_TASK_TYPE:
 			_selected = parseInt(action.id);
-			console.log('task_type', _selected);
+			//console.log('task_type', _selected);
 			TaskTypeStore.emitChange();
 			break;
 
@@ -48,6 +48,7 @@ TaskTypeStore.dispatchToken = AppDispatcher.register(action => {
 		case TrackerConstants.SET_MILESTONE_TASK:
 			AppDispatcher.waitFor([MilestoneTaskStore.dispatchToken]);
 
+			//find task type id based on selected milestone task
 			var milestoneTask = MilestoneTaskStore.getMilestoneTask();
 			if (milestoneTask) {
 				var milestoneTaskTypeName = milestoneTask.task_type;
@@ -55,10 +56,10 @@ TaskTypeStore.dispatchToken = AppDispatcher.register(action => {
 				if (milestoneTaskType) {
 					var milestoneTaskTypeId = milestoneTaskType.id;
 					_selected = milestoneTaskTypeId;
+					//console.log('task_type', _selected);
 				}
 			}
-
-
+			
 			break;
 
 		default:

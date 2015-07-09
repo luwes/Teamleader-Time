@@ -44,7 +44,7 @@ MilestoneStore.dispatchToken = AppDispatcher.register(action => {
 			//console.log(_milestones);
 			if (_milestones.length > 0) {
 				_selected = parseInt(_milestones[0].id);
-				console.log('milestone', _selected);
+				//console.log('milestone', _selected);
 			}
 			MilestoneStore.emitChange();
 
@@ -53,7 +53,7 @@ MilestoneStore.dispatchToken = AppDispatcher.register(action => {
 
 		case TrackerConstants.SET_MILESTONE:
 			_selected = parseInt(action.id);
-			console.log('milestone', _selected);
+			//console.log('milestone', _selected);
 			MilestoneStore.emitChange();
 
 			getMilestoneTasks(_selected);
