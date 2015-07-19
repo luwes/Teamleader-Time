@@ -1,8 +1,9 @@
 
+var fs = require('fs');
 var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
 
-var NwBuilder = require('node-webkit-builder');
+var NwBuilder = require('nw-builder');
 var minimist = require('minimist');
 
 var source = require('vinyl-source-stream'); // Used to stream bundle for further handling
@@ -20,13 +21,15 @@ var packageJson = require('./package.json');
 var dependencies = Object.keys(packageJson && packageJson.dependencies || {});
 
 gulp.task('sass', function() {
-	gulp.src(paths.sass)
+	return gulp.src(paths.sass)
 		.pipe($.sass())
 		.pipe($.autoprefixer())
 		.pipe(gulp.dest('app/css'));
 });
 
-//bundle libraries
+/**
+ * Bundle libraries
+ */
 var b1 = browserify({
 	debug: true,
 	extensions: [ '.jsx' ],
@@ -53,7 +56,9 @@ function bundle1() {
 		.pipe(gulp.dest('app/js'));
 }
 
-//bundle app
+/**
+ * Bundle app
+ */
 var b2 = watchify(browserify({
 	entries: paths.js,
 	debug: true,
@@ -83,30 +88,69 @@ function bundle2() {
 }
 
 gulp.task('watch', function() {
-	gulp.watch(paths.sass, ['sass']);
+	return gulp.watch(paths.sass, ['sass']);
 	//gulp.watch(paths.js, ['js']);
 });
 
-gulp.task('default', ['sass', 'appjs', 'watch'], function() {
 
-	var nw = new NwBuilder({
-		appDir: './app',
-		files: './app/**/**', // use the glob format
-	    platforms: [ 'osx', 'win' ],
-	    buildDir: './dist',
-	    buildType: 'versioned',
-	    version: 'v0.12.2',
-	    argv: minimist(process.argv.slice(2))
-	});
+var nwOptions = {
+	appDir: './app',
+	files: './app/**/**', // use the glob format
+	platforms: [ 'osx' ],
+	buildDir: './dist',
+	buildType: 'versioned',
+	version: 'v0.12.2'
+};
+
+/**
+ * Runs the app
+ * Use the "--dev" option to enable toolbars and debug
+ */
+gulp.task('run', run);
+function run() {
+
+	var nw = new NwBuilder(nwOptions);
 
 	//Log stuff you want
 	nw.on('log',  $.util.log);
 
+	setDevMode(true);
+
 	// Build returns a promise
 	nw.run().then(function () {
-	   console.log('all done!');
+		console.log('all done!');
 	}).catch(function (error) {
-	    console.error(error);
+		console.error(error);
 	});
+}
 
+/**
+ * Builds the app
+ */
+gulp.task('build', function() {
+
+	var nw = new NwBuilder(nwOptions);
+
+	//Log stuff you want
+	nw.on('log',  $.util.log);
+
+	setDevMode(false);
+
+	// Build returns a promise
+	nw.build().then(function () {
+		console.log('all done!');
+	}).catch(function (error) {
+		console.error(error);
+	});
 });
+
+/**
+ * Toggles dev mode
+ * @param enable
+ */
+function setDevMode(enable)
+{
+    fs.writeFile('app/.dev', enable ? '1' : '0');
+}
+
+gulp.task('default', ['sass', 'appjs', 'watch'], run);

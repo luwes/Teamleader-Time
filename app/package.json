@@ -7,7 +7,7 @@
     "frame": false,
     "transparent": true,
     "title": "Teamleader Time",
-    "position": "center",
+    "position": "mouse",
     "width": 520,
     "height": 320
   }

@@ -22,8 +22,8 @@ function _show(x, y) {
 }
 
 function _onWindowBlur() {
-	// window.hide();
-	// isVisible = false;
+	window.hide();
+	isVisible = false;
 }
 
 function _fitWindowToContent() {
@@ -39,27 +39,27 @@ function _fitWindowToContent() {
 
 export default class StatusBar {
 
-	constructor() {
+	constructor(App) {
 
 	  // if (!sessionStorage.initializedStatusBar) {
 	  //   sessionStorage.initializedStatusBar = true;
 
-	    var tray = new gui.Tray({
+	    this.tray = new gui.Tray({
 	        title: '',
-	        icon: 'images/icon.png',
-	        alticon: 'images/icon.png',
-	        iconsAreTemplates: false
+	        icon: 'images/icon@2x.png'
 	    });
-	    tray.on('click', _toggle);
+	    this.tray.on('click', _toggle);
 
-	    window.on('blur', _onWindowBlur);
+	    if (App.devMode) {
+	    	window.showDevTools();
+	    } else {
+	    	window.on('blur', _onWindowBlur);
+	    }
 
 			(function animloop() {
 				requestAnimationFrame(animloop);
 				_fitWindowToContent();
 			})();
-
-			_show(100, 100);
 	  //}
 	}
 }

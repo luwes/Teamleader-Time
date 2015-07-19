@@ -9,10 +9,6 @@
   <body>
 		<script>
 			var nodeRequire = require;
-			global.document = window.document;
-			global.navigator = window.navigator;
-			global.localStorage = window.localStorage;
-			global.sessionStorage = window.sessionStorage;
 		</script>
 
 		<script src="js/lib.js"></script>
@@ -21,6 +17,7 @@
 		<script>
 			var gulp = require('gulp');
 			gulp.task('reload', function () {
+				if (App) App.statusBar.tray.remove();
 			  if (location) location.reload();
 			});
 
