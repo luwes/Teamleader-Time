@@ -1,0 +1,23 @@
+
+.tracker {
+
+	.tracker-meta {
+		margin-bottom: 15px;
+		font-size: 14px;
+		.tracker-task {
+			font-size: 13px;
+			color: #ccc;
+		}
+	}
+
+	input.tracker-time {
+		width: 70px;
+		height: 35px;
+		margin-bottom: 30px;
+		padding: 10px;
+		text-align: center;
+		font-size: 16px;
+		background-color: #fff;
+		cursor: auto;
+	}
+}

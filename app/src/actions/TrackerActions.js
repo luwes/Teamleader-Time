@@ -9,6 +9,7 @@ export function getProjects() {
 	apiRequest({
 		url: '/getProjects.php',
 		data: {
+			show_active_only: 1,
 			amount: 100,
 			pageno: 0
 		},
@@ -137,9 +138,19 @@ export function setTaskDescription(txt) {
   });
 }
 
+export function startTimer(timestamp) {
+  AppDispatcher.dispatch({
+    type: TrackerConstants.START_TIMER,
+    timestamp: timestamp
+  });
+}
 
-
-
+export function stopTimer(timestamp) {
+  AppDispatcher.dispatch({
+    type: TrackerConstants.STOP_TIMER,
+    timestamp: timestamp
+  });
+}
 
 
 

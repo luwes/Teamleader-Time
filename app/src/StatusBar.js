@@ -22,8 +22,8 @@ function _show(x, y) {
 }
 
 function _onWindowBlur() {
-	window.hide();
-	isVisible = false;
+	// window.hide();
+	// isVisible = false;
 }
 
 function _fitWindowToContent() {
@@ -58,6 +58,8 @@ export default class StatusBar {
 				requestAnimationFrame(animloop);
 				_fitWindowToContent();
 			})();
+
+			_show(100, 100);
 	  //}
 	}
 }

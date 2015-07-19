@@ -1,4 +1,5 @@
 
+import { findWhere } from 'underscore';
 import { createStore } from '../utils/StoreUtils';
 
 import AppDispatcher from '../dispatcher/AppDispatcher';
@@ -17,6 +18,15 @@ var ProjectStore  = createStore({
 
 	getProjectId() {
 		return _selected;
+	},
+
+	getProject() {
+		return findWhere(_projects, { id: _selected });
+	},
+
+	getProjectTitle() {
+		var project = this.getProject();
+		return project ? project.title : null;
 	}
 });
 
