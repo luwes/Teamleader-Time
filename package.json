@@ -3,21 +3,12 @@
   "version": "0.0.1",
   "description": "Time tracker app for Teamleader CRM",
   "main": "index.js",
-  "browser": {
-    "bootstrap": "./node_modules/bootstrap/dist/js/bootstrap.js"
-  },
   "browserify": {
     "transform": [
       "browserify-shim"
     ]
   },
   "browserify-shim": {
-    "bootstrap": {
-      "exports": "bootstrap",
-      "depends": [
-        "jquery:jQuery"
-      ]
-    }
   },
   "devDependencies": {
     "babelify": "^6.1.2",
@@ -37,13 +28,11 @@
     "watchify": "^3.2.1"
   },
   "dependencies": {
-    "bootstrap": "^3.3.4",
     "flux": "^2.0.3",
     "jquery": "^2.1.4",
     "keymirror": "^0.1.1",
     "object-assign": "^3.0.0",
     "react": "^0.13.3",
-    "react-localstorage": "^0.2.3",
     "react-router": "^0.13.3",
     "underscore": "^1.8.3"
   }

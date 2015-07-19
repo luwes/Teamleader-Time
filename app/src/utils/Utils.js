@@ -47,3 +47,12 @@ export function htmlEntities(string) {
 		.replace(/&amp;/g, '&')
 		.replace(/&#039;/g, "'");
 }
+
+export function formatTime(secs) {
+	var h = parseInt(secs / 3600, 10);
+	var m = parseInt((secs % 3600) / 60, 10);
+	var s = parseInt((secs % 3600) % 60, 10);
+	return (h === 0 ? '' : (h < 10 ? '0'+h+':' : h+':')) +
+			(m < 10 ? '0'+m : ''+m) + ':' +
+			(s < 10 ? '0'+s : ''+s);
+}
