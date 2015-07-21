@@ -29,11 +29,10 @@ var webpack = require('webpack');
 var webpackConfig = require('./webpack.config.js');
 
 gulp.task("js", function(callback) {
-	// run webpack
 	webpack(webpackConfig, function(err, stats) {
 	  if(err) throw new $.util.PluginError("webpack", err);
 	  $.util.log("[webpack]", stats.toString({
-			// output options
+	  	colors: true
 	  }));
 	  callback();
 	});

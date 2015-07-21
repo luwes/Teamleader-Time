@@ -17,7 +17,6 @@ var config = {
     filename: '[name].js'
   },
   module: {
-    noParse: vendors,
     loaders: [
       {
         test: /\.jsx?$/,
