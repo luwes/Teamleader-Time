@@ -1,11 +1,12 @@
 
 import React from 'react';
-import Router, { Link, RouteHandler } from 'react-router';
+import { Link } from 'react-router';
 
 import { EventEmitter } from 'events';
 import { Dispatcher } from 'flux';
 
 var gui = nodeRequire('nw.gui');
+
 
 var TeamleaderTimeApp = React.createClass({
   render: function () {
@@ -14,14 +15,14 @@ var TeamleaderTimeApp = React.createClass({
       <div className="app">
 	  		<header>
 	  			<div className="headerext"></div>
-	  			<Link to="settings" className="settings-link" activeClassName="active">
+	  			<Link to="/settings" className="settings-link" activeClassName="active">
 	  				<i className="fa fa-cog"></i>
 	  			</Link>
 	  		</header>
 
         {/* this is the important part */}
         <div className="container">
-          <RouteHandler/>
+          {this.props.children}
         </div>
       </div>
     );

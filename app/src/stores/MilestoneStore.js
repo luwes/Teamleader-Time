@@ -43,7 +43,7 @@ MilestoneStore.dispatchToken = AppDispatcher.register(action => {
 			_milestones = action.data;
 			//console.log(_milestones);
 			if (_milestones.length > 0) {
-				_selected = parseInt(_milestones[0].id);
+				_selected = parseInt(_selected || _milestones[0].id);
 				//console.log('milestone', _selected);
 			}
 			MilestoneStore.emitChange();

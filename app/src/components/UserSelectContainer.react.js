@@ -3,7 +3,6 @@ import React from 'react';
 import Router, { Link } from 'react-router';
 
 import SettingsStore from '../stores/SettingsStore';
-import SettingsUsersStore from '../stores/SettingsUsersStore';
 import { getUsers } from '../actions/SettingsActions';
 
 import SelectInput from './SelectInput.react';
@@ -13,7 +12,7 @@ var UserSelectContainer = React.createClass({
 
 	getUsersState: function() {
 		return {
-			users: SettingsUsersStore.getUsers()
+			users: SettingsStore.getUsers()
 		}
 	},
 
@@ -29,11 +28,11 @@ var UserSelectContainer = React.createClass({
 
   componentDidMount: function() {
   	getUsers();
-  	SettingsUsersStore.addChangeListener(this._onChange);
+  	SettingsStore.addChangeListener(this._onChange);
   },
 
   componentWillUnmount: function() {
-  	SettingsUsersStore.removeChangeListener(this._onChange);
+  	SettingsStore.removeChangeListener(this._onChange);
   },
 
 	render: function() {

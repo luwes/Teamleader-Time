@@ -6,6 +6,8 @@ import AppDispatcher from '../dispatcher/AppDispatcher';
 import SettingsConstants from '../constants/SettingsConstants';
 
 
+var _users = [];
+
 function _setSettings(data) {
 	var settings = $.extend({}, SettingsStore.getSettings(), data);
 	localStorage.setItem('settings', JSON.stringify(settings));
@@ -19,6 +21,14 @@ var SettingsStore  = createStore({
 
 	getUserId() {
 		return parseInt(this.getSettings().userId);
+	},
+
+	isLoggedIn() {
+		return this.getUserId() > 0
+	},
+
+	getUsers() {
+		return _users;
 	}
 });
 
@@ -29,6 +39,12 @@ SettingsStore.dispatchToken = AppDispatcher.register(action => {
 
 		case SettingsConstants.SAVE_SETTINGS:
 			_setSettings(action.data);
+			SettingsStore.emitChange();
+			getUsers();
+			break;
+
+		case SettingsConstants.RECEIVE_USERS:
+			_users = action.data;
 			SettingsStore.emitChange();
 			break;
 

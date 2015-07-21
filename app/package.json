@@ -4,10 +4,10 @@
   "main": "index.html",
   "window": {
     "show": false,
+    "show_in_taskbar": false,
     "frame": false,
     "transparent": true,
     "title": "Teamleader Time",
-    "position": "mouse",
     "width": 520,
     "height": 320
   }

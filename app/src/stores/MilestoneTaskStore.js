@@ -48,7 +48,7 @@ MilestoneTaskStore.dispatchToken = AppDispatcher.register(action => {
 		case TrackerConstants.RECEIVE_MILESTONE_TASKS:
 			_tasks = action.data;
 			if (_tasks.length > 0) {
-				_selected = parseInt(_tasks[0].id);
+				_selected = parseInt(_selected || _tasks[0].id);
 				//console.log('task', _selected);
 			}
 			MilestoneTaskStore.emitChange();
