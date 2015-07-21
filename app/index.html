@@ -11,13 +11,13 @@
 			var nodeRequire = require;
 		</script>
 
-		<script src="js/lib.js"></script>
+		<script src="js/vendors.js"></script>
 		<script src="js/app.js"></script>
 
 		<script>
 			var gulp = require('gulp');
 			gulp.task('reload', function () {
-				//if (App) App.statusBar.tray.remove();
+				if (App) App.statusBar.tray.remove();
 			  if (location) location.reload();
 			});
 

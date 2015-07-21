@@ -1,28 +1,34 @@
 
 import React from 'react';
 import { Router, Route } from 'react-router';
-var history = require('react-router/lib/BrowserHistory').history;
+import HashHistory from 'react-router/lib/HashHistory';
 
 import TeamleaderTimeApp from './components/TeamleaderTimeApp.react';
 import Tracker from './components/Tracker.react';
 import Login from './components/Login.react';
 import Settings from './components/Settings.react';
 
+import SettingsStore from './stores/SettingsStore';
+
 
 export default class Routes {
 
 	constructor() {
 
-		console.log(history)
-
 	  React.render((
-	  	<Router history={history}>
+	  	<Router history={new HashHistory}>
 		    <Route component={TeamleaderTimeApp}>
-		    	<Route path="/" component={Tracker} />
-		      <Route path="/login" component={Login} />
-		      <Route path="/settings" component={Settings} />
+		    	<Route path="/" component={Tracker} onEnter={this.requireAuth}/>
+		      <Route path="/login" component={Login}/>
+		      <Route path="/settings" component={Settings} onEnter={this.requireAuth}/>
 		    </Route>
 		  </Router>
 		), document.body);
+	}
+
+	requireAuth(nextState, transition) {
+	  if (!SettingsStore.isLoggedIn()) {
+			transition.to('/login', null, { nextPathname: nextState.location.pathname });
+	  }
 	}
 }

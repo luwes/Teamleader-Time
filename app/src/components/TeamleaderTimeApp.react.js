@@ -5,8 +5,6 @@ import { Link } from 'react-router';
 import { EventEmitter } from 'events';
 import { Dispatcher } from 'flux';
 
-var gui = nodeRequire('nw.gui');
-
 
 var TeamleaderTimeApp = React.createClass({
   render: function () {

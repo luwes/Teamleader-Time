@@ -1,2 +1,2900 @@
-!function e(t,n,r){function a(o,i){if(!n[o]){if(!t[o]){var u="function"==typeof require&&require;if(!i&&u)return u(o,!0);if(s)return s(o,!0);var c=new Error("Cannot find module '"+o+"'");throw c.code="MODULE_NOT_FOUND",c}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return a(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}for(var s="function"==typeof require&&require,o=0;o<r.length;o++)a(r[o]);return a}({1:[function(e,t,n){"use strict";function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(n,"__esModule",{value:!0});var a=nodeRequire("nw.gui"),s=function o(){r(this,o);var e=new a.Menu({type:"menubar"});try{e.createMacBuiltin("Teamleader Time",{hideEdit:!1}),a.Window.get().menu=e}catch(t){console.log(t.message)}};n["default"]=s,t.exports=n["default"]},{}],2:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}function a(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(n,"__esModule",{value:!0});var s=e("react"),o=r(s),i=e("react-router"),u=e("./components/TeamleaderTimeApp.react"),c=r(u),l=e("./components/Tracker.react"),f=r(l),d=e("./components/Login.react"),p=r(d),h=e("./components/Settings.react"),m=r(h),g=e("react-router/lib/BrowserHistory").history,v=function S(){a(this,S),console.log(g),o["default"].render(o["default"].createElement(i.Router,{history:g},o["default"].createElement(i.Route,{component:c["default"]},o["default"].createElement(i.Route,{path:"/",component:f["default"]}),o["default"].createElement(i.Route,{path:"/login",component:p["default"]}),o["default"].createElement(i.Route,{path:"/settings",component:m["default"]}))),document.body)};n["default"]=v,t.exports=n["default"]},{"./components/Login.react":6,"./components/Settings.react":10,"./components/TeamleaderTimeApp.react":13,"./components/Tracker.react":15,react:"react","react-router":"react-router","react-router/lib/BrowserHistory":32}],3:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}function a(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function s(e){p?d.hide():o.apply(this,[e.x,e.y]),p=!p}function o(e,t){d.moveTo(e-l["default"](".app").width()/2-6,t),u(),d.show(),d.focus()}function i(){d.hide(),p=!1}function u(){var e=l["default"](".app").height()+100,t=l["default"](".app").width()+40;(m!=t||h!=e)&&(d.resizeTo(t,e),m=t,h=e)}Object.defineProperty(n,"__esModule",{value:!0});var c=e("jquery"),l=r(c),f=nodeRequire("nw.gui"),d=f.Window.get(),p=!1,h=0,m=0,g=function v(e){a(this,v),this.tray=new f.Tray({title:"",icon:"images/icon@2x.png"}),this.tray.on("click",s),e.devMode?d.showDevTools():d.on("blur",i),function t(){requestAnimationFrame(t),u()}()};n["default"]=g,t.exports=n["default"]},{jquery:"jquery"}],4:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}function a(e){u["default"].dispatch({type:l["default"].SAVE_SETTINGS,data:e})}function s(){o.apiRequest({url:"/getUsers.php",success:function(e){u["default"].dispatch({type:l["default"].RECEIVE_USERS,data:e})}})}Object.defineProperty(n,"__esModule",{value:!0}),n.saveSettings=a,n.getUsers=s;var o=e("../utils/Utils"),i=e("../dispatcher/AppDispatcher"),u=r(i),c=e("../constants/SettingsConstants"),l=r(c)},{"../constants/SettingsConstants":17,"../dispatcher/AppDispatcher":19,"../utils/Utils":29}],5:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}function a(){v.apiRequest({url:"/getProjects.php",data:{show_active_only:1,amount:100,pageno:0},success:function(e){var t=g.where(e,{phase:"active"});y["default"].dispatch({type:T["default"].RECEIVE_PROJECTS,data:t})}})}function s(e){y["default"].dispatch({type:T["default"].SET_PROJECT,id:e})}function o(e){e>0&&v.apiRequest({url:"/getProject.php",data:{project_id:e},success:function(e){y["default"].dispatch({type:T["default"].SET_CONTACT_OR_COMPANY,option:e.contact_or_company,id:e.contact_or_company_id})}})}function i(e){e>0&&v.apiRequest({url:"/getMilestonesByProject.php",data:{project_id:e},success:function(e){var t=g.where(e,{closed:0});y["default"].dispatch({type:T["default"].RECEIVE_MILESTONES,data:t})}})}function u(e){y["default"].dispatch({type:T["default"].SET_MILESTONE,id:e})}function c(e){e>0&&v.apiRequest({url:"/getTasksByMilestone.php",data:{milestone_id:e},success:function(e){var t=g.where(e,{done:0}),n=JSON.parse(localStorage.getItem("settings"));n&&n.userName&&(t=g.where(t,{owner_name:n.userName})),y["default"].dispatch({type:T["default"].RECEIVE_MILESTONE_TASKS,data:t})}})}function l(e){y["default"].dispatch({type:T["default"].SET_MILESTONE_TASK,id:e})}function f(){v.apiRequest({url:"/getTaskTypes.php",success:function(e){y["default"].dispatch({type:T["default"].RECEIVE_TASK_TYPES,data:e})}})}function d(e){y["default"].dispatch({type:T["default"].SET_TASK_TYPE,id:e})}function p(e){y["default"].dispatch({type:T["default"].SET_TASK_DESCRIPTION,txt:e})}function h(e){y["default"].dispatch({type:T["default"].START_TIMER,timestamp:e})}function m(e){y["default"].dispatch({type:T["default"].STOP_TIMER,timestamp:e})}Object.defineProperty(n,"__esModule",{value:!0}),n.getProjects=a,n.setProject=s,n.getProjectDetails=o,n.getMilestones=i,n.setMilestone=u,n.getMilestoneTasks=c,n.setMilestoneTask=l,n.getTaskTypes=f,n.setTaskType=d,n.setTaskDescription=p,n.startTimer=h,n.stopTimer=m;var g=e("underscore"),v=e("../utils/Utils"),S=e("../dispatcher/AppDispatcher"),y=r(S),_=e("../constants/TrackerConstants"),T=r(_)},{"../constants/TrackerConstants":18,"../dispatcher/AppDispatcher":19,"../utils/Utils":29,underscore:"underscore"}],6:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(n,"__esModule",{value:!0});var a=e("jquery"),s=r(a),o=e("react"),i=r(o),u=e("react-router"),c=(r(u),e("../stores/SettingsStore")),l=r(c),f=e("../actions/SettingsActions"),d=e("./TextInput.react"),p=r(d),h=e("./SelectInput.react"),m=(r(h),e("./UserSelectContainer.react")),g=r(m),v=i["default"].createClass({displayName:"Login",getInitialState:function(){return l["default"].getSettings()},_onChange:function(){this.setState(l["default"].getSettings())},componentDidMount:function(){l["default"].addChangeListener(this._onChange)},componentWillUnmount:function(){l["default"].removeChangeListener(this._onChange)},handleSubmit:function(e){e.preventDefault();var t=i["default"].findDOMNode(this.refs.groupId).value.trim(),n=i["default"].findDOMNode(this.refs.groupSecret).value.trim();if(n&&t){var r=this.refs.userSelectContainer,a=r.refs.userSelect,o=i["default"].findDOMNode(a);f.saveSettings({groupId:t,groupSecret:n,userId:a?o.value:0,userName:a?s["default"](o).find("option:selected").text():""})}},render:function(){return i["default"].createElement("div",{className:"login"},i["default"].createElement("form",{className:"form-horizontal",onSubmit:this.handleSubmit},i["default"].createElement("div",{className:"form-group"},i["default"].createElement("label",{className:"col-xs-3 control-label",htmlFor:"group-id"},"Group ID"),i["default"].createElement("div",{className:"col-xs-6"},i["default"].createElement(p["default"],{id:"group-id",ref:"groupId",defaultValue:this.state.groupId}))),i["default"].createElement("div",{className:"form-group"},i["default"].createElement("label",{className:"col-xs-3 control-label",htmlFor:"group-secret"},"Group Secret"),i["default"].createElement("div",{className:"col-xs-6"},i["default"].createElement(p["default"],{id:"group-secret",ref:"groupSecret",defaultValue:this.state.groupSecret}))),i["default"].createElement(g["default"],{ref:"userSelectContainer",userId:this.state.userId}),i["default"].createElement("div",{className:"btn-toolbar"},i["default"].createElement("button",{type:"submit",className:"btn btn-primary btn-sm"},"Login"))))}});n["default"]=v,t.exports=n["default"]},{"../actions/SettingsActions":4,"../stores/SettingsStore":24,"./SelectInput.react":9,"./TextInput.react":14,"./UserSelectContainer.react":16,jquery:"jquery",react:"react","react-router":"react-router"}],7:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(n,"__esModule",{value:!0});var a=e("react"),s=r(a),o=e("../actions/TrackerActions"),i=e("../stores/ProjectStore"),u=r(i),c=e("../stores/MilestoneStore"),l=r(c),f=e("./SelectInput.react"),d=r(f),p=s["default"].createClass({displayName:"MilestoneSelectContainer",getMilestonesState:function(){return{milestones:l["default"].getMilestones(),milestone:l["default"].getMilestoneId()}},getInitialState:function(){return this.getMilestonesState()},_onChange:function(){this.isMounted()&&this.setState(this.getMilestonesState())},componentDidMount:function(){o.getMilestones(u["default"].getProjectId()),l["default"].addChangeListener(this._onChange)},componentWillUnmount:function(){l["default"].removeChangeListener(this._onChange)},handleChange:function(e){var t=e.currentTarget;o.setMilestone(t.value)},render:function(){return 0===this.state.milestones.length?null:s["default"].createElement("div",{className:"form-group"},s["default"].createElement("label",{className:"col-xs-3 control-label",htmlFor:"milestone"},"Milestone"),s["default"].createElement("div",{className:"col-xs-6"},s["default"].createElement(d["default"],{id:"milestone",ref:"milestone",value:this.state.milestone,options:this.state.milestones,onChange:this.handleChange})))}});n["default"]=p,t.exports=n["default"]},{"../actions/TrackerActions":5,"../stores/MilestoneStore":21,"../stores/ProjectStore":23,"./SelectInput.react":9,react:"react"}],8:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(n,"__esModule",{value:!0});var a=e("react"),s=r(a),o=e("underscore"),i=e("../actions/TrackerActions"),u=e("../stores/ProjectStore"),c=r(u),l=e("./SelectInput.react"),f=r(l),d=s["default"].createClass({displayName:"ProjectSelectContainer",getProjectsState:function(){return{projects:c["default"].getProjects(),project:c["default"].getProjectId()}},getInitialState:function(){return this.getProjectsState()},_onChange:function(){this.isMounted()&&this.setState(this.getProjectsState())},componentDidMount:function(){i.getProjects(),c["default"].addChangeListener(this._onChange)},componentWillUnmount:function(){c["default"].removeChangeListener(this._onChange)},handleChange:function(e){var t=e.currentTarget;i.setProject(t.value)},render:function(){var e=o.clone(this.state.projects);return e.length>0&&e.unshift({id:0,title:"Choose..."}),s["default"].createElement("div",{className:"form-group"},s["default"].createElement("label",{className:"col-xs-3 control-label",htmlFor:"project"},"Project"),s["default"].createElement("div",{className:"col-xs-6"},s["default"].createElement(f["default"],{id:"project",ref:"project",value:this.state.project,options:e,onChange:this.handleChange})))}});n["default"]=d,t.exports=n["default"]},{"../actions/TrackerActions":5,"../stores/ProjectStore":23,"./SelectInput.react":9,react:"react",underscore:"underscore"}],9:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(n,"__esModule",{value:!0});var a=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var n=arguments[t];for(var r in n)Object.prototype.hasOwnProperty.call(n,r)&&(e[r]=n[r])}return e},s=e("react"),o=r(s),i=e("../utils/Utils"),u=o["default"].createClass({displayName:"SelectInput",getDefaultProps:function(){return{valueKey:"id",labelKey:"title"}},render:function(){var e=this,t=this.props.options.map(function(t){var n=t[e.props.valueKey],r=t[e.props.labelKey];return o["default"].createElement("option",{key:n,value:n},i.htmlEntities(r))});return o["default"].createElement("select",a({},this.props,{className:"form-control"}),t)}});n["default"]=u,t.exports=n["default"]},{"../utils/Utils":29,react:"react"}],10:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(n,"__esModule",{value:!0});var a=e("jquery"),s=(r(a),e("react")),o=r(s),i=e("../stores/SettingsStore"),u=r(i),c=(e("../actions/SettingsActions"),o["default"].createClass({displayName:"Settings",getInitialState:function(){return u["default"].getSettings()},_onChange:function(){this.setState(u["default"].getSettings())},componentDidMount:function(){u["default"].addChangeListener(this._onChange)},componentWillUnmount:function(){u["default"].removeChangeListener(this._onChange)},render:function(){return o["default"].createElement("div",{className:"settings"})}}));n["default"]=c,t.exports=n["default"]},{"../actions/SettingsActions":4,"../stores/SettingsStore":24,jquery:"jquery",react:"react"}],11:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(n,"__esModule",{value:!0});var a=e("react"),s=r(a),o=e("underscore"),i=e("../actions/TrackerActions"),u=e("../stores/MilestoneStore"),c=r(u),l=e("../stores/MilestoneTaskStore"),f=r(l),d=e("../stores/TaskStore"),p=r(d),h=e("./SelectInput.react"),m=r(h),g=e("./TaskTypeSelectContainer.react"),v=r(g),S=s["default"].createClass({displayName:"TaskSelectContainer",getTasksState:function(){return{tasks:f["default"].getMilestoneTasks(),task:f["default"].getMilestoneTaskId(),description:p["default"].getTaskDescription()}},getInitialState:function(){return this.getTasksState()},_onChange:function(){this.isMounted()&&this.setState(this.getTasksState())},componentDidMount:function(){i.getMilestoneTasks(c["default"].getMilestoneId()),f["default"].addChangeListener(this._onChange),p["default"].addChangeListener(this._onChange)},componentWillUnmount:function(){f["default"].removeChangeListener(this._onChange),p["default"].removeChangeListener(this._onChange)},handleMilestoneTaskChange:function(e){var t=e.currentTarget;i.setMilestoneTask(t.value)},handleTaskDescriptionChange:function(e){i.setTaskDescription(e.target.value)},render:function(){if(this.state.tasks.length>0&&-1!=this.state.task){var e=o.clone(this.state.tasks);return e.push({id:-1,description:"New task..."}),s["default"].createElement("div",{className:"form-group"},s["default"].createElement("label",{className:"col-xs-3 control-label",htmlFor:"milestone-task"},"Todo"),s["default"].createElement("div",{className:"col-xs-6"},s["default"].createElement(m["default"],{id:"milestone-task",ref:"milestoneTask",labelKey:"description",value:this.state.task,options:e,onChange:this.handleMilestoneTaskChange})))}return s["default"].createElement("div",{className:"custom-task"},s["default"].createElement("div",{className:"form-group"},s["default"].createElement("label",{className:"col-xs-3 control-label",htmlFor:"task-type"},"Type"),s["default"].createElement("div",{className:"col-xs-6"},s["default"].createElement(v["default"],null))),s["default"].createElement("div",{className:"form-group"},s["default"].createElement("div",{className:"col-xs-12"},s["default"].createElement("textarea",{id:"task-description",placeholder:"Task description...",className:"form-control",rows:"3",value:this.state.description,onChange:this.handleTaskDescriptionChange}))))}});n["default"]=S,t.exports=n["default"]},{"../actions/TrackerActions":5,"../stores/MilestoneStore":21,"../stores/MilestoneTaskStore":22,"../stores/TaskStore":25,"./SelectInput.react":9,"./TaskTypeSelectContainer.react":12,react:"react",underscore:"underscore"}],12:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(n,"__esModule",{value:!0});var a=e("react"),s=r(a),o=e("../actions/TrackerActions"),i=e("../stores/TaskTypeStore"),u=r(i),c=e("./SelectInput.react"),l=r(c),f=s["default"].createClass({displayName:"TaskTypeSelectContainer",getTasksState:function(){return{taskTypes:u["default"].getTaskTypes(),taskType:u["default"].getTaskTypeId()}},getInitialState:function(){return this.getTasksState()},_onChange:function(){this.isMounted()&&this.setState(this.getTasksState())},componentDidMount:function(){o.getTaskTypes(),u["default"].addChangeListener(this._onChange)},componentWillUnmount:function(){u["default"].removeChangeListener(this._onChange)},handleChange:function(e){var t=e.currentTarget;o.setTaskType(t.value)},render:function(){return s["default"].createElement(l["default"],{id:"task-type",ref:"taskType",labelKey:"name",value:this.state.taskType,options:this.state.taskTypes,onChange:this.handleChange})}});n["default"]=f,t.exports=n["default"]},{"../actions/TrackerActions":5,"../stores/TaskTypeStore":26,"./SelectInput.react":9,react:"react"}],13:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(n,"__esModule",{value:!0});var a=e("react"),s=r(a),o=e("react-router"),i=(e("events"),e("flux"),nodeRequire("nw.gui"),s["default"].createClass({displayName:"TeamleaderTimeApp",render:function(){return s["default"].createElement("div",{className:"app"},s["default"].createElement("header",null,s["default"].createElement("div",{className:"headerext"}),s["default"].createElement(o.Link,{to:"/settings",className:"settings-link",activeClassName:"active"},s["default"].createElement("i",{className:"fa fa-cog"}))),s["default"].createElement("div",{className:"container"},this.props.children))}}));n["default"]=i,t.exports=n["default"]},{events:30,flux:"flux",react:"react","react-router":"react-router"}],14:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(n,"__esModule",{value:!0});var a=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var n=arguments[t];for(var r in n)Object.prototype.hasOwnProperty.call(n,r)&&(e[r]=n[r])}return e},s=e("react"),o=r(s),i=o["default"].createClass({displayName:"TextInput",render:function(){return o["default"].createElement("input",a({},this.props,{type:"text",className:"form-control"}))}});n["default"]=i,t.exports=n["default"]},{react:"react"}],15:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(n,"__esModule",{value:!0});var a=e("react"),s=r(a),o=e("../utils/Utils"),i=e("../stores/CustomerStore"),u=(r(i),e("../stores/ProjectStore")),c=r(u),l=e("../stores/MilestoneStore"),f=(r(l),e("../stores/MilestoneTaskStore")),d=r(f),p=e("../stores/TaskTypeStore"),h=(r(p),e("../stores/SettingsStore")),m=(r(h),e("../stores/TaskStore")),g=r(m),v=e("../stores/TimeStore"),S=r(v),y=e("./ProjectSelectContainer.react"),_=r(y),T=e("./MilestoneSelectContainer.react"),E=r(T),C=e("./TaskSelectContainer.react"),M=r(C),k=e("../actions/TrackerActions"),w=s["default"].createClass({displayName:"Tracker",getTrackerState:function(){return{isTiming:S["default"].isTiming(),seconds:S["default"].getSecondsElapsed()}},getInitialState:function(){return this.getTrackerState()},_onChange:function(){this.isMounted()&&this.setState(this.getTrackerState())},componentDidMount:function(){S["default"].addChangeListener(this._onChange)},componentWillUnmount:function(){S["default"].removeChangeListener(this._onChange)},handleStart:function(e){e.preventDefault();var t=Math.floor(Date.now()/1e3);k.startTimer(t)},handleStop:function(e){e.preventDefault();var t=Math.floor(Date.now()/1e3);k.stopTimer(t)},render:function(){return this.state.isTiming?s["default"].createElement("div",{className:"tracker"},s["default"].createElement("form",{className:"",onSubmit:this.handleStop},s["default"].createElement("div",{className:"tracker-meta"},s["default"].createElement("div",{className:"tracker-project"},c["default"].getProjectTitle()||"Untitled project"),s["default"].createElement("div",{className:"tracker-task"},d["default"].getMilestoneTaskDescription()||g["default"].getTaskDescription()||"No task description")),s["default"].createElement("div",{className:"form-group"},s["default"].createElement("input",{type:"text",className:"form-control tracker-time",disabled:!0,value:o.formatTime(this.state.seconds)})),s["default"].createElement("div",{className:"btn-toolbar"},s["default"].createElement("button",{type:"submit",className:"btn btn-primary btn-sm stop-timer-btn"},"Stop timer")))):s["default"].createElement("div",{className:"tracker"},s["default"].createElement("form",{className:"form-horizontal",onSubmit:this.handleStart},s["default"].createElement(_["default"],null),s["default"].createElement(E["default"],null),s["default"].createElement(M["default"],{ref:"taskSelectContainer"}),s["default"].createElement("div",{className:"btn-toolbar"},s["default"].createElement("button",{type:"submit",className:"btn btn-primary btn-sm start-timer-btn"},"Start timer"))))}});n["default"]=w,t.exports=n["default"]},{"../actions/TrackerActions":5,"../stores/CustomerStore":20,"../stores/MilestoneStore":21,"../stores/MilestoneTaskStore":22,"../stores/ProjectStore":23,"../stores/SettingsStore":24,"../stores/TaskStore":25,"../stores/TaskTypeStore":26,"../stores/TimeStore":27,"../utils/Utils":29,"./MilestoneSelectContainer.react":7,"./ProjectSelectContainer.react":8,"./TaskSelectContainer.react":11,react:"react"}],16:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(n,"__esModule",{value:!0});var a=e("react"),s=r(a),o=e("react-router"),i=(r(o),e("../stores/SettingsStore")),u=r(i),c=e("../actions/SettingsActions"),l=e("./SelectInput.react"),f=r(l),d=s["default"].createClass({displayName:"UserSelectContainer",getUsersState:function(){return{users:u["default"].getUsers()}},getInitialState:function(){return this.getUsersState()},_onChange:function(){this.isMounted()&&this.setState(this.getUsersState())},componentDidMount:function(){c.getUsers(),u["default"].addChangeListener(this._onChange)},componentWillUnmount:function(){u["default"].removeChangeListener(this._onChange)},render:function(){return 0===this.state.users.length?null:s["default"].createElement("div",{className:"form-group"},s["default"].createElement("label",{className:"col-xs-3 control-label",htmlFor:"user-select"},"Select user"),s["default"].createElement("div",{className:"col-xs-6"},s["default"].createElement(f["default"],{id:"user-select",ref:"userSelect",labelKey:"name",options:this.state.users,defaultValue:this.props.userId})))}});n["default"]=d,t.exports=n["default"]},{"../actions/SettingsActions":4,"../stores/SettingsStore":24,"./SelectInput.react":9,react:"react","react-router":"react-router"}],17:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(n,"__esModule",{value:!0});var a=e("keymirror"),s=r(a);n["default"]=s["default"]({SAVE_SETTINGS:null,RECEIVE_USERS:null}),t.exports=n["default"]},{keymirror:"keymirror"}],18:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(n,"__esModule",{value:!0});var a=e("keymirror"),s=r(a);n["default"]=s["default"]({RECEIVE_PROJECTS:null,RECEIVE_MILESTONES:null,RECEIVE_MILESTONE_TASKS:null,RECEIVE_TASK_TYPES:null,SET_PROJECT:null,SET_MILESTONE:null,SET_MILESTONE_TASK:null,SET_CONTACT_OR_COMPANY:null,SET_TASK_TYPE:null,SET_TASK_DESCRIPTION:null,START_TIMER:null,STOP_TIMER:null}),t.exports=n["default"]},{keymirror:"keymirror"}],19:[function(e,t,n){"use strict";Object.defineProperty(n,"__esModule",{value:!0});var r=e("flux");n["default"]=new r.Dispatcher,t.exports=n["default"]},{flux:"flux"}],20:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(n,"__esModule",{value:!0});var a,s,o=e("../utils/StoreUtils"),i=e("../dispatcher/AppDispatcher"),u=r(i),c=e("../constants/TrackerConstants"),l=r(c),f=o.createStore({getContactOrCompany:function(){return a},getContactOrCompanyId:function(){return s}});f.dispatchToken=u["default"].register(function(e){switch(e.type){case l["default"].SET_CONTACT_OR_COMPANY:a=e.option,s=e.id,f.emitChange()}}),n["default"]=f,t.exports=n["default"]},{"../constants/TrackerConstants":18,"../dispatcher/AppDispatcher":19,"../utils/StoreUtils":28}],21:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(n,"__esModule",{value:!0});var a,s=e("underscore"),o=e("../utils/StoreUtils"),i=e("../dispatcher/AppDispatcher"),u=r(i),c=e("../constants/TrackerConstants"),l=r(c),f=e("../actions/TrackerActions"),d=e("../stores/ProjectStore"),p=r(d),h=[],m=o.createStore({getMilestones:function(){return h},getMilestoneId:function(){return a},getMilestone:function(){return s.findWhere(h,{id:a})}});m.dispatchToken=u["default"].register(function(e){switch(e.type){case l["default"].SET_PROJECT:u["default"].waitFor([p["default"].dispatchToken]),h=[],a=0,0==p["default"].getProjectId()&&m.emitChange();break;case l["default"].RECEIVE_MILESTONES:h=e.data,h.length>0&&(a=parseInt(a||h[0].id)),m.emitChange(),f.getMilestoneTasks(a);break;case l["default"].SET_MILESTONE:a=parseInt(e.id),m.emitChange(),f.getMilestoneTasks(a)}}),n["default"]=m,t.exports=n["default"]},{"../actions/TrackerActions":5,"../constants/TrackerConstants":18,"../dispatcher/AppDispatcher":19,"../stores/ProjectStore":23,"../utils/StoreUtils":28,underscore:"underscore"}],22:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(n,"__esModule",{value:!0});var a,s=e("underscore"),o=e("../utils/StoreUtils"),i=e("../dispatcher/AppDispatcher"),u=r(i),c=e("../constants/TrackerConstants"),l=r(c),f=e("../stores/ProjectStore"),d=r(f),p=e("../stores/MilestoneStore"),h=r(p),m=[],g=o.createStore({getMilestoneTasks:function(){return m},getMilestoneTaskId:function(){return a},getMilestoneTask:function(){return s.findWhere(m,{id:a})},getMilestoneTaskDescription:function(){var e=this.getMilestoneTask();return e?e.description:null}});g.dispatchToken=u["default"].register(function(e){switch(e.type){case l["default"].SET_PROJECT:case l["default"].SET_MILESTONE:u["default"].waitFor([h["default"].dispatchToken]),m=[],a=0,0==d["default"].getProjectId()&&g.emitChange();break;case l["default"].RECEIVE_MILESTONE_TASKS:m=e.data,m.length>0&&(a=parseInt(a||m[0].id)),g.emitChange();break;case l["default"].SET_MILESTONE_TASK:a=parseInt(e.id),g.emitChange()}}),n["default"]=g,t.exports=n["default"]},{"../constants/TrackerConstants":18,"../dispatcher/AppDispatcher":19,"../stores/MilestoneStore":21,"../stores/ProjectStore":23,"../utils/StoreUtils":28,underscore:"underscore"}],23:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(n,"__esModule",{value:!0});var a,s=e("underscore"),o=e("../utils/StoreUtils"),i=e("../dispatcher/AppDispatcher"),u=r(i),c=e("../constants/TrackerConstants"),l=r(c),f=e("../actions/TrackerActions"),d=[],p=o.createStore({getProjects:function(){return d},getProjectId:function(){return a},getProject:function(){return s.findWhere(d,{id:a})},getProjectTitle:function(){var e=this.getProject();return e?e.title:null}});p.dispatchToken=u["default"].register(function(e){switch(e.type){case l["default"].RECEIVE_PROJECTS:d=e.data,p.emitChange();break;case l["default"].SET_PROJECT:a=parseInt(e.id),p.emitChange(),f.getProjectDetails(a),f.getMilestones(a)}}),n["default"]=p,t.exports=n["default"]},{"../actions/TrackerActions":5,"../constants/TrackerConstants":18,"../dispatcher/AppDispatcher":19,"../utils/StoreUtils":28,underscore:"underscore"}],24:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}function a(e){var t=o["default"].extend({},p.getSettings(),e);localStorage.setItem("settings",JSON.stringify(t))}Object.defineProperty(n,"__esModule",{value:!0});var s=e("jquery"),o=r(s),i=e("../utils/StoreUtils"),u=e("../dispatcher/AppDispatcher"),c=r(u),l=e("../constants/SettingsConstants"),f=r(l),d=[],p=i.createStore({getSettings:function(){return JSON.parse(localStorage.getItem("settings"))||{}},getUserId:function(){return parseInt(this.getSettings().userId)},isLoggedIn:function(){return this.getUserId()>0},getUsers:function(){return d}});p.dispatchToken=c["default"].register(function(e){switch(e.type){case f["default"].SAVE_SETTINGS:a(e.data),p.emitChange(),getUsers();break;case f["default"].RECEIVE_USERS:d=e.data,p.emitChange()}}),n["default"]=p,t.exports=n["default"]},{"../constants/SettingsConstants":17,"../dispatcher/AppDispatcher":19,"../utils/StoreUtils":28,jquery:"jquery"}],25:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(n,"__esModule",{value:!0});var a,s=e("../utils/StoreUtils"),o=e("../dispatcher/AppDispatcher"),i=r(o),u=e("../constants/TrackerConstants"),c=r(u),l=e("../stores/MilestoneTaskStore"),f=(r(l),s.createStore({getTaskDescription:function(){return a}}));f.dispatchToken=i["default"].register(function(e){switch(e.type){case c["default"].SET_TASK_DESCRIPTION:a=e.txt,f.emitChange()}}),n["default"]=f,t.exports=n["default"]},{"../constants/TrackerConstants":18,"../dispatcher/AppDispatcher":19,"../stores/MilestoneTaskStore":22,"../utils/StoreUtils":28}],26:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(n,"__esModule",{value:!0});var a,s=e("underscore"),o=e("../utils/StoreUtils"),i=e("../dispatcher/AppDispatcher"),u=r(i),c=e("../constants/TrackerConstants"),l=r(c),f=e("../stores/MilestoneTaskStore"),d=r(f),p=[],h=o.createStore({getTaskTypes:function(){return p},getTaskTypeId:function(){return a},getTaskType:function(){return s.findWhere(p,{id:a})}});h.dispatchToken=u["default"].register(function(e){switch(e.type){case l["default"].RECEIVE_TASK_TYPES:p=e.data,p.length>0&&(a=parseInt(p[0].id)),h.emitChange();break;case l["default"].SET_TASK_TYPE:a=parseInt(e.id),h.emitChange();break;case l["default"].RECEIVE_MILESTONE_TASKS:case l["default"].SET_MILESTONE_TASK:u["default"].waitFor([d["default"].dispatchToken]);var t=d["default"].getMilestoneTask();if(t){var n=t.task_type,r=s.findWhere(p,{name:n});if(r){var o=r.id;a=o}}}}),n["default"]=h,t.exports=n["default"]},{"../constants/TrackerConstants":18,"../dispatcher/AppDispatcher":19,"../stores/MilestoneTaskStore":22,"../utils/StoreUtils":28,underscore:"underscore"}],27:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}function a(){var e=Math.floor(Date.now()/1e3);p=e-o,h.emitChange()}Object.defineProperty(n,"__esModule",{value:!0});var s,o,i=e("../utils/StoreUtils"),u=e("../dispatcher/AppDispatcher"),c=r(u),l=e("../constants/TrackerConstants"),f=r(l),d=!1,p=0,h=i.createStore({isTiming:function(){return d},getSecondsElapsed:function(){return p}});h.dispatchToken=c["default"].register(function(e){switch(e.type){case f["default"].START_TIMER:o=e.timestamp,d=!0,clearInterval(s),s=setInterval(a,1e3),h.emitChange();break;case f["default"].STOP_TIMER:{e.timestamp}p=0,d=!1,clearInterval(s),h.emitChange()}}),n["default"]=h,t.exports=n["default"]},{"../constants/TrackerConstants":18,"../dispatcher/AppDispatcher":19,"../utils/StoreUtils":28}],28:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}function a(e){var t=new u.EventEmitter;t.setMaxListeners(0);var n=o["default"]({emitChange:function(){t.emit(c)},addChangeListener:function(e){t.on(c,e)},removeChangeListener:function(e){t.removeListener(c,e)}},e);return i.each(n,function(e,t){i.isFunction(e)&&(n[t]=n[t].bind(n))}),n}Object.defineProperty(n,"__esModule",{value:!0}),n.createStore=a;var s=e("object-assign"),o=r(s),i=e("underscore"),u=e("events"),c="change"},{events:30,"object-assign":"object-assign",underscore:"underscore"}],29:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}function a(e){var t={type:"POST",dataType:"json",data:{},error:function(t,n,r){console.error(e.url,n,r.toString())}},n=f["default"].getSettings();n&&(t.data={api_group:n.groupId,api_secret:n.groupSecret});var r=c["default"].extend(!0,t,e);r.data.api_group&&r.data.api_secret&&c["default"].ajax("https://www.teamleader.be/api"+e.url,r)}function s(e,t){for(var n=0;n<e.length;n++){var r=e[n];for(var a in t){var s=t[a],o=r[a];o&&(r[s]=o,
-delete r[a])}}return e}function o(e){return e.replace(/&amp;/g,"&").replace(/&#039;/g,"'")}function i(e){var t=parseInt(e/3600,10),n=parseInt(e%3600/60,10),r=parseInt(e%3600%60,10);return(0===t?"":10>t?"0"+t+":":t+":")+(10>n?"0"+n:""+n)+":"+(10>r?"0"+r:""+r)}Object.defineProperty(n,"__esModule",{value:!0}),n.apiRequest=a,n.rekey=s,n.htmlEntities=o,n.formatTime=i;var u=e("jquery"),c=r(u),l=e("../stores/SettingsStore"),f=r(l)},{"../stores/SettingsStore":24,jquery:"jquery"}],30:[function(e,t,n){function r(){this._events=this._events||{},this._maxListeners=this._maxListeners||void 0}function a(e){return"function"==typeof e}function s(e){return"number"==typeof e}function o(e){return"object"==typeof e&&null!==e}function i(e){return void 0===e}t.exports=r,r.EventEmitter=r,r.prototype._events=void 0,r.prototype._maxListeners=void 0,r.defaultMaxListeners=10,r.prototype.setMaxListeners=function(e){if(!s(e)||0>e||isNaN(e))throw TypeError("n must be a positive number");return this._maxListeners=e,this},r.prototype.emit=function(e){var t,n,r,s,u,c;if(this._events||(this._events={}),"error"===e&&(!this._events.error||o(this._events.error)&&!this._events.error.length)){if(t=arguments[1],t instanceof Error)throw t;throw TypeError('Uncaught, unspecified "error" event.')}if(n=this._events[e],i(n))return!1;if(a(n))switch(arguments.length){case 1:n.call(this);break;case 2:n.call(this,arguments[1]);break;case 3:n.call(this,arguments[1],arguments[2]);break;default:for(r=arguments.length,s=new Array(r-1),u=1;r>u;u++)s[u-1]=arguments[u];n.apply(this,s)}else if(o(n)){for(r=arguments.length,s=new Array(r-1),u=1;r>u;u++)s[u-1]=arguments[u];for(c=n.slice(),r=c.length,u=0;r>u;u++)c[u].apply(this,s)}return!0},r.prototype.addListener=function(e,t){var n;if(!a(t))throw TypeError("listener must be a function");if(this._events||(this._events={}),this._events.newListener&&this.emit("newListener",e,a(t.listener)?t.listener:t),this._events[e]?o(this._events[e])?this._events[e].push(t):this._events[e]=[this._events[e],t]:this._events[e]=t,o(this._events[e])&&!this._events[e].warned){var n;n=i(this._maxListeners)?r.defaultMaxListeners:this._maxListeners,n&&n>0&&this._events[e].length>n&&(this._events[e].warned=!0,console.error("(node) warning: possible EventEmitter memory leak detected. %d listeners added. Use emitter.setMaxListeners() to increase limit.",this._events[e].length),"function"==typeof console.trace&&console.trace())}return this},r.prototype.on=r.prototype.addListener,r.prototype.once=function(e,t){function n(){this.removeListener(e,n),r||(r=!0,t.apply(this,arguments))}if(!a(t))throw TypeError("listener must be a function");var r=!1;return n.listener=t,this.on(e,n),this},r.prototype.removeListener=function(e,t){var n,r,s,i;if(!a(t))throw TypeError("listener must be a function");if(!this._events||!this._events[e])return this;if(n=this._events[e],s=n.length,r=-1,n===t||a(n.listener)&&n.listener===t)delete this._events[e],this._events.removeListener&&this.emit("removeListener",e,t);else if(o(n)){for(i=s;i-->0;)if(n[i]===t||n[i].listener&&n[i].listener===t){r=i;break}if(0>r)return this;1===n.length?(n.length=0,delete this._events[e]):n.splice(r,1),this._events.removeListener&&this.emit("removeListener",e,t)}return this},r.prototype.removeAllListeners=function(e){var t,n;if(!this._events)return this;if(!this._events.removeListener)return 0===arguments.length?this._events={}:this._events[e]&&delete this._events[e],this;if(0===arguments.length){for(t in this._events)"removeListener"!==t&&this.removeAllListeners(t);return this.removeAllListeners("removeListener"),this._events={},this}if(n=this._events[e],a(n))this.removeListener(e,n);else for(;n.length;)this.removeListener(e,n[n.length-1]);return delete this._events[e],this},r.prototype.listeners=function(e){var t;return t=this._events&&this._events[e]?a(this._events[e])?[this._events[e]]:this._events[e].slice():[]},r.listenerCount=function(e,t){var n;return n=e._events&&e._events[t]?a(e._events[t])?1:e._events[t].length:0}},{}],31:[function(e,t,n){function r(){l=!1,i.length?c=i.concat(c):f=-1,c.length&&a()}function a(){if(!l){var e=setTimeout(r);l=!0;for(var t=c.length;t;){for(i=c,c=[];++f<t;)i[f].run();f=-1,t=c.length}i=null,l=!1,clearTimeout(e)}}function s(e,t){this.fun=e,this.array=t}function o(){}var i,u=t.exports={},c=[],l=!1,f=-1;u.nextTick=function(e){var t=new Array(arguments.length-1);if(arguments.length>1)for(var n=1;n<arguments.length;n++)t[n-1]=arguments[n];c.push(new s(e,t)),l||setTimeout(a,0)},s.prototype.run=function(){this.fun.apply(null,this.array)},u.title="browser",u.browser=!0,u.env={},u.argv=[],u.version="",u.versions={},u.on=o,u.addListener=o,u.once=o,u.off=o,u.removeListener=o,u.removeAllListeners=o,u.emit=o,u.binding=function(e){throw new Error("process.binding is not supported")},u.cwd=function(){return"/"},u.chdir=function(e){throw new Error("process.chdir is not supported")},u.umask=function(){return 0}},{}],32:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}function a(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function s(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(e.__proto__=t)}function o(e){var t=window.history.state;t&&window.history.replaceState(i(t,e),"")}n.__esModule=!0;var i=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var n=arguments[t];for(var r in n)Object.prototype.hasOwnProperty.call(n,r)&&(e[r]=n[r])}return e},u=e("./DOMHistory"),c=r(u),l=e("./DOMUtils"),f=e("./NavigationTypes"),d=r(f),p=function(e){function t(n){a(this,t),e.call(this,n),this.handlePopState=this.handlePopState.bind(this),this.isSupported=l.supportsHistory()}return s(t,e),t.prototype._updateLocation=function(e){var t=null;if(this.isSupported){var n=window.history.state;t=this._createState(n),n&&n.key||window.history.replaceState(t,"")}this.location=this.createLocation(l.getWindowPath(),t,e)},t.prototype.setup=function(){null==this.location&&this._updateLocation()},t.prototype.handlePopState=function(e){void 0!==e.state&&(this._updateLocation(d["default"].POP),this._notifyChange())},t.prototype.addChangeListener=function(t){e.prototype.addChangeListener.call(this,t),1===this.changeListeners.length&&(window.addEventListener?window.addEventListener("popstate",this.handlePopState,!1):window.attachEvent("onpopstate",this.handlePopState))},t.prototype.removeChangeListener=function(t){e.prototype.removeChangeListener.call(this,t),0===this.changeListeners.length&&(window.removeEventListener?window.removeEventListener("popstate",this.handlePopState,!1):window.detachEvent("onpopstate",this.handlePopState))},t.prototype.pushState=function(e,t){this.isSupported?(o(this.getScrollPosition()),e=this._createState(e),window.history.pushState(e,"",t),this.location=this.createLocation(t,e,d["default"].PUSH),this._notifyChange()):window.location=t},t.prototype.replaceState=function(e,t){this.isSupported?(e=this._createState(e),window.history.replaceState(e,"",t),this.location=this.createLocation(t,e,d["default"].REPLACE),this._notifyChange()):window.location.replace(t)},t}(c["default"]),h=new p;n.history=h,n["default"]=p},{"./DOMHistory":33,"./DOMUtils":34,"./NavigationTypes":37}],33:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}function a(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function s(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(e.__proto__=t)}n.__esModule=!0;var o=e("./History"),i=r(o),u=e("./DOMUtils"),c=function(e){function t(){var n=void 0===arguments[0]?{}:arguments[0];a(this,t),e.call(this,n),this.getScrollPosition=n.getScrollPosition||u.getWindowScrollPosition}return s(t,e),t.prototype.go=function(e){0!==e&&window.history.go(e)},t}(i["default"]);n["default"]=c,t.exports=n["default"]},{"./DOMUtils":34,"./History":35}],34:[function(e,t,n){"use strict";function r(){return window.location.href.split("#")[1]||""}function a(e){window.location.replace(window.location.pathname+window.location.search+"#"+e)}function s(){return window.location.pathname+window.location.search}function o(){return{scrollX:window.pageXOffset||document.documentElement.scrollLeft,scrollY:window.pageYOffset||document.documentElement.scrollTop}}function i(e,t){window.scrollTo(e,t)}function u(){var e=navigator.userAgent;return-1===e.indexOf("Android 2.")&&-1===e.indexOf("Android 4.0")||-1===e.indexOf("Mobile Safari")||-1!==e.indexOf("Chrome")||-1!==e.indexOf("Windows Phone")?window.history&&"pushState"in window.history:!1}n.__esModule=!0,n.getHashPath=r,n.replaceHashPath=a,n.getWindowPath=s,n.getWindowScrollPosition=o,n.setWindowScrollPosition=i,n.supportsHistory=u;var c=!("undefined"==typeof window||!window.document||!window.document.createElement);n.canUseDOM=c},{}],35:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}function a(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function s(){return Math.random().toString(36).substr(2)}n.__esModule=!0;var o=e("invariant"),i=r(o),u=e("./URLUtils"),c=e("./Location"),l=r(c),f=["pushState","replaceState","go"],d=function(){function e(){var t=void 0===arguments[0]?{}:arguments[0];a(this,e),f.forEach(function(e){i["default"]("function"==typeof this[e],'%s needs a "%s" method',this.constructor.name,e)},this),this.parseQueryString=t.parseQueryString||u.parseQueryString,this.changeListeners=[],this.location=null}return e.prototype._notifyChange=function(){for(var e=0,t=this.changeListeners.length;t>e;++e)this.changeListeners[e].call(this)},e.prototype.addChangeListener=function(e){this.changeListeners.push(e)},e.prototype.removeChangeListener=function(e){this.changeListeners=this.changeListeners.filter(function(t){return t!==e})},e.prototype.back=function(){this.go(-1)},e.prototype.forward=function(){this.go(1)},e.prototype._createState=function(e){return e=e||{},e.key||(e.key=s()),e},e.prototype.createLocation=function(e,t,n){var r=u.getPathname(e),a=u.getQueryString(e),s=a?this.parseQueryString(a):null;return new l["default"](r,s,t,n)},e}();n["default"]=d,t.exports=n["default"]},{"./Location":36,"./URLUtils":38,invariant:39}],36:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}function a(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}n.__esModule=!0;var s=e("./NavigationTypes"),o=r(s),i=function(){function e(){var t=void 0===arguments[0]?"/":arguments[0],n=void 0===arguments[1]?null:arguments[1],r=void 0===arguments[2]?null:arguments[2],s=void 0===arguments[3]?o["default"].POP:arguments[3];a(this,e),this.pathname=t,this.query=n,this.state=r,this.navigationType=s}return e.isLocation=function(t){return t instanceof e},e}();n["default"]=i,t.exports=n["default"]},{"./NavigationTypes":37}],37:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}n.__esModule=!0;var a=e("keymirror"),s=r(a),o=s["default"]({PUSH:null,REPLACE:null,POP:null});n["default"]=o,t.exports=n["default"]},{keymirror:"keymirror"}],38:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}function a(e){return S["default"].stringify(e,{arrayFormat:"brackets"})}function s(e){return e.replace(E,"")}function o(e){var t=e.match(E);return t?t[1]:""}function i(e){return e?e.replace(/^\/+/,""):""}function u(e){return"string"==typeof e&&"/"===e.charAt(0)}function c(e){return e.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")}function l(e){return c(e).replace(/\/+/g,"/+")}function f(e){for(var t,n="",r=[],a=[],s=0,o=/:([a-zA-Z_$][a-zA-Z0-9_$]*)|\*|\(|\)/g;t=o.exec(e);)t.index!==s&&(a.push(e.slice(s,t.index)),n+=l(e.slice(s,t.index))),t[1]?(n+="([^/?#]+)",r.push(t[1])):"*"===t[0]?(n+="([\\s\\S]*?)",r.push("splat")):"("===t[0]?n+="(?:":")"===t[0]&&(n+=")?"),a.push(t[0]),s=o.lastIndex;return s!==e.length&&(a.push(e.slice(s,e.length)),n+=l(e.slice(s,e.length))),{pattern:e,regexpSource:n,paramNames:r,tokens:a}}function d(e){return e in C||(C[e]=f(e)),C[e]}function p(e,t){var n=d(i(e)),r=n.regexpSource,a=n.paramNames,s=n.tokens;r+="/*";var o="*"!==s[s.length-1];o&&(r+="([\\s\\S]*?)");var u,c,l=t.match(new RegExp("^"+r+"$","i"));return null!=l?(c=Array.prototype.slice.call(l,1).map(function(e){return null!=e?decodeURIComponent(e.replace(/\+/g,"%20")):e}),u=o?c.pop():t.replace(l[0],"")):u=c=null,{remainingPathname:u,paramNames:a,paramValues:c}}function h(e){return d(e).paramNames}function m(e,t){var n=p(e,i(t)),r=n.paramNames,a=n.paramValues;return null!=a?r.reduce(function(e,t,n){return e[t]=a[n],e},{}):null}function g(e,t){t=t||{};for(var n,r,a,s=d(e),o=s.tokens,i=0,u="",c=0,l=0,f=o.length;f>l;++l)n=o[l],"*"===n?(a=Array.isArray(t.splat)?t.splat[c++]:t.splat,_["default"](null!=a||i>0,'Missing splat #%s for path "%s"',c,e),null!=a&&(u+=encodeURI(a).replace(/%20/g,"+"))):"("===n?i+=1:")"===n?i-=1:":"===n.charAt(0)?(r=n.substring(1),a=t[r],_["default"](null!=a||i>0,'Missing "%s" parameter for path "%s"',r,e),null!=a&&(u+=encodeURIComponent(a).replace(/%20/g,"+"))):u+=n;return u.replace(/\/+/g,"/")}n.__esModule=!0,n.stringifyQuery=a,n.getPathname=s,n.getQueryString=o,n.stripLeadingSlashes=i,n.isAbsolutePath=u,n.compilePattern=d,n.matchPattern=p,n.getParamNames=h,n.getParams=m,n.formatPattern=g;var v=e("qs"),S=r(v),y=e("invariant"),_=r(y),T=S["default"].parse;n.parseQueryString=T;var E=/\?([\s\S]*)$/,C={}},{invariant:39,qs:40}],39:[function(e,t,n){(function(e){"use strict";var n=function(t,n,r,a,s,o,i,u){if("production"!==e.env.NODE_ENV&&void 0===n)throw new Error("invariant requires an error message argument");if(!t){var c;if(void 0===n)c=new Error("Minified exception occurred; use the non-minified dev environment for the full error message and additional helpful warnings.");else{var l=[r,a,s,o,i,u],f=0;c=new Error("Invariant Violation: "+n.replace(/%s/g,function(){return l[f++]}))}throw c.framesToPop=1,c}};t.exports=n}).call(this,e("_process"))},{_process:31}],40:[function(e,t,n){t.exports=e("./lib/")},{"./lib/":41}],41:[function(e,t,n){var r=e("./stringify"),a=e("./parse");t.exports={stringify:r,parse:a}},{"./parse":42,"./stringify":43}],42:[function(e,t,n){var r=e("./utils"),a={delimiter:"&",depth:5,arrayLimit:20,parameterLimit:1e3};a.parseValues=function(e,t){for(var n={},a=e.split(t.delimiter,t.parameterLimit===1/0?void 0:t.parameterLimit),s=0,o=a.length;o>s;++s){var i=a[s],u=-1===i.indexOf("]=")?i.indexOf("="):i.indexOf("]=")+1;if(-1===u)n[r.decode(i)]="";else{var c=r.decode(i.slice(0,u)),l=r.decode(i.slice(u+1));if(Object.prototype.hasOwnProperty(c))continue;n[c]=n.hasOwnProperty(c)?[].concat(n[c]).concat(l):l}}return n},a.parseObject=function(e,t,n){if(!e.length)return t;var r=e.shift(),s={};if("[]"===r)s=[],s=s.concat(a.parseObject(e,t,n));else{var o="["===r[0]&&"]"===r[r.length-1]?r.slice(1,r.length-1):r,i=parseInt(o,10),u=""+i;!isNaN(i)&&r!==o&&u===o&&i>=0&&i<=n.arrayLimit?(s=[],s[i]=a.parseObject(e,t,n)):s[o]=a.parseObject(e,t,n)}return s},a.parseKeys=function(e,t,n){if(e){var r=/^([^\[\]]*)/,s=/(\[[^\[\]]*\])/g,o=r.exec(e);if(!Object.prototype.hasOwnProperty(o[1])){var i=[];o[1]&&i.push(o[1]);for(var u=0;null!==(o=s.exec(e))&&u<n.depth;)++u,Object.prototype.hasOwnProperty(o[1].replace(/\[|\]/g,""))||i.push(o[1]);return o&&i.push("["+e.slice(o.index)+"]"),a.parseObject(i,t,n)}}},t.exports=function(e,t){if(""===e||null===e||"undefined"==typeof e)return{};t=t||{},t.delimiter="string"==typeof t.delimiter||r.isRegExp(t.delimiter)?t.delimiter:a.delimiter,t.depth="number"==typeof t.depth?t.depth:a.depth,t.arrayLimit="number"==typeof t.arrayLimit?t.arrayLimit:a.arrayLimit,t.parameterLimit="number"==typeof t.parameterLimit?t.parameterLimit:a.parameterLimit;for(var n="string"==typeof e?a.parseValues(e,t):e,s={},o=Object.keys(n),i=0,u=o.length;u>i;++i){var c=o[i],l=a.parseKeys(c,n[c],t);s=r.merge(s,l)}return r.compact(s)}},{"./utils":44}],43:[function(e,t,n){var r=e("./utils"),a={delimiter:"&",arrayPrefixGenerators:{brackets:function(e,t){return e+"[]"},indices:function(e,t){return e+"["+t+"]"},repeat:function(e,t){return e}}};a.stringify=function(e,t,n){if(r.isBuffer(e)?e=e.toString():e instanceof Date?e=e.toISOString():null===e&&(e=""),"string"==typeof e||"number"==typeof e||"boolean"==typeof e)return[encodeURIComponent(t)+"="+encodeURIComponent(e)];var s=[];if("undefined"==typeof e)return s;for(var o=Object.keys(e),i=0,u=o.length;u>i;++i){var c=o[i];s=s.concat(Array.isArray(e)?a.stringify(e[c],n(t,c),n):a.stringify(e[c],t+"["+c+"]",n))}return s},t.exports=function(e,t){t=t||{};var n="undefined"==typeof t.delimiter?a.delimiter:t.delimiter,r=[];if("object"!=typeof e||null===e)return"";var s;s=t.arrayFormat in a.arrayPrefixGenerators?t.arrayFormat:"indices"in t?t.indices?"indices":"repeat":"indices";for(var o=a.arrayPrefixGenerators[s],i=Object.keys(e),u=0,c=i.length;c>u;++u){var l=i[u];r=r.concat(a.stringify(e[l],l,o))}return r.join(n)}},{"./utils":44}],44:[function(e,t,n){n.arrayToObject=function(e){for(var t={},n=0,r=e.length;r>n;++n)"undefined"!=typeof e[n]&&(t[n]=e[n]);return t},n.merge=function(e,t){if(!t)return e;if("object"!=typeof t)return Array.isArray(e)?e.push(t):e[t]=!0,e;if("object"!=typeof e)return e=[e].concat(t);Array.isArray(e)&&!Array.isArray(t)&&(e=n.arrayToObject(e));for(var r=Object.keys(t),a=0,s=r.length;s>a;++a){var o=r[a],i=t[o];e[o]=e[o]?n.merge(e[o],i):i}return e},n.decode=function(e){try{return decodeURIComponent(e.replace(/\+/g," "))}catch(t){return e}},n.compact=function(e,t){if("object"!=typeof e||null===e)return e;t=t||[];var r=t.indexOf(e);if(-1!==r)return t[r];if(t.push(e),Array.isArray(e)){for(var a=[],s=0,o=e.length;o>s;++s)"undefined"!=typeof e[s]&&a.push(e[s]);return a}var i=Object.keys(e);for(s=0,o=i.length;o>s;++s){var u=i[s];e[u]=n.compact(e[u],t)}return e},n.isRegExp=function(e){return"[object RegExp]"===Object.prototype.toString.call(e)},n.isBuffer=function(e){return null===e||"undefined"==typeof e?!1:!!(e.constructor&&e.constructor.isBuffer&&e.constructor.isBuffer(e))}},{}],45:[function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}function a(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(n,"__esModule",{value:!0});var s=e("./Routes"),o=r(s),i=e("./StatusBar"),u=r(i),c=e("./MenuBar"),l=r(c),f=nodeRequire("fs"),d=function p(){a(this,p),this.devMode=f.existsSync(".dev")&&"1"===f.readFileSync(".dev",{encoding:"utf8"}),this.statusBar=new u["default"](this),this.menuBar=new l["default"],this.routes=new o["default"]};n["default"]=window.App=new d,t.exports=n["default"]},{"./MenuBar":1,"./Routes":2,"./StatusBar":3}]},{},[45]);
+webpackJsonp([0],{
+
+/***/ 0:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	var _Routes = __webpack_require__(1);
+
+	var _Routes2 = _interopRequireDefault(_Routes);
+
+	var _StatusBar = __webpack_require__(221);
+
+	var _StatusBar2 = _interopRequireDefault(_StatusBar);
+
+	var _MenuBar = __webpack_require__(222);
+
+	var _MenuBar2 = _interopRequireDefault(_MenuBar);
+
+	var fs = nodeRequire('fs');
+
+	var App = function App() {
+		_classCallCheck(this, App);
+
+		this.devMode = fs.existsSync('.dev') && fs.readFileSync('.dev', { encoding: 'utf8' }) === '1';
+
+		this.statusBar = new _StatusBar2['default'](this);
+		this.menuBar = new _MenuBar2['default']();
+		this.routes = new _Routes2['default']();
+	};
+
+	exports['default'] = window.App = new App();
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 1:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	var _react = __webpack_require__(15);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(186);
+
+	var _reactRouterLibHashHistory = __webpack_require__(213);
+
+	var _reactRouterLibHashHistory2 = _interopRequireDefault(_reactRouterLibHashHistory);
+
+	var _componentsTeamleaderTimeAppReact = __webpack_require__(215);
+
+	var _componentsTeamleaderTimeAppReact2 = _interopRequireDefault(_componentsTeamleaderTimeAppReact);
+
+	var _componentsTrackerReact = __webpack_require__(2);
+
+	var _componentsTrackerReact2 = _interopRequireDefault(_componentsTrackerReact);
+
+	var _componentsLoginReact = __webpack_require__(216);
+
+	var _componentsLoginReact2 = _interopRequireDefault(_componentsLoginReact);
+
+	var _componentsSettingsReact = __webpack_require__(220);
+
+	var _componentsSettingsReact2 = _interopRequireDefault(_componentsSettingsReact);
+
+	var _storesSettingsStore = __webpack_require__(3);
+
+	var _storesSettingsStore2 = _interopRequireDefault(_storesSettingsStore);
+
+	var Routes = (function () {
+		function Routes() {
+			_classCallCheck(this, Routes);
+
+			_react2['default'].render(_react2['default'].createElement(
+				_reactRouter.Router,
+				{ history: new _reactRouterLibHashHistory2['default']() },
+				_react2['default'].createElement(
+					_reactRouter.Route,
+					{ component: _componentsTeamleaderTimeAppReact2['default'] },
+					_react2['default'].createElement(_reactRouter.Route, { path: "/", component: _componentsTrackerReact2['default'], onEnter: this.requireAuth }),
+					_react2['default'].createElement(_reactRouter.Route, { path: "/login", component: _componentsLoginReact2['default'] }),
+					_react2['default'].createElement(_reactRouter.Route, { path: "/settings", component: _componentsSettingsReact2['default'], onEnter: this.requireAuth })
+				)
+			), document.body);
+		}
+
+		_createClass(Routes, [{
+			key: 'requireAuth',
+			value: function requireAuth(nextState, transition) {
+				if (!_storesSettingsStore2['default'].isLoggedIn()) {
+					transition.to('/login', null, { nextPathname: nextState.location.pathname });
+				}
+			}
+		}]);
+
+		return Routes;
+	})();
+
+	exports['default'] = Routes;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 2:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _react = __webpack_require__(15);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _utilsUtils = __webpack_require__(171);
+
+	var _storesCustomerStore = __webpack_require__(172);
+
+	var _storesCustomerStore2 = _interopRequireDefault(_storesCustomerStore);
+
+	var _storesProjectStore = __webpack_require__(174);
+
+	var _storesProjectStore2 = _interopRequireDefault(_storesProjectStore);
+
+	var _storesMilestoneStore = __webpack_require__(176);
+
+	var _storesMilestoneStore2 = _interopRequireDefault(_storesMilestoneStore);
+
+	var _storesMilestoneTaskStore = __webpack_require__(177);
+
+	var _storesMilestoneTaskStore2 = _interopRequireDefault(_storesMilestoneTaskStore);
+
+	var _storesTaskTypeStore = __webpack_require__(178);
+
+	var _storesTaskTypeStore2 = _interopRequireDefault(_storesTaskTypeStore);
+
+	var _storesSettingsStore = __webpack_require__(3);
+
+	var _storesSettingsStore2 = _interopRequireDefault(_storesSettingsStore);
+
+	var _storesTaskStore = __webpack_require__(179);
+
+	var _storesTaskStore2 = _interopRequireDefault(_storesTaskStore);
+
+	var _storesTimeStore = __webpack_require__(180);
+
+	var _storesTimeStore2 = _interopRequireDefault(_storesTimeStore);
+
+	var _ProjectSelectContainerReact = __webpack_require__(181);
+
+	var _ProjectSelectContainerReact2 = _interopRequireDefault(_ProjectSelectContainerReact);
+
+	var _MilestoneSelectContainerReact = __webpack_require__(183);
+
+	var _MilestoneSelectContainerReact2 = _interopRequireDefault(_MilestoneSelectContainerReact);
+
+	var _TaskSelectContainerReact = __webpack_require__(184);
+
+	var _TaskSelectContainerReact2 = _interopRequireDefault(_TaskSelectContainerReact);
+
+	var _actionsTrackerActions = __webpack_require__(175);
+
+	var Tracker = _react2['default'].createClass({
+		displayName: 'Tracker',
+
+		// return {
+		// 	project: ProjectStore.getProjectId(),
+		// 	milestone: MilestoneStore.getMilestoneId(),
+		// 	milestoneTask: MilestoneTaskStore.getMilestoneTaskId(),
+		// 	contactOrCompany: CustomerStore.getContactOrCompany(),
+		// 	contactOrCompanyId: CustomerStore.getContactOrCompanyId(),
+		// 	taskType: TaskTypeStore.getTaskTypeId(),
+		// 	userId: SettingsStore.getUserId(),
+		// 	description: MilestoneTaskStore.getMilestoneTaskDescription() ||
+		// 								TaskStore.getTaskDescription()
+		// }
+
+		getTrackerState: function getTrackerState() {
+			return {
+				isTiming: _storesTimeStore2['default'].isTiming(),
+				seconds: _storesTimeStore2['default'].getSecondsElapsed()
+			};
+		},
+
+		getInitialState: function getInitialState() {
+			return this.getTrackerState();
+		},
+
+		_onChange: function _onChange() {
+			if (this.isMounted()) {
+				this.setState(this.getTrackerState());
+			}
+		},
+
+		componentDidMount: function componentDidMount() {
+			_storesTimeStore2['default'].addChangeListener(this._onChange);
+		},
+
+		componentWillUnmount: function componentWillUnmount() {
+			_storesTimeStore2['default'].removeChangeListener(this._onChange);
+		},
+
+		handleStart: function handleStart(e) {
+			e.preventDefault();
+
+			var now = Math.floor(Date.now() / 1000); //in seconds
+			(0, _actionsTrackerActions.startTimer)(now);
+		},
+
+		handleStop: function handleStop(e) {
+			e.preventDefault();
+
+			var now = Math.floor(Date.now() / 1000); //in seconds
+			(0, _actionsTrackerActions.stopTimer)(now);
+		},
+
+		render: function render() {
+			if (this.state.isTiming) {
+				return _react2['default'].createElement(
+					'div',
+					{ className: "tracker" },
+					_react2['default'].createElement(
+						'form',
+						{ className: "", onSubmit: this.handleStop },
+						_react2['default'].createElement(
+							'div',
+							{ className: "tracker-meta" },
+							_react2['default'].createElement(
+								'div',
+								{ className: "tracker-project" },
+								_storesProjectStore2['default'].getProjectTitle() || 'Untitled project'
+							),
+							_react2['default'].createElement(
+								'div',
+								{ className: "tracker-task" },
+								_storesMilestoneTaskStore2['default'].getMilestoneTaskDescription() || _storesTaskStore2['default'].getTaskDescription() || 'No task description'
+							)
+						),
+						_react2['default'].createElement(
+							'div',
+							{ className: "form-group" },
+							_react2['default'].createElement('input', {
+								type: "text",
+								className: "form-control tracker-time",
+								disabled: true,
+								value: (0, _utilsUtils.formatTime)(this.state.seconds)
+							})
+						),
+						_react2['default'].createElement(
+							'div',
+							{ className: "btn-toolbar" },
+							_react2['default'].createElement(
+								'button',
+								{ type: "submit", className: "btn btn-primary btn-sm stop-timer-btn" },
+								'Stop timer'
+							)
+						)
+					)
+				);
+			} else {
+				return _react2['default'].createElement(
+					'div',
+					{ className: "tracker" },
+					_react2['default'].createElement(
+						'form',
+						{ className: "form-horizontal", onSubmit: this.handleStart },
+						_react2['default'].createElement(_ProjectSelectContainerReact2['default'], null),
+						_react2['default'].createElement(_MilestoneSelectContainerReact2['default'], null),
+						_react2['default'].createElement(_TaskSelectContainerReact2['default'], { ref: "taskSelectContainer" }),
+						_react2['default'].createElement(
+							'div',
+							{ className: "btn-toolbar" },
+							_react2['default'].createElement(
+								'button',
+								{ type: "submit", className: "btn btn-primary btn-sm start-timer-btn" },
+								'Start timer'
+							)
+						)
+					)
+				);
+			}
+		}
+	});
+
+	exports['default'] = Tracker;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 3:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _jquery = __webpack_require__(4);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _utilsStoreUtils = __webpack_require__(5);
+
+	var _dispatcherAppDispatcher = __webpack_require__(9);
+
+	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
+
+	var _constantsSettingsConstants = __webpack_require__(13);
+
+	var _constantsSettingsConstants2 = _interopRequireDefault(_constantsSettingsConstants);
+
+	var _users = [];
+
+	function _setSettings(data) {
+		var settings = _jquery2['default'].extend({}, SettingsStore.getSettings(), data);
+		localStorage.setItem('settings', JSON.stringify(settings));
+	}
+
+	var SettingsStore = (0, _utilsStoreUtils.createStore)({
+
+		getSettings: function getSettings() {
+			return JSON.parse(localStorage.getItem('settings')) || {};
+		},
+
+		getUserId: function getUserId() {
+			return parseInt(this.getSettings().userId);
+		},
+
+		isLoggedIn: function isLoggedIn() {
+			return this.getUserId() > 0;
+		},
+
+		getUsers: function getUsers() {
+			return _users;
+		}
+	});
+
+	SettingsStore.dispatchToken = _dispatcherAppDispatcher2['default'].register(function (action) {
+
+		switch (action.type) {
+
+			case _constantsSettingsConstants2['default'].SAVE_SETTINGS:
+				_setSettings(action.data);
+				SettingsStore.emitChange();
+				getUsers();
+				break;
+
+			case _constantsSettingsConstants2['default'].RECEIVE_USERS:
+				_users = action.data;
+				SettingsStore.emitChange();
+				break;
+
+			default:
+			//no op
+		}
+	});
+
+	exports['default'] = SettingsStore;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 5:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	exports.createStore = createStore;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _objectAssign = __webpack_require__(6);
+
+	var _objectAssign2 = _interopRequireDefault(_objectAssign);
+
+	var _underscore = __webpack_require__(7);
+
+	var _events = __webpack_require__(8);
+
+	var CHANGE_EVENT = 'change';
+
+	function createStore(spec) {
+	  var emitter = new _events.EventEmitter();
+	  emitter.setMaxListeners(0);
+
+	  var store = (0, _objectAssign2['default'])({
+	    emitChange: function emitChange() {
+	      emitter.emit(CHANGE_EVENT);
+	    },
+
+	    addChangeListener: function addChangeListener(callback) {
+	      emitter.on(CHANGE_EVENT, callback);
+	    },
+
+	    removeChangeListener: function removeChangeListener(callback) {
+	      emitter.removeListener(CHANGE_EVENT, callback);
+	    }
+	  }, spec);
+
+	  // Auto-bind store methods for convenience
+	  (0, _underscore.each)(store, function (val, key) {
+	    if ((0, _underscore.isFunction)(val)) {
+	      store[key] = store[key].bind(store);
+	    }
+	  });
+
+	  return store;
+	}
+
+/***/ },
+
+/***/ 8:
+/***/ function(module, exports) {
+
+	// Copyright Joyent, Inc. and other Node contributors.
+	//
+	// Permission is hereby granted, free of charge, to any person obtaining a
+	// copy of this software and associated documentation files (the
+	// "Software"), to deal in the Software without restriction, including
+	// without limitation the rights to use, copy, modify, merge, publish,
+	// distribute, sublicense, and/or sell copies of the Software, and to permit
+	// persons to whom the Software is furnished to do so, subject to the
+	// following conditions:
+	//
+	// The above copyright notice and this permission notice shall be included
+	// in all copies or substantial portions of the Software.
+	//
+	// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+	// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+	// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+	// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+	// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+	// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+	// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+	function EventEmitter() {
+	  this._events = this._events || {};
+	  this._maxListeners = this._maxListeners || undefined;
+	}
+	module.exports = EventEmitter;
+
+	// Backwards-compat with node 0.10.x
+	EventEmitter.EventEmitter = EventEmitter;
+
+	EventEmitter.prototype._events = undefined;
+	EventEmitter.prototype._maxListeners = undefined;
+
+	// By default EventEmitters will print a warning if more than 10 listeners are
+	// added to it. This is a useful default which helps finding memory leaks.
+	EventEmitter.defaultMaxListeners = 10;
+
+	// Obviously not all Emitters should be limited to 10. This function allows
+	// that to be increased. Set to zero for unlimited.
+	EventEmitter.prototype.setMaxListeners = function(n) {
+	  if (!isNumber(n) || n < 0 || isNaN(n))
+	    throw TypeError('n must be a positive number');
+	  this._maxListeners = n;
+	  return this;
+	};
+
+	EventEmitter.prototype.emit = function(type) {
+	  var er, handler, len, args, i, listeners;
+
+	  if (!this._events)
+	    this._events = {};
+
+	  // If there is no 'error' event listener then throw.
+	  if (type === 'error') {
+	    if (!this._events.error ||
+	        (isObject(this._events.error) && !this._events.error.length)) {
+	      er = arguments[1];
+	      if (er instanceof Error) {
+	        throw er; // Unhandled 'error' event
+	      }
+	      throw TypeError('Uncaught, unspecified "error" event.');
+	    }
+	  }
+
+	  handler = this._events[type];
+
+	  if (isUndefined(handler))
+	    return false;
+
+	  if (isFunction(handler)) {
+	    switch (arguments.length) {
+	      // fast cases
+	      case 1:
+	        handler.call(this);
+	        break;
+	      case 2:
+	        handler.call(this, arguments[1]);
+	        break;
+	      case 3:
+	        handler.call(this, arguments[1], arguments[2]);
+	        break;
+	      // slower
+	      default:
+	        len = arguments.length;
+	        args = new Array(len - 1);
+	        for (i = 1; i < len; i++)
+	          args[i - 1] = arguments[i];
+	        handler.apply(this, args);
+	    }
+	  } else if (isObject(handler)) {
+	    len = arguments.length;
+	    args = new Array(len - 1);
+	    for (i = 1; i < len; i++)
+	      args[i - 1] = arguments[i];
+
+	    listeners = handler.slice();
+	    len = listeners.length;
+	    for (i = 0; i < len; i++)
+	      listeners[i].apply(this, args);
+	  }
+
+	  return true;
+	};
+
+	EventEmitter.prototype.addListener = function(type, listener) {
+	  var m;
+
+	  if (!isFunction(listener))
+	    throw TypeError('listener must be a function');
+
+	  if (!this._events)
+	    this._events = {};
+
+	  // To avoid recursion in the case that type === "newListener"! Before
+	  // adding it to the listeners, first emit "newListener".
+	  if (this._events.newListener)
+	    this.emit('newListener', type,
+	              isFunction(listener.listener) ?
+	              listener.listener : listener);
+
+	  if (!this._events[type])
+	    // Optimize the case of one listener. Don't need the extra array object.
+	    this._events[type] = listener;
+	  else if (isObject(this._events[type]))
+	    // If we've already got an array, just append.
+	    this._events[type].push(listener);
+	  else
+	    // Adding the second element, need to change to array.
+	    this._events[type] = [this._events[type], listener];
+
+	  // Check for listener leak
+	  if (isObject(this._events[type]) && !this._events[type].warned) {
+	    var m;
+	    if (!isUndefined(this._maxListeners)) {
+	      m = this._maxListeners;
+	    } else {
+	      m = EventEmitter.defaultMaxListeners;
+	    }
+
+	    if (m && m > 0 && this._events[type].length > m) {
+	      this._events[type].warned = true;
+	      console.error('(node) warning: possible EventEmitter memory ' +
+	                    'leak detected. %d listeners added. ' +
+	                    'Use emitter.setMaxListeners() to increase limit.',
+	                    this._events[type].length);
+	      if (typeof console.trace === 'function') {
+	        // not supported in IE 10
+	        console.trace();
+	      }
+	    }
+	  }
+
+	  return this;
+	};
+
+	EventEmitter.prototype.on = EventEmitter.prototype.addListener;
+
+	EventEmitter.prototype.once = function(type, listener) {
+	  if (!isFunction(listener))
+	    throw TypeError('listener must be a function');
+
+	  var fired = false;
+
+	  function g() {
+	    this.removeListener(type, g);
+
+	    if (!fired) {
+	      fired = true;
+	      listener.apply(this, arguments);
+	    }
+	  }
+
+	  g.listener = listener;
+	  this.on(type, g);
+
+	  return this;
+	};
+
+	// emits a 'removeListener' event iff the listener was removed
+	EventEmitter.prototype.removeListener = function(type, listener) {
+	  var list, position, length, i;
+
+	  if (!isFunction(listener))
+	    throw TypeError('listener must be a function');
+
+	  if (!this._events || !this._events[type])
+	    return this;
+
+	  list = this._events[type];
+	  length = list.length;
+	  position = -1;
+
+	  if (list === listener ||
+	      (isFunction(list.listener) && list.listener === listener)) {
+	    delete this._events[type];
+	    if (this._events.removeListener)
+	      this.emit('removeListener', type, listener);
+
+	  } else if (isObject(list)) {
+	    for (i = length; i-- > 0;) {
+	      if (list[i] === listener ||
+	          (list[i].listener && list[i].listener === listener)) {
+	        position = i;
+	        break;
+	      }
+	    }
+
+	    if (position < 0)
+	      return this;
+
+	    if (list.length === 1) {
+	      list.length = 0;
+	      delete this._events[type];
+	    } else {
+	      list.splice(position, 1);
+	    }
+
+	    if (this._events.removeListener)
+	      this.emit('removeListener', type, listener);
+	  }
+
+	  return this;
+	};
+
+	EventEmitter.prototype.removeAllListeners = function(type) {
+	  var key, listeners;
+
+	  if (!this._events)
+	    return this;
+
+	  // not listening for removeListener, no need to emit
+	  if (!this._events.removeListener) {
+	    if (arguments.length === 0)
+	      this._events = {};
+	    else if (this._events[type])
+	      delete this._events[type];
+	    return this;
+	  }
+
+	  // emit removeListener for all listeners on all events
+	  if (arguments.length === 0) {
+	    for (key in this._events) {
+	      if (key === 'removeListener') continue;
+	      this.removeAllListeners(key);
+	    }
+	    this.removeAllListeners('removeListener');
+	    this._events = {};
+	    return this;
+	  }
+
+	  listeners = this._events[type];
+
+	  if (isFunction(listeners)) {
+	    this.removeListener(type, listeners);
+	  } else {
+	    // LIFO order
+	    while (listeners.length)
+	      this.removeListener(type, listeners[listeners.length - 1]);
+	  }
+	  delete this._events[type];
+
+	  return this;
+	};
+
+	EventEmitter.prototype.listeners = function(type) {
+	  var ret;
+	  if (!this._events || !this._events[type])
+	    ret = [];
+	  else if (isFunction(this._events[type]))
+	    ret = [this._events[type]];
+	  else
+	    ret = this._events[type].slice();
+	  return ret;
+	};
+
+	EventEmitter.listenerCount = function(emitter, type) {
+	  var ret;
+	  if (!emitter._events || !emitter._events[type])
+	    ret = 0;
+	  else if (isFunction(emitter._events[type]))
+	    ret = 1;
+	  else
+	    ret = emitter._events[type].length;
+	  return ret;
+	};
+
+	function isFunction(arg) {
+	  return typeof arg === 'function';
+	}
+
+	function isNumber(arg) {
+	  return typeof arg === 'number';
+	}
+
+	function isObject(arg) {
+	  return typeof arg === 'object' && arg !== null;
+	}
+
+	function isUndefined(arg) {
+	  return arg === void 0;
+	}
+
+
+/***/ },
+
+/***/ 9:
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+	 * Copyright (c) 2014-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * AppDispatcher
+	 *
+	 * A singleton that operates as the central hub for application updates.
+	 */
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var _flux = __webpack_require__(10);
+
+	exports['default'] = new _flux.Dispatcher();
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 13:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _keymirror = __webpack_require__(14);
+
+	var _keymirror2 = _interopRequireDefault(_keymirror);
+
+	exports['default'] = (0, _keymirror2['default'])({
+		SAVE_SETTINGS: null,
+		RECEIVE_USERS: null
+	});
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 171:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+	exports.apiRequest = apiRequest;
+	exports.rekey = rekey;
+	exports.htmlEntities = htmlEntities;
+	exports.formatTime = formatTime;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _jquery = __webpack_require__(4);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _storesSettingsStore = __webpack_require__(3);
+
+	var _storesSettingsStore2 = _interopRequireDefault(_storesSettingsStore);
+
+	function apiRequest(options) {
+
+		var defaults = {
+			type: 'POST',
+			dataType: 'json',
+			data: {},
+			error: function error(xhr, status, err) {
+				console.error(options.url, status, err.toString());
+			}
+		};
+
+		var appSettings = _storesSettingsStore2['default'].getSettings();
+		if (appSettings) {
+			defaults.data = {
+				api_group: appSettings.groupId,
+				api_secret: appSettings.groupSecret
+			};
+		}
+
+		var settings = _jquery2['default'].extend(true, defaults, options);
+		if (settings.data.api_group && settings.data.api_secret) {
+			_jquery2['default'].ajax('https://www.teamleader.be/api' + options.url, settings);
+		}
+	}
+
+	function rekey(arr, lookup) {
+		for (var i = 0; i < arr.length; i++) {
+			var obj = arr[i];
+			for (var fromKey in lookup) {
+				var toKey = lookup[fromKey];
+				var value = obj[fromKey];
+				if (value) {
+					obj[toKey] = value;
+					delete obj[fromKey];
+				}
+			}
+		}
+		return arr;
+	}
+
+	function htmlEntities(string) {
+		return string.replace(/&amp;/g, '&').replace(/&#039;/g, "'");
+	}
+
+	function formatTime(secs) {
+		var h = parseInt(secs / 3600, 10);
+		var m = parseInt(secs % 3600 / 60, 10);
+		var s = parseInt(secs % 3600 % 60, 10);
+		return (h === 0 ? '' : h < 10 ? '0' + h + ':' : h + ':') + (m < 10 ? '0' + m : '' + m) + ':' + (s < 10 ? '0' + s : '' + s);
+	}
+
+/***/ },
+
+/***/ 172:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _utilsStoreUtils = __webpack_require__(5);
+
+	var _dispatcherAppDispatcher = __webpack_require__(9);
+
+	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
+
+	var _constantsTrackerConstants = __webpack_require__(173);
+
+	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
+
+	var _contactOrCompany;
+	var _contactOrCompanyId;
+
+	var CustomerStore = (0, _utilsStoreUtils.createStore)({
+
+		getContactOrCompany: function getContactOrCompany() {
+			return _contactOrCompany;
+		},
+
+		getContactOrCompanyId: function getContactOrCompanyId() {
+			return _contactOrCompanyId;
+		}
+	});
+
+	CustomerStore.dispatchToken = _dispatcherAppDispatcher2['default'].register(function (action) {
+
+		switch (action.type) {
+
+			case _constantsTrackerConstants2['default'].SET_CONTACT_OR_COMPANY:
+				_contactOrCompany = action.option;
+				_contactOrCompanyId = action.id;
+				CustomerStore.emitChange();
+				break;
+
+			default:
+			//no op
+		}
+	});
+
+	exports['default'] = CustomerStore;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 173:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _keymirror = __webpack_require__(14);
+
+	var _keymirror2 = _interopRequireDefault(_keymirror);
+
+	exports['default'] = (0, _keymirror2['default'])({
+		RECEIVE_PROJECTS: null,
+		RECEIVE_MILESTONES: null,
+		RECEIVE_MILESTONE_TASKS: null,
+		RECEIVE_TASK_TYPES: null,
+		SET_PROJECT: null,
+		SET_MILESTONE: null,
+		SET_MILESTONE_TASK: null,
+		SET_CONTACT_OR_COMPANY: null,
+		SET_TASK_TYPE: null,
+		SET_TASK_DESCRIPTION: null,
+		START_TIMER: null,
+		STOP_TIMER: null
+	});
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 174:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _underscore = __webpack_require__(7);
+
+	var _utilsStoreUtils = __webpack_require__(5);
+
+	var _dispatcherAppDispatcher = __webpack_require__(9);
+
+	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
+
+	var _constantsTrackerConstants = __webpack_require__(173);
+
+	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
+
+	var _actionsTrackerActions = __webpack_require__(175);
+
+	var _projects = [];
+	var _selected;
+
+	var ProjectStore = (0, _utilsStoreUtils.createStore)({
+
+		getProjects: function getProjects() {
+			return _projects;
+		},
+
+		getProjectId: function getProjectId() {
+			return _selected;
+		},
+
+		getProject: function getProject() {
+			return (0, _underscore.findWhere)(_projects, { id: _selected });
+		},
+
+		getProjectTitle: function getProjectTitle() {
+			var project = this.getProject();
+			return project ? project.title : null;
+		}
+	});
+
+	ProjectStore.dispatchToken = _dispatcherAppDispatcher2['default'].register(function (action) {
+
+		switch (action.type) {
+
+			case _constantsTrackerConstants2['default'].RECEIVE_PROJECTS:
+				_projects = action.data;
+				ProjectStore.emitChange();
+				break;
+
+			case _constantsTrackerConstants2['default'].SET_PROJECT:
+				_selected = parseInt(action.id);
+				//console.log('project', _selected);
+				ProjectStore.emitChange();
+
+				(0, _actionsTrackerActions.getProjectDetails)(_selected);
+				(0, _actionsTrackerActions.getMilestones)(_selected);
+				break;
+
+			default:
+			//no op
+		}
+	});
+
+	exports['default'] = ProjectStore;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 175:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+	exports.getProjects = getProjects;
+	exports.setProject = setProject;
+	exports.getProjectDetails = getProjectDetails;
+	exports.getMilestones = getMilestones;
+	exports.setMilestone = setMilestone;
+	exports.getMilestoneTasks = getMilestoneTasks;
+	exports.setMilestoneTask = setMilestoneTask;
+	exports.getTaskTypes = getTaskTypes;
+	exports.setTaskType = setTaskType;
+	exports.setTaskDescription = setTaskDescription;
+	exports.startTimer = startTimer;
+	exports.stopTimer = stopTimer;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _underscore = __webpack_require__(7);
+
+	var _utilsUtils = __webpack_require__(171);
+
+	var _dispatcherAppDispatcher = __webpack_require__(9);
+
+	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
+
+	var _constantsTrackerConstants = __webpack_require__(173);
+
+	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
+
+	function getProjects() {
+		(0, _utilsUtils.apiRequest)({
+			url: '/getProjects.php',
+			data: {
+				show_active_only: 1,
+				amount: 100,
+				pageno: 0
+			},
+			success: function success(json) {
+				var data = (0, _underscore.where)(json, { phase: 'active' });
+				//console.log(data);
+				_dispatcherAppDispatcher2['default'].dispatch({
+					type: _constantsTrackerConstants2['default'].RECEIVE_PROJECTS,
+					data: data
+				});
+			}
+		});
+	}
+
+	function setProject(id) {
+		_dispatcherAppDispatcher2['default'].dispatch({
+			type: _constantsTrackerConstants2['default'].SET_PROJECT,
+			id: id
+		});
+	}
+
+	function getProjectDetails(project) {
+		if (project > 0) {
+			(0, _utilsUtils.apiRequest)({
+				url: '/getProject.php',
+				data: {
+					project_id: project
+				},
+				success: function success(data) {
+					//console.log(data)
+					_dispatcherAppDispatcher2['default'].dispatch({
+						type: _constantsTrackerConstants2['default'].SET_CONTACT_OR_COMPANY,
+						option: data.contact_or_company,
+						id: data.contact_or_company_id
+					});
+				}
+			});
+		}
+	}
+
+	function getMilestones(project) {
+		if (project > 0) {
+			(0, _utilsUtils.apiRequest)({
+				url: '/getMilestonesByProject.php',
+				data: {
+					project_id: project
+				},
+				success: function success(json) {
+					var data = (0, _underscore.where)(json, { closed: 0 });
+					//console.log(data);
+					_dispatcherAppDispatcher2['default'].dispatch({
+						type: _constantsTrackerConstants2['default'].RECEIVE_MILESTONES,
+						data: data
+					});
+				}
+			});
+		}
+	}
+
+	function setMilestone(id) {
+		_dispatcherAppDispatcher2['default'].dispatch({
+			type: _constantsTrackerConstants2['default'].SET_MILESTONE,
+			id: id
+		});
+	}
+
+	function getMilestoneTasks(milestone) {
+
+		if (milestone > 0) {
+
+			(0, _utilsUtils.apiRequest)({
+				url: '/getTasksByMilestone.php',
+				data: {
+					milestone_id: milestone
+				},
+				success: function success(json) {
+					var data = (0, _underscore.where)(json, { done: 0 });
+					//console.log(data);
+
+					//todo: filter in view
+					var appSettings = JSON.parse(localStorage.getItem('settings'));
+					if (appSettings && appSettings.userName) {
+						data = (0, _underscore.where)(data, { owner_name: appSettings.userName });
+					}
+
+					_dispatcherAppDispatcher2['default'].dispatch({
+						type: _constantsTrackerConstants2['default'].RECEIVE_MILESTONE_TASKS,
+						data: data
+					});
+				}
+			});
+		}
+	}
+
+	function setMilestoneTask(id) {
+		_dispatcherAppDispatcher2['default'].dispatch({
+			type: _constantsTrackerConstants2['default'].SET_MILESTONE_TASK,
+			id: id
+		});
+	}
+
+	function getTaskTypes() {
+		(0, _utilsUtils.apiRequest)({
+			url: '/getTaskTypes.php',
+			success: function success(data) {
+				//console.log(data)
+				_dispatcherAppDispatcher2['default'].dispatch({
+					type: _constantsTrackerConstants2['default'].RECEIVE_TASK_TYPES,
+					data: data
+				});
+			}
+		});
+	}
+
+	function setTaskType(id) {
+		_dispatcherAppDispatcher2['default'].dispatch({
+			type: _constantsTrackerConstants2['default'].SET_TASK_TYPE,
+			id: id
+		});
+	}
+
+	function setTaskDescription(txt) {
+		_dispatcherAppDispatcher2['default'].dispatch({
+			type: _constantsTrackerConstants2['default'].SET_TASK_DESCRIPTION,
+			txt: txt
+		});
+	}
+
+	function startTimer(timestamp) {
+		_dispatcherAppDispatcher2['default'].dispatch({
+			type: _constantsTrackerConstants2['default'].START_TIMER,
+			timestamp: timestamp
+		});
+	}
+
+	function stopTimer(timestamp) {
+		_dispatcherAppDispatcher2['default'].dispatch({
+			type: _constantsTrackerConstants2['default'].STOP_TIMER,
+			timestamp: timestamp
+		});
+	}
+
+/***/ },
+
+/***/ 176:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _underscore = __webpack_require__(7);
+
+	var _utilsStoreUtils = __webpack_require__(5);
+
+	var _dispatcherAppDispatcher = __webpack_require__(9);
+
+	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
+
+	var _constantsTrackerConstants = __webpack_require__(173);
+
+	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
+
+	var _actionsTrackerActions = __webpack_require__(175);
+
+	var _storesProjectStore = __webpack_require__(174);
+
+	var _storesProjectStore2 = _interopRequireDefault(_storesProjectStore);
+
+	var _milestones = [];
+	var _selected;
+
+	var MilestoneStore = (0, _utilsStoreUtils.createStore)({
+
+		getMilestones: function getMilestones() {
+			return _milestones;
+		},
+
+		getMilestoneId: function getMilestoneId() {
+			return _selected;
+		},
+
+		getMilestone: function getMilestone() {
+			return (0, _underscore.findWhere)(_milestones, { id: _selected });
+		}
+	});
+
+	MilestoneStore.dispatchToken = _dispatcherAppDispatcher2['default'].register(function (action) {
+
+		switch (action.type) {
+
+			case _constantsTrackerConstants2['default'].SET_PROJECT:
+				_dispatcherAppDispatcher2['default'].waitFor([_storesProjectStore2['default'].dispatchToken]);
+				_milestones = [];
+				_selected = 0;
+				if (_storesProjectStore2['default'].getProjectId() == 0) {
+					MilestoneStore.emitChange();
+				}
+				break;
+
+			case _constantsTrackerConstants2['default'].RECEIVE_MILESTONES:
+				_milestones = action.data;
+				//console.log(_milestones);
+				if (_milestones.length > 0) {
+					_selected = parseInt(_selected || _milestones[0].id);
+					//console.log('milestone', _selected);
+				}
+				MilestoneStore.emitChange();
+
+				(0, _actionsTrackerActions.getMilestoneTasks)(_selected);
+				break;
+
+			case _constantsTrackerConstants2['default'].SET_MILESTONE:
+				_selected = parseInt(action.id);
+				//console.log('milestone', _selected);
+				MilestoneStore.emitChange();
+
+				(0, _actionsTrackerActions.getMilestoneTasks)(_selected);
+				break;
+
+			default:
+			//no op
+		}
+	});
+
+	exports['default'] = MilestoneStore;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 177:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _underscore = __webpack_require__(7);
+
+	var _utilsStoreUtils = __webpack_require__(5);
+
+	var _dispatcherAppDispatcher = __webpack_require__(9);
+
+	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
+
+	var _constantsTrackerConstants = __webpack_require__(173);
+
+	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
+
+	var _storesProjectStore = __webpack_require__(174);
+
+	var _storesProjectStore2 = _interopRequireDefault(_storesProjectStore);
+
+	var _storesMilestoneStore = __webpack_require__(176);
+
+	var _storesMilestoneStore2 = _interopRequireDefault(_storesMilestoneStore);
+
+	var _tasks = [];
+	var _selected;
+
+	var MilestoneTaskStore = (0, _utilsStoreUtils.createStore)({
+
+		getMilestoneTasks: function getMilestoneTasks() {
+			return _tasks;
+		},
+
+		getMilestoneTaskId: function getMilestoneTaskId() {
+			return _selected;
+		},
+
+		getMilestoneTask: function getMilestoneTask() {
+			return (0, _underscore.findWhere)(_tasks, { id: _selected });
+		},
+
+		getMilestoneTaskDescription: function getMilestoneTaskDescription() {
+			var task = this.getMilestoneTask();
+			return task ? task.description : null;
+		}
+	});
+
+	MilestoneTaskStore.dispatchToken = _dispatcherAppDispatcher2['default'].register(function (action) {
+
+		switch (action.type) {
+
+			case _constantsTrackerConstants2['default'].SET_PROJECT:
+			case _constantsTrackerConstants2['default'].SET_MILESTONE:
+				_dispatcherAppDispatcher2['default'].waitFor([_storesMilestoneStore2['default'].dispatchToken]);
+				_tasks = [];
+				_selected = 0;
+				if (_storesProjectStore2['default'].getProjectId() == 0) {
+					MilestoneTaskStore.emitChange();
+				}
+				break;
+
+			case _constantsTrackerConstants2['default'].RECEIVE_MILESTONE_TASKS:
+				_tasks = action.data;
+				if (_tasks.length > 0) {
+					_selected = parseInt(_selected || _tasks[0].id);
+					//console.log('task', _selected);
+				}
+				MilestoneTaskStore.emitChange();
+				break;
+
+			case _constantsTrackerConstants2['default'].SET_MILESTONE_TASK:
+				_selected = parseInt(action.id);
+				//console.log('task', _selected);
+				MilestoneTaskStore.emitChange();
+				break;
+
+			default:
+			//no op
+		}
+	});
+
+	exports['default'] = MilestoneTaskStore;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 178:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _underscore = __webpack_require__(7);
+
+	var _utilsStoreUtils = __webpack_require__(5);
+
+	var _dispatcherAppDispatcher = __webpack_require__(9);
+
+	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
+
+	var _constantsTrackerConstants = __webpack_require__(173);
+
+	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
+
+	var _storesMilestoneTaskStore = __webpack_require__(177);
+
+	var _storesMilestoneTaskStore2 = _interopRequireDefault(_storesMilestoneTaskStore);
+
+	var _taskTypes = [];
+	var _selected;
+
+	var TaskTypeStore = (0, _utilsStoreUtils.createStore)({
+
+		getTaskTypes: function getTaskTypes() {
+			return _taskTypes;
+		},
+
+		getTaskTypeId: function getTaskTypeId() {
+			return _selected;
+		},
+
+		getTaskType: function getTaskType() {
+			return (0, _underscore.findWhere)(_taskTypes, { id: _selected });
+		}
+	});
+
+	TaskTypeStore.dispatchToken = _dispatcherAppDispatcher2['default'].register(function (action) {
+
+		switch (action.type) {
+
+			case _constantsTrackerConstants2['default'].RECEIVE_TASK_TYPES:
+				_taskTypes = action.data;
+				if (_taskTypes.length > 0) {
+					_selected = parseInt(_taskTypes[0].id);
+					//console.log('task_type', _selected);
+				}
+				TaskTypeStore.emitChange();
+				break;
+
+			case _constantsTrackerConstants2['default'].SET_TASK_TYPE:
+				_selected = parseInt(action.id);
+				//console.log('task_type', _selected);
+				TaskTypeStore.emitChange();
+				break;
+
+			case _constantsTrackerConstants2['default'].RECEIVE_MILESTONE_TASKS:
+			case _constantsTrackerConstants2['default'].SET_MILESTONE_TASK:
+				_dispatcherAppDispatcher2['default'].waitFor([_storesMilestoneTaskStore2['default'].dispatchToken]);
+
+				//find task type id based on selected milestone task
+				var milestoneTask = _storesMilestoneTaskStore2['default'].getMilestoneTask();
+				if (milestoneTask) {
+					var milestoneTaskTypeName = milestoneTask.task_type;
+					var milestoneTaskType = (0, _underscore.findWhere)(_taskTypes, { name: milestoneTaskTypeName });
+					if (milestoneTaskType) {
+						var milestoneTaskTypeId = milestoneTaskType.id;
+						_selected = milestoneTaskTypeId;
+						//console.log('task_type', _selected);
+					}
+				}
+
+				break;
+
+			default:
+			//no op
+		}
+	});
+
+	exports['default'] = TaskTypeStore;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 179:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _utilsStoreUtils = __webpack_require__(5);
+
+	var _dispatcherAppDispatcher = __webpack_require__(9);
+
+	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
+
+	var _constantsTrackerConstants = __webpack_require__(173);
+
+	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
+
+	var _storesMilestoneTaskStore = __webpack_require__(177);
+
+	var _storesMilestoneTaskStore2 = _interopRequireDefault(_storesMilestoneTaskStore);
+
+	var _description;
+
+	var TaskStore = (0, _utilsStoreUtils.createStore)({
+
+		getTaskDescription: function getTaskDescription() {
+			return _description;
+		}
+	});
+
+	TaskStore.dispatchToken = _dispatcherAppDispatcher2['default'].register(function (action) {
+
+		switch (action.type) {
+
+			case _constantsTrackerConstants2['default'].SET_TASK_DESCRIPTION:
+				_description = action.txt;
+				//console.log(_description);
+				TaskStore.emitChange();
+				break;
+
+			default:
+			//no op
+		}
+	});
+
+	exports['default'] = TaskStore;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 180:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _utilsStoreUtils = __webpack_require__(5);
+
+	var _dispatcherAppDispatcher = __webpack_require__(9);
+
+	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
+
+	var _constantsTrackerConstants = __webpack_require__(173);
+
+	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
+
+	var _isTiming = false;
+	var _interval;
+	var _start;
+	var _elapsed = 0;
+
+	function _tick() {
+		var now = Math.floor(Date.now() / 1000); //in seconds
+		_elapsed = now - _start;
+
+		TimeStore.emitChange();
+	}
+
+	var TimeStore = (0, _utilsStoreUtils.createStore)({
+
+		isTiming: function isTiming() {
+			return _isTiming;
+		},
+
+		getSecondsElapsed: function getSecondsElapsed() {
+			return _elapsed;
+		}
+
+	});
+
+	TimeStore.dispatchToken = _dispatcherAppDispatcher2['default'].register(function (action) {
+
+		switch (action.type) {
+
+			case _constantsTrackerConstants2['default'].START_TIMER:
+				_start = action.timestamp;
+				_isTiming = true;
+
+				clearInterval(_interval);
+				_interval = setInterval(_tick, 1000);
+
+				TimeStore.emitChange();
+				break;
+
+			case _constantsTrackerConstants2['default'].STOP_TIMER:
+				var end = action.timestamp;
+
+				//todo: save time tracking
+
+				_elapsed = 0;
+				_isTiming = false;
+				clearInterval(_interval);
+
+				TimeStore.emitChange();
+				break;
+
+			default:
+			//no op
+		}
+	});
+
+	exports['default'] = TimeStore;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 181:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _react = __webpack_require__(15);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _underscore = __webpack_require__(7);
+
+	var _actionsTrackerActions = __webpack_require__(175);
+
+	var _storesProjectStore = __webpack_require__(174);
+
+	var _storesProjectStore2 = _interopRequireDefault(_storesProjectStore);
+
+	var _SelectInputReact = __webpack_require__(182);
+
+	var _SelectInputReact2 = _interopRequireDefault(_SelectInputReact);
+
+	var ProjectSelectContainer = _react2['default'].createClass({
+		displayName: 'ProjectSelectContainer',
+
+		getProjectsState: function getProjectsState() {
+			return {
+				projects: _storesProjectStore2['default'].getProjects(),
+				project: _storesProjectStore2['default'].getProjectId()
+			};
+		},
+
+		getInitialState: function getInitialState() {
+			return this.getProjectsState();
+		},
+
+		_onChange: function _onChange() {
+			if (this.isMounted()) {
+				this.setState(this.getProjectsState());
+			}
+		},
+
+		componentDidMount: function componentDidMount() {
+			(0, _actionsTrackerActions.getProjects)();
+			_storesProjectStore2['default'].addChangeListener(this._onChange);
+		},
+
+		componentWillUnmount: function componentWillUnmount() {
+			_storesProjectStore2['default'].removeChangeListener(this._onChange);
+		},
+
+		handleChange: function handleChange(event) {
+			var target = event.currentTarget;
+			(0, _actionsTrackerActions.setProject)(target.value);
+		},
+
+		render: function render() {
+
+			var projects = (0, _underscore.clone)(this.state.projects);
+			if (projects.length > 0) {
+				projects.unshift({ id: 0, title: 'Choose...' });
+			}
+
+			return _react2['default'].createElement(
+				'div',
+				{ className: "form-group" },
+				_react2['default'].createElement(
+					'label',
+					{ className: "col-xs-3 control-label", htmlFor: "project" },
+					'Project'
+				),
+				_react2['default'].createElement(
+					'div',
+					{ className: "col-xs-6" },
+					_react2['default'].createElement(_SelectInputReact2['default'], {
+						id: "project",
+						ref: "project",
+						value: this.state.project,
+						options: projects,
+						onChange: this.handleChange
+					})
+				)
+			);
+		}
+	});
+
+	exports['default'] = ProjectSelectContainer;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 182:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _react = __webpack_require__(15);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _utilsUtils = __webpack_require__(171);
+
+	var SelectInput = _react2['default'].createClass({
+		displayName: 'SelectInput',
+
+		getDefaultProps: function getDefaultProps() {
+			return {
+				valueKey: 'id',
+				labelKey: 'title'
+			};
+		},
+
+		render: function render() {
+			var _this = this;
+
+			var optionNodes = this.props.options.map(function (option) {
+				var value = option[_this.props.valueKey];
+				var label = option[_this.props.labelKey];
+				return _react2['default'].createElement(
+					'option',
+					{ key: value, value: value },
+					(0, _utilsUtils.htmlEntities)(label)
+				);
+			});
+
+			return _react2['default'].createElement(
+				'select',
+				_extends({}, this.props, {
+					className: "form-control"
+				}),
+				optionNodes
+			);
+		}
+	});
+
+	exports['default'] = SelectInput;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 183:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _react = __webpack_require__(15);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _actionsTrackerActions = __webpack_require__(175);
+
+	var _storesProjectStore = __webpack_require__(174);
+
+	var _storesProjectStore2 = _interopRequireDefault(_storesProjectStore);
+
+	var _storesMilestoneStore = __webpack_require__(176);
+
+	var _storesMilestoneStore2 = _interopRequireDefault(_storesMilestoneStore);
+
+	var _SelectInputReact = __webpack_require__(182);
+
+	var _SelectInputReact2 = _interopRequireDefault(_SelectInputReact);
+
+	var MilestoneSelectContainer = _react2['default'].createClass({
+		displayName: 'MilestoneSelectContainer',
+
+		getMilestonesState: function getMilestonesState() {
+			return {
+				milestones: _storesMilestoneStore2['default'].getMilestones(),
+				milestone: _storesMilestoneStore2['default'].getMilestoneId()
+			};
+		},
+
+		getInitialState: function getInitialState() {
+			return this.getMilestonesState();
+		},
+
+		_onChange: function _onChange() {
+			if (this.isMounted()) {
+				this.setState(this.getMilestonesState());
+			}
+		},
+
+		componentDidMount: function componentDidMount() {
+			(0, _actionsTrackerActions.getMilestones)(_storesProjectStore2['default'].getProjectId());
+			_storesMilestoneStore2['default'].addChangeListener(this._onChange);
+		},
+
+		componentWillUnmount: function componentWillUnmount() {
+			_storesMilestoneStore2['default'].removeChangeListener(this._onChange);
+		},
+
+		handleChange: function handleChange(event) {
+			var target = event.currentTarget;
+			(0, _actionsTrackerActions.setMilestone)(target.value);
+		},
+
+		render: function render() {
+			if (this.state.milestones.length === 0) return null;
+			return _react2['default'].createElement(
+				'div',
+				{ className: "form-group" },
+				_react2['default'].createElement(
+					'label',
+					{ className: "col-xs-3 control-label", htmlFor: "milestone" },
+					'Milestone'
+				),
+				_react2['default'].createElement(
+					'div',
+					{ className: "col-xs-6" },
+					_react2['default'].createElement(_SelectInputReact2['default'], {
+						id: "milestone",
+						ref: "milestone",
+						value: this.state.milestone,
+						options: this.state.milestones,
+						onChange: this.handleChange
+					})
+				)
+			);
+		}
+	});
+
+	exports['default'] = MilestoneSelectContainer;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 184:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _react = __webpack_require__(15);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _underscore = __webpack_require__(7);
+
+	var _actionsTrackerActions = __webpack_require__(175);
+
+	var _storesMilestoneStore = __webpack_require__(176);
+
+	var _storesMilestoneStore2 = _interopRequireDefault(_storesMilestoneStore);
+
+	var _storesMilestoneTaskStore = __webpack_require__(177);
+
+	var _storesMilestoneTaskStore2 = _interopRequireDefault(_storesMilestoneTaskStore);
+
+	var _storesTaskStore = __webpack_require__(179);
+
+	var _storesTaskStore2 = _interopRequireDefault(_storesTaskStore);
+
+	var _SelectInputReact = __webpack_require__(182);
+
+	var _SelectInputReact2 = _interopRequireDefault(_SelectInputReact);
+
+	var _TaskTypeSelectContainerReact = __webpack_require__(185);
+
+	var _TaskTypeSelectContainerReact2 = _interopRequireDefault(_TaskTypeSelectContainerReact);
+
+	var TaskSelectContainer = _react2['default'].createClass({
+		displayName: 'TaskSelectContainer',
+
+		getTasksState: function getTasksState() {
+			return {
+				tasks: _storesMilestoneTaskStore2['default'].getMilestoneTasks(),
+				task: _storesMilestoneTaskStore2['default'].getMilestoneTaskId(),
+				description: _storesTaskStore2['default'].getTaskDescription()
+			};
+		},
+
+		getInitialState: function getInitialState() {
+			return this.getTasksState();
+		},
+
+		_onChange: function _onChange() {
+			if (this.isMounted()) {
+				this.setState(this.getTasksState());
+			}
+		},
+
+		componentDidMount: function componentDidMount() {
+			(0, _actionsTrackerActions.getMilestoneTasks)(_storesMilestoneStore2['default'].getMilestoneId());
+			_storesMilestoneTaskStore2['default'].addChangeListener(this._onChange);
+			_storesTaskStore2['default'].addChangeListener(this._onChange);
+		},
+
+		componentWillUnmount: function componentWillUnmount() {
+			_storesMilestoneTaskStore2['default'].removeChangeListener(this._onChange);
+			_storesTaskStore2['default'].removeChangeListener(this._onChange);
+		},
+
+		handleMilestoneTaskChange: function handleMilestoneTaskChange(event) {
+			var target = event.currentTarget;
+			(0, _actionsTrackerActions.setMilestoneTask)(target.value);
+		},
+
+		handleTaskDescriptionChange: function handleTaskDescriptionChange(event) {
+			(0, _actionsTrackerActions.setTaskDescription)(event.target.value);
+		},
+
+		render: function render() {
+			if (this.state.tasks.length > 0 && this.state.task != -1) {
+
+				var tasks = (0, _underscore.clone)(this.state.tasks);
+				tasks.push({ id: -1, description: 'New task...' });
+
+				return _react2['default'].createElement(
+					'div',
+					{ className: "form-group" },
+					_react2['default'].createElement(
+						'label',
+						{ className: "col-xs-3 control-label", htmlFor: "milestone-task" },
+						'Todo'
+					),
+					_react2['default'].createElement(
+						'div',
+						{ className: "col-xs-6" },
+						_react2['default'].createElement(_SelectInputReact2['default'], {
+							id: "milestone-task",
+							ref: "milestoneTask",
+							labelKey: "description",
+							value: this.state.task,
+							options: tasks,
+							onChange: this.handleMilestoneTaskChange
+						})
+					)
+				);
+			} else {
+				return _react2['default'].createElement(
+					'div',
+					{ className: "custom-task" },
+					_react2['default'].createElement(
+						'div',
+						{ className: "form-group" },
+						_react2['default'].createElement(
+							'label',
+							{ className: "col-xs-3 control-label", htmlFor: "task-type" },
+							'Type'
+						),
+						_react2['default'].createElement(
+							'div',
+							{ className: "col-xs-6" },
+							_react2['default'].createElement(_TaskTypeSelectContainerReact2['default'], null)
+						)
+					),
+					_react2['default'].createElement(
+						'div',
+						{ className: "form-group" },
+						_react2['default'].createElement(
+							'div',
+							{ className: "col-xs-12" },
+							_react2['default'].createElement('textarea', {
+								id: "task-description",
+								placeholder: "Task description...",
+								className: "form-control",
+								rows: "3",
+								value: this.state.description,
+								onChange: this.handleTaskDescriptionChange
+							})
+						)
+					)
+				);
+			}
+		}
+	});
+
+	exports['default'] = TaskSelectContainer;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 185:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _react = __webpack_require__(15);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _actionsTrackerActions = __webpack_require__(175);
+
+	var _storesTaskTypeStore = __webpack_require__(178);
+
+	var _storesTaskTypeStore2 = _interopRequireDefault(_storesTaskTypeStore);
+
+	var _SelectInputReact = __webpack_require__(182);
+
+	var _SelectInputReact2 = _interopRequireDefault(_SelectInputReact);
+
+	var TaskTypeSelectContainer = _react2['default'].createClass({
+		displayName: 'TaskTypeSelectContainer',
+
+		getTasksState: function getTasksState() {
+			return {
+				taskTypes: _storesTaskTypeStore2['default'].getTaskTypes(),
+				taskType: _storesTaskTypeStore2['default'].getTaskTypeId()
+			};
+		},
+
+		getInitialState: function getInitialState() {
+			return this.getTasksState();
+		},
+
+		_onChange: function _onChange() {
+			if (this.isMounted()) {
+				this.setState(this.getTasksState());
+			}
+		},
+
+		componentDidMount: function componentDidMount() {
+			(0, _actionsTrackerActions.getTaskTypes)();
+			_storesTaskTypeStore2['default'].addChangeListener(this._onChange);
+		},
+
+		componentWillUnmount: function componentWillUnmount() {
+			_storesTaskTypeStore2['default'].removeChangeListener(this._onChange);
+		},
+
+		handleChange: function handleChange(event) {
+			var target = event.currentTarget;
+			(0, _actionsTrackerActions.setTaskType)(target.value);
+		},
+
+		render: function render() {
+			return _react2['default'].createElement(_SelectInputReact2['default'], {
+				id: "task-type",
+				ref: "taskType",
+				labelKey: "name",
+				value: this.state.taskType,
+				options: this.state.taskTypes,
+				onChange: this.handleChange
+			});
+		}
+	});
+
+	exports['default'] = TaskTypeSelectContainer;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 213:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.__esModule = true;
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+
+	var _warning = __webpack_require__(188);
+
+	var _warning2 = _interopRequireDefault(_warning);
+
+	var _DOMHistory2 = __webpack_require__(214);
+
+	var _DOMHistory3 = _interopRequireDefault(_DOMHistory2);
+
+	var _NavigationTypes = __webpack_require__(201);
+
+	var _NavigationTypes2 = _interopRequireDefault(_NavigationTypes);
+
+	var _DOMUtils = __webpack_require__(205);
+
+	var _URLUtils = __webpack_require__(193);
+
+	var DefaultQueryKey = '_qk';
+
+	function ensureSlash() {
+	  var path = (0, _DOMUtils.getHashPath)();
+
+	  if ((0, _URLUtils.isAbsolutePath)(path)) return true;
+
+	  (0, _DOMUtils.replaceHashPath)('/' + path);
+
+	  return false;
+	}
+
+	function addQueryStringValueToPath(path, key, value) {
+	  return path + (path.indexOf('?') === -1 ? '?' : '&') + ('' + key + '=' + value);
+	}
+
+	function getQueryStringValueFromPath(path, key) {
+	  var match = path.match(new RegExp('\\?.*?\\b' + key + '=(.+?)\\b'));
+	  return match && match[1];
+	}
+
+	function saveState(path, queryKey, state) {
+	  window.sessionStorage.setItem(state.key, JSON.stringify(state));
+	  return addQueryStringValueToPath(path, queryKey, state.key);
+	}
+
+	function readState(path, queryKey) {
+	  var sessionKey = getQueryStringValueFromPath(path, queryKey);
+	  var json = sessionKey && window.sessionStorage.getItem(sessionKey);
+
+	  if (json) {
+	    try {
+	      return JSON.parse(json);
+	    } catch (error) {}
+	  }
+
+	  return null;
+	}
+
+	function updateCurrentState(queryKey, extraState) {
+	  var path = (0, _DOMUtils.getHashPath)();
+	  var state = readState(path, queryKey);
+
+	  if (state) saveState(path, queryKey, _extends(state, extraState));
+	}
+
+	/**
+	 * A history implementation for DOM environments that uses window.location.hash
+	 * to store the current path. This is essentially a hack for older browsers that
+	 * do not support the HTML5 history API (IE <= 9).
+	 *
+	 * Support for persistence of state across page refreshes is provided using a
+	 * combination of a URL query string parameter and DOM storage. However, this
+	 * support is not enabled by default. In order to use it, create your own
+	 * HashHistory.
+	 *
+	 *   import HashHistory from 'react-router/lib/HashHistory';
+	 *   var StatefulHashHistory = new HashHistory({ queryKey: '_key' });
+	 *   React.render(<Router history={StatefulHashHistory} .../>, ...);
+	 */
+
+	var HashHistory = (function (_DOMHistory) {
+	  function HashHistory() {
+	    var options = arguments[0] === undefined ? {} : arguments[0];
+
+	    _classCallCheck(this, HashHistory);
+
+	    _DOMHistory.call(this, options);
+	    this.handleHashChange = this.handleHashChange.bind(this);
+	    this.queryKey = options.queryKey;
+
+	    if (typeof this.queryKey !== 'string') this.queryKey = this.queryKey ? DefaultQueryKey : null;
+	  }
+
+	  _inherits(HashHistory, _DOMHistory);
+
+	  HashHistory.prototype._updateLocation = function _updateLocation(navigationType) {
+	    var path = (0, _DOMUtils.getHashPath)();
+	    var state = this.queryKey ? readState(path, this.queryKey) : null;
+	    this.location = this.createLocation(path, state, navigationType);
+	  };
+
+	  HashHistory.prototype.setup = function setup() {
+	    if (this.location == null) {
+	      ensureSlash();
+	      this._updateLocation();
+	    }
+	  };
+
+	  HashHistory.prototype.handleHashChange = function handleHashChange() {
+	    if (!ensureSlash()) return;
+
+	    if (this._ignoreNextHashChange) {
+	      this._ignoreNextHashChange = false;
+	    } else {
+	      this._updateLocation(_NavigationTypes2['default'].POP);
+	      this._notifyChange();
+	    }
+	  };
+
+	  HashHistory.prototype.addChangeListener = function addChangeListener(listener) {
+	    _DOMHistory.prototype.addChangeListener.call(this, listener);
+
+	    if (this.changeListeners.length === 1) {
+	      if (window.addEventListener) {
+	        window.addEventListener('hashchange', this.handleHashChange, false);
+	      } else {
+	        window.attachEvent('onhashchange', this.handleHashChange);
+	      }
+	    }
+	  };
+
+	  HashHistory.prototype.removeChangeListener = function removeChangeListener(listener) {
+	    _DOMHistory.prototype.removeChangeListener.call(this, listener);
+
+	    if (this.changeListeners.length === 0) {
+	      if (window.removeEventListener) {
+	        window.removeEventListener('hashchange', this.handleHashChange, false);
+	      } else {
+	        window.detachEvent('onhashchange', this.handleHashChange);
+	      }
+	    }
+	  };
+
+	  HashHistory.prototype.pushState = function pushState(state, path) {
+	    (0, _warning2['default'])(this.queryKey || state == null, 'HashHistory needs a queryKey in order to persist state');
+
+	    if (this.queryKey) updateCurrentState(this.queryKey, this.getScrollPosition());
+
+	    state = this._createState(state);
+
+	    if (this.queryKey) path = saveState(path, this.queryKey, state);
+
+	    this._ignoreNextHashChange = true;
+	    window.location.hash = path;
+
+	    this.location = this.createLocation(path, state, _NavigationTypes2['default'].PUSH);
+
+	    this._notifyChange();
+	  };
+
+	  HashHistory.prototype.replaceState = function replaceState(state, path) {
+	    state = this._createState(state);
+
+	    if (this.queryKey) path = saveState(path, this.queryKey, state);
+
+	    this._ignoreNextHashChange = true;
+	    (0, _DOMUtils.replaceHashPath)(path);
+
+	    this.location = this.createLocation(path, state, _NavigationTypes2['default'].REPLACE);
+
+	    this._notifyChange();
+	  };
+
+	  HashHistory.prototype.makeHref = function makeHref(path) {
+	    return '#' + path;
+	  };
+
+	  return HashHistory;
+	})(_DOMHistory3['default']);
+
+	var history = new HashHistory();
+	exports.history = history;
+	exports['default'] = HashHistory;
+
+	// Ignore invalid JSON in session storage.
+
+/***/ },
+
+/***/ 214:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.__esModule = true;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+
+	var _History2 = __webpack_require__(202);
+
+	var _History3 = _interopRequireDefault(_History2);
+
+	var _DOMUtils = __webpack_require__(205);
+
+	/**
+	 * A history interface that assumes a DOM environment.
+	 */
+
+	var DOMHistory = (function (_History) {
+	  function DOMHistory() {
+	    var options = arguments[0] === undefined ? {} : arguments[0];
+
+	    _classCallCheck(this, DOMHistory);
+
+	    _History.call(this, options);
+	    this.getScrollPosition = options.getScrollPosition || _DOMUtils.getWindowScrollPosition;
+	  }
+
+	  _inherits(DOMHistory, _History);
+
+	  DOMHistory.prototype.go = function go(n) {
+	    if (n === 0) return;
+
+	    window.history.go(n);
+	  };
+
+	  return DOMHistory;
+	})(_History3['default']);
+
+	exports['default'] = DOMHistory;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 215:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _react = __webpack_require__(15);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(186);
+
+	var _events = __webpack_require__(8);
+
+	var _flux = __webpack_require__(10);
+
+	var TeamleaderTimeApp = _react2['default'].createClass({
+	  displayName: 'TeamleaderTimeApp',
+
+	  render: function render() {
+
+	    return _react2['default'].createElement(
+	      'div',
+	      { className: "app" },
+	      _react2['default'].createElement(
+	        'header',
+	        null,
+	        _react2['default'].createElement('div', { className: "headerext" }),
+	        _react2['default'].createElement(
+	          _reactRouter.Link,
+	          { to: "/settings", className: "settings-link", activeClassName: "active" },
+	          _react2['default'].createElement('i', { className: "fa fa-cog" })
+	        )
+	      ),
+	      _react2['default'].createElement(
+	        'div',
+	        { className: "container" },
+	        this.props.children
+	      )
+	    );
+	  }
+	});
+
+	exports['default'] = TeamleaderTimeApp;
+	module.exports = exports['default'];
+	/* this is the important part */
+
+/***/ },
+
+/***/ 216:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _jquery = __webpack_require__(4);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _react = __webpack_require__(15);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(186);
+
+	var _reactRouter2 = _interopRequireDefault(_reactRouter);
+
+	var _storesSettingsStore = __webpack_require__(3);
+
+	var _storesSettingsStore2 = _interopRequireDefault(_storesSettingsStore);
+
+	var _actionsSettingsActions = __webpack_require__(217);
+
+	var _TextInputReact = __webpack_require__(218);
+
+	var _TextInputReact2 = _interopRequireDefault(_TextInputReact);
+
+	var _SelectInputReact = __webpack_require__(182);
+
+	var _SelectInputReact2 = _interopRequireDefault(_SelectInputReact);
+
+	var _UserSelectContainerReact = __webpack_require__(219);
+
+	var _UserSelectContainerReact2 = _interopRequireDefault(_UserSelectContainerReact);
+
+	var Login = _react2['default'].createClass({
+		displayName: 'Login',
+
+		getInitialState: function getInitialState() {
+			return _storesSettingsStore2['default'].getSettings();
+		},
+
+		_onChange: function _onChange() {
+			this.setState(_storesSettingsStore2['default'].getSettings());
+		},
+
+		componentDidMount: function componentDidMount() {
+			_storesSettingsStore2['default'].addChangeListener(this._onChange);
+		},
+
+		componentWillUnmount: function componentWillUnmount() {
+			_storesSettingsStore2['default'].removeChangeListener(this._onChange);
+		},
+
+		handleSubmit: function handleSubmit(e) {
+			e.preventDefault();
+
+			var groupId = _react2['default'].findDOMNode(this.refs.groupId).value.trim();
+			var groupSecret = _react2['default'].findDOMNode(this.refs.groupSecret).value.trim();
+			if (!groupSecret || !groupId) {
+				return;
+			}
+
+			var container = this.refs.userSelectContainer;
+			var select = container.refs.userSelect;
+			var selectNode = _react2['default'].findDOMNode(select);
+
+			(0, _actionsSettingsActions.saveSettings)({
+				groupId: groupId,
+				groupSecret: groupSecret,
+				userId: select ? selectNode.value : 0,
+				userName: select ? (0, _jquery2['default'])(selectNode).find('option:selected').text() : ''
+			});
+
+			return;
+		},
+
+		render: function render() {
+			return _react2['default'].createElement(
+				'div',
+				{ className: "login" },
+				_react2['default'].createElement(
+					'form',
+					{ className: "form-horizontal", onSubmit: this.handleSubmit },
+					_react2['default'].createElement(
+						'div',
+						{ className: "form-group" },
+						_react2['default'].createElement(
+							'label',
+							{ className: "col-xs-3 control-label", htmlFor: "group-id" },
+							'Group ID'
+						),
+						_react2['default'].createElement(
+							'div',
+							{ className: "col-xs-6" },
+							_react2['default'].createElement(_TextInputReact2['default'], { id: "group-id", ref: "groupId", defaultValue: this.state.groupId })
+						)
+					),
+					_react2['default'].createElement(
+						'div',
+						{ className: "form-group" },
+						_react2['default'].createElement(
+							'label',
+							{ className: "col-xs-3 control-label", htmlFor: "group-secret" },
+							'Group Secret'
+						),
+						_react2['default'].createElement(
+							'div',
+							{ className: "col-xs-6" },
+							_react2['default'].createElement(_TextInputReact2['default'], { id: "group-secret", ref: "groupSecret", defaultValue: this.state.groupSecret })
+						)
+					),
+					_react2['default'].createElement(_UserSelectContainerReact2['default'], {
+						ref: "userSelectContainer",
+						userId: this.state.userId
+					}),
+					_react2['default'].createElement(
+						'div',
+						{ className: "btn-toolbar" },
+						_react2['default'].createElement(
+							'button',
+							{ type: "submit", className: "btn btn-primary btn-sm" },
+							'Login'
+						)
+					)
+				)
+			);
+		}
+	});
+
+	exports['default'] = Login;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 217:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+	exports.saveSettings = saveSettings;
+	exports.getUsers = getUsers;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _utilsUtils = __webpack_require__(171);
+
+	var _dispatcherAppDispatcher = __webpack_require__(9);
+
+	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
+
+	var _constantsSettingsConstants = __webpack_require__(13);
+
+	var _constantsSettingsConstants2 = _interopRequireDefault(_constantsSettingsConstants);
+
+	function saveSettings(data) {
+		_dispatcherAppDispatcher2['default'].dispatch({
+			type: _constantsSettingsConstants2['default'].SAVE_SETTINGS,
+			data: data
+		});
+	}
+
+	function getUsers() {
+		(0, _utilsUtils.apiRequest)({
+			url: '/getUsers.php',
+			success: function success(data) {
+				_dispatcherAppDispatcher2['default'].dispatch({
+					type: _constantsSettingsConstants2['default'].RECEIVE_USERS,
+					data: data
+				});
+			}
+		});
+	}
+
+/***/ },
+
+/***/ 218:
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	var _react = __webpack_require__(15);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var TextInput = _react2["default"].createClass({
+		displayName: "TextInput",
+
+		// getInitialState: function() {
+		// 	return { value: '' };
+		// },
+
+		// componentWillReceiveProps: function(nextProps) {
+		// 	this.setState({ value: nextProps.savedValue });
+		// },
+
+		// handleChange: function(event) {
+		// 	this.setState({ value: event.target.value });
+		//  },
+
+		render: function render() {
+			//var value = this.state.value;
+			return _react2["default"].createElement("input", _extends({}, this.props, {
+				type: "text",
+				className: "form-control"
+				//value={value}
+				//onChange={this.handleChange}
+			}));
+		}
+	});
+
+	exports["default"] = TextInput;
+	module.exports = exports["default"];
+
+/***/ },
+
+/***/ 219:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _react = __webpack_require__(15);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(186);
+
+	var _reactRouter2 = _interopRequireDefault(_reactRouter);
+
+	var _storesSettingsStore = __webpack_require__(3);
+
+	var _storesSettingsStore2 = _interopRequireDefault(_storesSettingsStore);
+
+	var _actionsSettingsActions = __webpack_require__(217);
+
+	var _SelectInputReact = __webpack_require__(182);
+
+	var _SelectInputReact2 = _interopRequireDefault(_SelectInputReact);
+
+	var UserSelectContainer = _react2['default'].createClass({
+		displayName: 'UserSelectContainer',
+
+		getUsersState: function getUsersState() {
+			return {
+				users: _storesSettingsStore2['default'].getUsers()
+			};
+		},
+
+		getInitialState: function getInitialState() {
+			return this.getUsersState();
+		},
+
+		_onChange: function _onChange() {
+			if (this.isMounted()) {
+				this.setState(this.getUsersState());
+			}
+		},
+
+		componentDidMount: function componentDidMount() {
+			(0, _actionsSettingsActions.getUsers)();
+			_storesSettingsStore2['default'].addChangeListener(this._onChange);
+		},
+
+		componentWillUnmount: function componentWillUnmount() {
+			_storesSettingsStore2['default'].removeChangeListener(this._onChange);
+		},
+
+		render: function render() {
+			if (this.state.users.length === 0) return null;
+			return _react2['default'].createElement(
+				'div',
+				{ className: "form-group" },
+				_react2['default'].createElement(
+					'label',
+					{ className: "col-xs-3 control-label", htmlFor: "user-select" },
+					'Select user'
+				),
+				_react2['default'].createElement(
+					'div',
+					{ className: "col-xs-6" },
+					_react2['default'].createElement(_SelectInputReact2['default'], {
+						id: "user-select",
+						ref: "userSelect",
+						labelKey: "name",
+						options: this.state.users,
+						defaultValue: this.props.userId
+					})
+				)
+			);
+		}
+	});
+
+	exports['default'] = UserSelectContainer;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 220:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _jquery = __webpack_require__(4);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _react = __webpack_require__(15);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _storesSettingsStore = __webpack_require__(3);
+
+	var _storesSettingsStore2 = _interopRequireDefault(_storesSettingsStore);
+
+	var _actionsSettingsActions = __webpack_require__(217);
+
+	var Settings = _react2['default'].createClass({
+	  displayName: 'Settings',
+
+	  getInitialState: function getInitialState() {
+	    return _storesSettingsStore2['default'].getSettings();
+	  },
+
+	  _onChange: function _onChange() {
+	    this.setState(_storesSettingsStore2['default'].getSettings());
+	  },
+
+	  componentDidMount: function componentDidMount() {
+	    _storesSettingsStore2['default'].addChangeListener(this._onChange);
+	  },
+
+	  componentWillUnmount: function componentWillUnmount() {
+	    _storesSettingsStore2['default'].removeChangeListener(this._onChange);
+	  },
+
+	  render: function render() {
+	    return _react2['default'].createElement('div', { className: "settings" });
+	  }
+	});
+
+	exports['default'] = Settings;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 221:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	var _jquery = __webpack_require__(4);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var gui = nodeRequire('nw.gui');
+	var window = gui.Window.get();
+
+	var isVisible = false;
+	var height = 0;
+	var width = 0;
+
+	function _toggle(e) {
+		isVisible ? window.hide() : _show.apply(this, [e.x, e.y]);
+		isVisible = !isVisible;
+	}
+
+	function _show(x, y) {
+		window.moveTo(x - (0, _jquery2['default'])('.app').width() / 2 - 6, y);
+		_fitWindowToContent();
+		window.show();
+		window.focus();
+	}
+
+	function _onWindowBlur() {
+		window.hide();
+		isVisible = false;
+	}
+
+	function _fitWindowToContent() {
+		var hei = (0, _jquery2['default'])('.app').height() + 100;
+		var wid = (0, _jquery2['default'])('.app').width() + 40;
+
+		if (width != wid || height != hei) {
+			window.resizeTo(wid, hei);
+			width = wid;
+			height = hei;
+		}
+	}
+
+	var StatusBar = function StatusBar(App) {
+		_classCallCheck(this, StatusBar);
+
+		// if (!sessionStorage.initializedStatusBar) {
+		//   sessionStorage.initializedStatusBar = true;
+
+		this.tray = new gui.Tray({
+			title: '',
+			icon: 'images/icon@2x.png'
+		});
+		this.tray.on('click', _toggle);
+
+		if (App.devMode) {
+			window.showDevTools();
+		} else {
+			window.on('blur', _onWindowBlur);
+		}
+
+		(function animloop() {
+			requestAnimationFrame(animloop);
+			_fitWindowToContent();
+		})();
+		//}
+	};
+
+	exports['default'] = StatusBar;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 222:
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	var gui = nodeRequire('nw.gui');
+
+	var MenuBar = function MenuBar() {
+		_classCallCheck(this, MenuBar);
+
+		var mb = new gui.Menu({ type: 'menubar' });
+		try {
+			mb.createMacBuiltin('Teamleader Time', {
+				hideEdit: false
+			});
+			gui.Window.get().menu = mb;
+		} catch (ex) {
+			console.log(ex.message);
+		}
+	};
+
+	exports['default'] = MenuBar;
+	module.exports = exports['default'];
+
+/***/ }
+
+});
