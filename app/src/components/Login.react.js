@@ -1,7 +1,7 @@
 
 import $ from 'jquery';
 import React from 'react';
-import Router, { Link } from 'react-router';
+import { Router, Link, Navigation } from 'react-router';
 
 import SettingsStore from '../stores/SettingsStore';
 import { saveSettings } from '../actions/SettingsActions';
@@ -11,6 +11,8 @@ import UserSelectContainer from './UserSelectContainer.react';
 
 
 var Login = React.createClass({
+
+	mixins: [ Navigation ],
 
 	getInitialState: function() {
 		return SettingsStore.getSettings();
@@ -48,10 +50,23 @@ var Login = React.createClass({
 			userName: select ? $(selectNode).find('option:selected').text() : ''
 		});
 
+		if (SettingsStore.isLoggedIn()) {
+
+			var { location } = this.props;
+			if (location.state && location.state.nextPathname) {
+				this.replaceWith(location.state.nextPathname);
+			} else {
+				this.replaceWith('/');
+			}
+		}
+
 		return;
 	},
 
 	render: function() {
+
+		var buttonText = SettingsStore.getUsers().length > 0 ? 'Login' : 'Connect';
+
 		return (
 			<div className="login">
 				<form className="form-horizontal" onSubmit={this.handleSubmit}>
@@ -71,8 +86,14 @@ var Login = React.createClass({
 				  	ref="userSelectContainer"
 				    userId={this.state.userId}
 					/>
-				  <div className="btn-toolbar">
-						<button type="submit" className="btn btn-primary btn-sm">Login</button> 
+			  	<div className="form-group">
+			  		<div className="col-xs-offset-3 col-xs-6">
+			  			<div className="btn-toolbar">
+								<button type="submit" className="btn btn-primary btn-sm">
+									{buttonText}
+								</button> 
+							</div>
+						</div>
 					</div>
 				</form>
 			</div>

@@ -5,6 +5,8 @@ import { createStore } from '../utils/StoreUtils';
 import AppDispatcher from '../dispatcher/AppDispatcher';
 import SettingsConstants from '../constants/SettingsConstants';
 
+import { getUsers } from '../actions/SettingsActions';
+
 
 var _users = [];
 

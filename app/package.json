@@ -7,8 +7,6 @@
     "show_in_taskbar": false,
     "frame": false,
     "transparent": true,
-    "title": "Teamleader Time",
-    "width": 520,
-    "height": 320
+    "title": "Teamleader Time"
   }
 }

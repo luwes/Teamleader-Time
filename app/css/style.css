@@ -5842,13 +5842,16 @@ body {
   position: relative;
   z-index: 1;
   width: 460px;
-  min-height: 200px;
+  min-height: 150px;
   margin: 12px 0 0 20px;
   border-radius: 6px;
   background-color: #fff;
   box-shadow: 0 5px 20px rgba(58, 58, 58, 0.5); }
   .app header {
-    position: relative; }
+    position: relative;
+    margin-bottom: 16px;
+    padding: 10px 20px 10px;
+    border-bottom: 2px solid #1486dd; }
     .app header:before {
       position: absolute;
       z-index: 3;
@@ -5860,33 +5863,25 @@ body {
       border-style: solid;
       border-color: transparent transparent #ffffff transparent; }
     .app header .headerext {
-      height: 46px;
-      margin-bottom: 13px;
-      border-bottom: 2px solid #1486dd;
+      height: 23px;
       background-image: url("../images/extension_header.png");
       background-repeat: no-repeat;
-      background-position: 19px 10px; }
+      background-position: -3px 0px; }
+    .app header .timesheets-link {
+      font-size: 11px;
+      font-weight: bold;
+      background-color: #8EC900;
+      border-color: #8EC900; }
     .app header .settings-link {
-      position: absolute;
-      top: 15px;
-      right: 20px;
+      margin-left: 15px;
+      position: relative;
+      top: 4px;
       color: #aaa;
       font-size: 20px;
       line-height: 1;
       -webkit-transition: color 0.5s;
               transition: color 0.5s; }
       .app header .settings-link.active {
-        color: #222; }
-    .app header .dev-link {
-      position: absolute;
-      top: 15px;
-      right: 50px;
-      color: #aaa;
-      font-size: 20px;
-      line-height: 1;
-      -webkit-transition: color 0.5s;
-              transition: color 0.5s; }
-      .app header .dev-link.active {
         color: #222; }
   .app .container {
     padding-bottom: 20px; }

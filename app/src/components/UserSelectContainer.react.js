@@ -1,4 +1,6 @@
 
+import { clone } from 'underscore';
+
 import React from 'react';
 import Router, { Link } from 'react-router';
 
@@ -37,6 +39,12 @@ var UserSelectContainer = React.createClass({
 
 	render: function() {
 		if (this.state.users.length === 0) return null;
+
+		var users = clone(this.state.users);
+		if (users.length > 0) {
+			users.unshift({ id: 0, name: 'Choose...' });
+		}
+
 		return (
 		  <div className="form-group">
 		    <label className="col-xs-3 control-label" htmlFor="user-select">Select user</label>
@@ -45,7 +53,7 @@ var UserSelectContainer = React.createClass({
 		    		id="user-select" 
 		    		ref="userSelect" 
 		    		labelKey="name" 
-		    		options={this.state.users} 
+		    		options={users} 
 		    		defaultValue={this.props.userId}
 		    	/>
 		    </div>

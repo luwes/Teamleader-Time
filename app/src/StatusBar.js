@@ -53,8 +53,8 @@ export default class StatusBar {
 	    if (App.devMode) {
 	    	window.showDevTools();
 	    } else {
-	    	window.on('blur', _onWindowBlur);
-	    }
+	   		window.on('blur', _onWindowBlur);
+	   	}
 
 			(function animloop() {
 				requestAnimationFrame(animloop);

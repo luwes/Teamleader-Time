@@ -57,17 +57,17 @@ webpackJsonp([0],{
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-	var _react = __webpack_require__(15);
+	var _react = __webpack_require__(17);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRouter = __webpack_require__(186);
+	var _reactRouter = __webpack_require__(187);
 
-	var _reactRouterLibHashHistory = __webpack_require__(213);
+	var _reactRouterLibHashHistory = __webpack_require__(214);
 
 	var _reactRouterLibHashHistory2 = _interopRequireDefault(_reactRouterLibHashHistory);
 
-	var _componentsTeamleaderTimeAppReact = __webpack_require__(215);
+	var _componentsTeamleaderTimeAppReact = __webpack_require__(216);
 
 	var _componentsTeamleaderTimeAppReact2 = _interopRequireDefault(_componentsTeamleaderTimeAppReact);
 
@@ -75,7 +75,7 @@ webpackJsonp([0],{
 
 	var _componentsTrackerReact2 = _interopRequireDefault(_componentsTrackerReact);
 
-	var _componentsLoginReact = __webpack_require__(216);
+	var _componentsLoginReact = __webpack_require__(217);
 
 	var _componentsLoginReact2 = _interopRequireDefault(_componentsLoginReact);
 
@@ -132,29 +132,29 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _react = __webpack_require__(15);
+	var _react = __webpack_require__(17);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _utilsUtils = __webpack_require__(171);
+	var _utilsUtils = __webpack_require__(16);
 
-	var _storesCustomerStore = __webpack_require__(172);
+	var _storesCustomerStore = __webpack_require__(173);
 
 	var _storesCustomerStore2 = _interopRequireDefault(_storesCustomerStore);
 
-	var _storesProjectStore = __webpack_require__(174);
+	var _storesProjectStore = __webpack_require__(175);
 
 	var _storesProjectStore2 = _interopRequireDefault(_storesProjectStore);
 
-	var _storesMilestoneStore = __webpack_require__(176);
+	var _storesMilestoneStore = __webpack_require__(177);
 
 	var _storesMilestoneStore2 = _interopRequireDefault(_storesMilestoneStore);
 
-	var _storesMilestoneTaskStore = __webpack_require__(177);
+	var _storesMilestoneTaskStore = __webpack_require__(178);
 
 	var _storesMilestoneTaskStore2 = _interopRequireDefault(_storesMilestoneTaskStore);
 
-	var _storesTaskTypeStore = __webpack_require__(178);
+	var _storesTaskTypeStore = __webpack_require__(179);
 
 	var _storesTaskTypeStore2 = _interopRequireDefault(_storesTaskTypeStore);
 
@@ -162,27 +162,27 @@ webpackJsonp([0],{
 
 	var _storesSettingsStore2 = _interopRequireDefault(_storesSettingsStore);
 
-	var _storesTaskStore = __webpack_require__(179);
+	var _storesTaskStore = __webpack_require__(180);
 
 	var _storesTaskStore2 = _interopRequireDefault(_storesTaskStore);
 
-	var _storesTimeStore = __webpack_require__(180);
+	var _storesTimeStore = __webpack_require__(181);
 
 	var _storesTimeStore2 = _interopRequireDefault(_storesTimeStore);
 
-	var _ProjectSelectContainerReact = __webpack_require__(181);
+	var _ProjectSelectContainerReact = __webpack_require__(182);
 
 	var _ProjectSelectContainerReact2 = _interopRequireDefault(_ProjectSelectContainerReact);
 
-	var _MilestoneSelectContainerReact = __webpack_require__(183);
+	var _MilestoneSelectContainerReact = __webpack_require__(184);
 
 	var _MilestoneSelectContainerReact2 = _interopRequireDefault(_MilestoneSelectContainerReact);
 
-	var _TaskSelectContainerReact = __webpack_require__(184);
+	var _TaskSelectContainerReact = __webpack_require__(185);
 
 	var _TaskSelectContainerReact2 = _interopRequireDefault(_TaskSelectContainerReact);
 
-	var _actionsTrackerActions = __webpack_require__(175);
+	var _actionsTrackerActions = __webpack_require__(176);
 
 	var Tracker = _react2['default'].createClass({
 		displayName: 'Tracker',
@@ -336,6 +336,8 @@ webpackJsonp([0],{
 
 	var _constantsSettingsConstants2 = _interopRequireDefault(_constantsSettingsConstants);
 
+	var _actionsSettingsActions = __webpack_require__(15);
+
 	var _users = [];
 
 	function _setSettings(data) {
@@ -369,7 +371,7 @@ webpackJsonp([0],{
 			case _constantsSettingsConstants2['default'].SAVE_SETTINGS:
 				_setSettings(action.data);
 				SettingsStore.emitChange();
-				getUsers();
+				(0, _actionsSettingsActions.getUsers)();
 				break;
 
 			case _constantsSettingsConstants2['default'].RECEIVE_USERS:
@@ -799,7 +801,51 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 171:
+/***/ 15:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+	exports.saveSettings = saveSettings;
+	exports.getUsers = getUsers;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _utilsUtils = __webpack_require__(16);
+
+	var _dispatcherAppDispatcher = __webpack_require__(9);
+
+	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
+
+	var _constantsSettingsConstants = __webpack_require__(13);
+
+	var _constantsSettingsConstants2 = _interopRequireDefault(_constantsSettingsConstants);
+
+	function saveSettings(data) {
+		_dispatcherAppDispatcher2['default'].dispatch({
+			type: _constantsSettingsConstants2['default'].SAVE_SETTINGS,
+			data: data
+		});
+	}
+
+	function getUsers() {
+		(0, _utilsUtils.apiRequest)({
+			url: '/getUsers.php',
+			success: function success(data) {
+				_dispatcherAppDispatcher2['default'].dispatch({
+					type: _constantsSettingsConstants2['default'].RECEIVE_USERS,
+					data: data
+				});
+			}
+		});
+	}
+
+/***/ },
+
+/***/ 16:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -875,7 +921,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 172:
+/***/ 173:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -892,7 +938,7 @@ webpackJsonp([0],{
 
 	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
 
-	var _constantsTrackerConstants = __webpack_require__(173);
+	var _constantsTrackerConstants = __webpack_require__(174);
 
 	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
 
@@ -930,7 +976,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 173:
+/***/ 174:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -963,7 +1009,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 174:
+/***/ 175:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -982,11 +1028,11 @@ webpackJsonp([0],{
 
 	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
 
-	var _constantsTrackerConstants = __webpack_require__(173);
+	var _constantsTrackerConstants = __webpack_require__(174);
 
 	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
 
-	var _actionsTrackerActions = __webpack_require__(175);
+	var _actionsTrackerActions = __webpack_require__(176);
 
 	var _projects = [];
 	var _selected;
@@ -1039,7 +1085,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 175:
+/***/ 176:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1064,13 +1110,13 @@ webpackJsonp([0],{
 
 	var _underscore = __webpack_require__(7);
 
-	var _utilsUtils = __webpack_require__(171);
+	var _utilsUtils = __webpack_require__(16);
 
 	var _dispatcherAppDispatcher = __webpack_require__(9);
 
 	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
 
-	var _constantsTrackerConstants = __webpack_require__(173);
+	var _constantsTrackerConstants = __webpack_require__(174);
 
 	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
 
@@ -1223,7 +1269,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 176:
+/***/ 177:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1242,13 +1288,13 @@ webpackJsonp([0],{
 
 	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
 
-	var _constantsTrackerConstants = __webpack_require__(173);
+	var _constantsTrackerConstants = __webpack_require__(174);
 
 	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
 
-	var _actionsTrackerActions = __webpack_require__(175);
+	var _actionsTrackerActions = __webpack_require__(176);
 
-	var _storesProjectStore = __webpack_require__(174);
+	var _storesProjectStore = __webpack_require__(175);
 
 	var _storesProjectStore2 = _interopRequireDefault(_storesProjectStore);
 
@@ -1313,7 +1359,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 177:
+/***/ 178:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1332,15 +1378,15 @@ webpackJsonp([0],{
 
 	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
 
-	var _constantsTrackerConstants = __webpack_require__(173);
+	var _constantsTrackerConstants = __webpack_require__(174);
 
 	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
 
-	var _storesProjectStore = __webpack_require__(174);
+	var _storesProjectStore = __webpack_require__(175);
 
 	var _storesProjectStore2 = _interopRequireDefault(_storesProjectStore);
 
-	var _storesMilestoneStore = __webpack_require__(176);
+	var _storesMilestoneStore = __webpack_require__(177);
 
 	var _storesMilestoneStore2 = _interopRequireDefault(_storesMilestoneStore);
 
@@ -1406,7 +1452,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 178:
+/***/ 179:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1425,11 +1471,11 @@ webpackJsonp([0],{
 
 	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
 
-	var _constantsTrackerConstants = __webpack_require__(173);
+	var _constantsTrackerConstants = __webpack_require__(174);
 
 	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
 
-	var _storesMilestoneTaskStore = __webpack_require__(177);
+	var _storesMilestoneTaskStore = __webpack_require__(178);
 
 	var _storesMilestoneTaskStore2 = _interopRequireDefault(_storesMilestoneTaskStore);
 
@@ -1498,7 +1544,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 179:
+/***/ 180:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1515,11 +1561,11 @@ webpackJsonp([0],{
 
 	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
 
-	var _constantsTrackerConstants = __webpack_require__(173);
+	var _constantsTrackerConstants = __webpack_require__(174);
 
 	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
 
-	var _storesMilestoneTaskStore = __webpack_require__(177);
+	var _storesMilestoneTaskStore = __webpack_require__(178);
 
 	var _storesMilestoneTaskStore2 = _interopRequireDefault(_storesMilestoneTaskStore);
 
@@ -1552,7 +1598,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 180:
+/***/ 181:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1569,7 +1615,7 @@ webpackJsonp([0],{
 
 	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
 
-	var _constantsTrackerConstants = __webpack_require__(173);
+	var _constantsTrackerConstants = __webpack_require__(174);
 
 	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
 
@@ -1633,7 +1679,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 181:
+/***/ 182:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1644,19 +1690,19 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _react = __webpack_require__(15);
+	var _react = __webpack_require__(17);
 
 	var _react2 = _interopRequireDefault(_react);
 
 	var _underscore = __webpack_require__(7);
 
-	var _actionsTrackerActions = __webpack_require__(175);
+	var _actionsTrackerActions = __webpack_require__(176);
 
-	var _storesProjectStore = __webpack_require__(174);
+	var _storesProjectStore = __webpack_require__(175);
 
 	var _storesProjectStore2 = _interopRequireDefault(_storesProjectStore);
 
-	var _SelectInputReact = __webpack_require__(182);
+	var _SelectInputReact = __webpack_require__(183);
 
 	var _SelectInputReact2 = _interopRequireDefault(_SelectInputReact);
 
@@ -1729,7 +1775,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 182:
+/***/ 183:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1742,11 +1788,11 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _react = __webpack_require__(15);
+	var _react = __webpack_require__(17);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _utilsUtils = __webpack_require__(171);
+	var _utilsUtils = __webpack_require__(16);
 
 	var SelectInput = _react2['default'].createClass({
 		displayName: 'SelectInput',
@@ -1786,7 +1832,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 183:
+/***/ 184:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1797,21 +1843,21 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _react = __webpack_require__(15);
+	var _react = __webpack_require__(17);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _actionsTrackerActions = __webpack_require__(175);
+	var _actionsTrackerActions = __webpack_require__(176);
 
-	var _storesProjectStore = __webpack_require__(174);
+	var _storesProjectStore = __webpack_require__(175);
 
 	var _storesProjectStore2 = _interopRequireDefault(_storesProjectStore);
 
-	var _storesMilestoneStore = __webpack_require__(176);
+	var _storesMilestoneStore = __webpack_require__(177);
 
 	var _storesMilestoneStore2 = _interopRequireDefault(_storesMilestoneStore);
 
-	var _SelectInputReact = __webpack_require__(182);
+	var _SelectInputReact = __webpack_require__(183);
 
 	var _SelectInputReact2 = _interopRequireDefault(_SelectInputReact);
 
@@ -1879,7 +1925,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 184:
+/***/ 185:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1890,31 +1936,31 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _react = __webpack_require__(15);
+	var _react = __webpack_require__(17);
 
 	var _react2 = _interopRequireDefault(_react);
 
 	var _underscore = __webpack_require__(7);
 
-	var _actionsTrackerActions = __webpack_require__(175);
+	var _actionsTrackerActions = __webpack_require__(176);
 
-	var _storesMilestoneStore = __webpack_require__(176);
+	var _storesMilestoneStore = __webpack_require__(177);
 
 	var _storesMilestoneStore2 = _interopRequireDefault(_storesMilestoneStore);
 
-	var _storesMilestoneTaskStore = __webpack_require__(177);
+	var _storesMilestoneTaskStore = __webpack_require__(178);
 
 	var _storesMilestoneTaskStore2 = _interopRequireDefault(_storesMilestoneTaskStore);
 
-	var _storesTaskStore = __webpack_require__(179);
+	var _storesTaskStore = __webpack_require__(180);
 
 	var _storesTaskStore2 = _interopRequireDefault(_storesTaskStore);
 
-	var _SelectInputReact = __webpack_require__(182);
+	var _SelectInputReact = __webpack_require__(183);
 
 	var _SelectInputReact2 = _interopRequireDefault(_SelectInputReact);
 
-	var _TaskTypeSelectContainerReact = __webpack_require__(185);
+	var _TaskTypeSelectContainerReact = __webpack_require__(186);
 
 	var _TaskTypeSelectContainerReact2 = _interopRequireDefault(_TaskTypeSelectContainerReact);
 
@@ -2030,7 +2076,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 185:
+/***/ 186:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2041,17 +2087,17 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _react = __webpack_require__(15);
+	var _react = __webpack_require__(17);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _actionsTrackerActions = __webpack_require__(175);
+	var _actionsTrackerActions = __webpack_require__(176);
 
-	var _storesTaskTypeStore = __webpack_require__(178);
+	var _storesTaskTypeStore = __webpack_require__(179);
 
 	var _storesTaskTypeStore2 = _interopRequireDefault(_storesTaskTypeStore);
 
-	var _SelectInputReact = __webpack_require__(182);
+	var _SelectInputReact = __webpack_require__(183);
 
 	var _SelectInputReact2 = _interopRequireDefault(_SelectInputReact);
 
@@ -2106,7 +2152,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 213:
+/***/ 214:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2121,21 +2167,21 @@ webpackJsonp([0],{
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
-	var _warning = __webpack_require__(188);
+	var _warning = __webpack_require__(189);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
-	var _DOMHistory2 = __webpack_require__(214);
+	var _DOMHistory2 = __webpack_require__(215);
 
 	var _DOMHistory3 = _interopRequireDefault(_DOMHistory2);
 
-	var _NavigationTypes = __webpack_require__(201);
+	var _NavigationTypes = __webpack_require__(202);
 
 	var _NavigationTypes2 = _interopRequireDefault(_NavigationTypes);
 
-	var _DOMUtils = __webpack_require__(205);
+	var _DOMUtils = __webpack_require__(206);
 
-	var _URLUtils = __webpack_require__(193);
+	var _URLUtils = __webpack_require__(194);
 
 	var DefaultQueryKey = '_qk';
 
@@ -2306,7 +2352,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 214:
+/***/ 215:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2319,11 +2365,11 @@ webpackJsonp([0],{
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
-	var _History2 = __webpack_require__(202);
+	var _History2 = __webpack_require__(203);
 
 	var _History3 = _interopRequireDefault(_History2);
 
-	var _DOMUtils = __webpack_require__(205);
+	var _DOMUtils = __webpack_require__(206);
 
 	/**
 	 * A history interface that assumes a DOM environment.
@@ -2355,7 +2401,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 215:
+/***/ 216:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2366,32 +2412,69 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _react = __webpack_require__(15);
+	var _jquery = __webpack_require__(4);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _react = __webpack_require__(17);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRouter = __webpack_require__(186);
+	var _reactRouter = __webpack_require__(187);
 
 	var _events = __webpack_require__(8);
 
 	var _flux = __webpack_require__(10);
 
+	var gui = nodeRequire('nw.gui');
+
 	var TeamleaderTimeApp = _react2['default'].createClass({
 	  displayName: 'TeamleaderTimeApp',
 
-	  render: function render() {
+	  mixins: [_reactRouter.Navigation],
 
+	  openTimesheets: function openTimesheets(e) {
+	    e.preventDefault();
+	    gui.Shell.openExternal(e.currentTarget.href);
+	  },
+
+	  toggleBack: function toggleBack(e) {
+	    var el = e.currentTarget;
+	    if ((0, _jquery2['default'])(el).hasClass('active')) {
+	      e.preventDefault();
+	      this.transitionTo('/');
+	    }
+	  },
+
+	  render: function render() {
 	    return _react2['default'].createElement(
 	      'div',
 	      { className: "app" },
 	      _react2['default'].createElement(
 	        'header',
 	        null,
-	        _react2['default'].createElement('div', { className: "headerext" }),
 	        _react2['default'].createElement(
-	          _reactRouter.Link,
-	          { to: "/settings", className: "settings-link", activeClassName: "active" },
-	          _react2['default'].createElement('i', { className: "fa fa-cog" })
+	          'div',
+	          { className: "row" },
+	          _react2['default'].createElement(
+	            'div',
+	            { className: "col-xs-7" },
+	            _react2['default'].createElement('div', { className: "headerext" })
+	          ),
+	          _react2['default'].createElement(
+	            'div',
+	            { className: "col-xs-5 text-right" },
+	            _react2['default'].createElement(
+	              'a',
+	              { className: "btn btn-sm btn-success timesheets-link", href: "https://www.teamleader.be/timesheets.php", onClick: this.openTimesheets },
+	              'My timesheets'
+	            ),
+	            _react2['default'].createElement(
+	              _reactRouter.Link,
+	              { to: "/settings", className: "settings-link", activeClassName: "active", onClick: this.toggleBack },
+	              _react2['default'].createElement('i', { className: "fa fa-cog" })
+	            )
+	          )
 	        )
 	      ),
 	      _react2['default'].createElement(
@@ -2409,7 +2492,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 216:
+/***/ 217:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2424,25 +2507,23 @@ webpackJsonp([0],{
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _react = __webpack_require__(15);
+	var _react = __webpack_require__(17);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRouter = __webpack_require__(186);
-
-	var _reactRouter2 = _interopRequireDefault(_reactRouter);
+	var _reactRouter = __webpack_require__(187);
 
 	var _storesSettingsStore = __webpack_require__(3);
 
 	var _storesSettingsStore2 = _interopRequireDefault(_storesSettingsStore);
 
-	var _actionsSettingsActions = __webpack_require__(217);
+	var _actionsSettingsActions = __webpack_require__(15);
 
 	var _TextInputReact = __webpack_require__(218);
 
 	var _TextInputReact2 = _interopRequireDefault(_TextInputReact);
 
-	var _SelectInputReact = __webpack_require__(182);
+	var _SelectInputReact = __webpack_require__(183);
 
 	var _SelectInputReact2 = _interopRequireDefault(_SelectInputReact);
 
@@ -2452,6 +2533,8 @@ webpackJsonp([0],{
 
 	var Login = _react2['default'].createClass({
 		displayName: 'Login',
+
+		mixins: [_reactRouter.Navigation],
 
 		getInitialState: function getInitialState() {
 			return _storesSettingsStore2['default'].getSettings();
@@ -2489,10 +2572,23 @@ webpackJsonp([0],{
 				userName: select ? (0, _jquery2['default'])(selectNode).find('option:selected').text() : ''
 			});
 
+			if (_storesSettingsStore2['default'].isLoggedIn()) {
+				var location = this.props.location;
+
+				if (location.state && location.state.nextPathname) {
+					this.replaceWith(location.state.nextPathname);
+				} else {
+					this.replaceWith('/');
+				}
+			}
+
 			return;
 		},
 
 		render: function render() {
+
+			var buttonText = _storesSettingsStore2['default'].getUsers().length > 0 ? 'Login' : 'Connect';
+
 			return _react2['default'].createElement(
 				'div',
 				{ className: "login" },
@@ -2533,11 +2629,19 @@ webpackJsonp([0],{
 					}),
 					_react2['default'].createElement(
 						'div',
-						{ className: "btn-toolbar" },
+						{ className: "form-group" },
 						_react2['default'].createElement(
-							'button',
-							{ type: "submit", className: "btn btn-primary btn-sm" },
-							'Login'
+							'div',
+							{ className: "col-xs-offset-3 col-xs-6" },
+							_react2['default'].createElement(
+								'div',
+								{ className: "btn-toolbar" },
+								_react2['default'].createElement(
+									'button',
+									{ type: "submit", className: "btn btn-primary btn-sm" },
+									buttonText
+								)
+							)
 						)
 					)
 				)
@@ -2547,50 +2651,6 @@ webpackJsonp([0],{
 
 	exports['default'] = Login;
 	module.exports = exports['default'];
-
-/***/ },
-
-/***/ 217:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-		value: true
-	});
-	exports.saveSettings = saveSettings;
-	exports.getUsers = getUsers;
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _utilsUtils = __webpack_require__(171);
-
-	var _dispatcherAppDispatcher = __webpack_require__(9);
-
-	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
-
-	var _constantsSettingsConstants = __webpack_require__(13);
-
-	var _constantsSettingsConstants2 = _interopRequireDefault(_constantsSettingsConstants);
-
-	function saveSettings(data) {
-		_dispatcherAppDispatcher2['default'].dispatch({
-			type: _constantsSettingsConstants2['default'].SAVE_SETTINGS,
-			data: data
-		});
-	}
-
-	function getUsers() {
-		(0, _utilsUtils.apiRequest)({
-			url: '/getUsers.php',
-			success: function success(data) {
-				_dispatcherAppDispatcher2['default'].dispatch({
-					type: _constantsSettingsConstants2['default'].RECEIVE_USERS,
-					data: data
-				});
-			}
-		});
-	}
 
 /***/ },
 
@@ -2607,7 +2667,7 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-	var _react = __webpack_require__(15);
+	var _react = __webpack_require__(17);
 
 	var _react2 = _interopRequireDefault(_react);
 
@@ -2653,11 +2713,13 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _react = __webpack_require__(15);
+	var _underscore = __webpack_require__(7);
+
+	var _react = __webpack_require__(17);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRouter = __webpack_require__(186);
+	var _reactRouter = __webpack_require__(187);
 
 	var _reactRouter2 = _interopRequireDefault(_reactRouter);
 
@@ -2665,9 +2727,9 @@ webpackJsonp([0],{
 
 	var _storesSettingsStore2 = _interopRequireDefault(_storesSettingsStore);
 
-	var _actionsSettingsActions = __webpack_require__(217);
+	var _actionsSettingsActions = __webpack_require__(15);
 
-	var _SelectInputReact = __webpack_require__(182);
+	var _SelectInputReact = __webpack_require__(183);
 
 	var _SelectInputReact2 = _interopRequireDefault(_SelectInputReact);
 
@@ -2701,6 +2763,12 @@ webpackJsonp([0],{
 
 		render: function render() {
 			if (this.state.users.length === 0) return null;
+
+			var users = (0, _underscore.clone)(this.state.users);
+			if (users.length > 0) {
+				users.unshift({ id: 0, name: 'Choose...' });
+			}
+
 			return _react2['default'].createElement(
 				'div',
 				{ className: "form-group" },
@@ -2716,7 +2784,7 @@ webpackJsonp([0],{
 						id: "user-select",
 						ref: "userSelect",
 						labelKey: "name",
-						options: this.state.users,
+						options: users,
 						defaultValue: this.props.userId
 					})
 				)
@@ -2744,18 +2812,22 @@ webpackJsonp([0],{
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _react = __webpack_require__(15);
+	var _react = __webpack_require__(17);
 
 	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(187);
 
 	var _storesSettingsStore = __webpack_require__(3);
 
 	var _storesSettingsStore2 = _interopRequireDefault(_storesSettingsStore);
 
-	var _actionsSettingsActions = __webpack_require__(217);
+	var _actionsSettingsActions = __webpack_require__(15);
 
 	var Settings = _react2['default'].createClass({
 	  displayName: 'Settings',
+
+	  mixins: [_reactRouter.Navigation],
 
 	  getInitialState: function getInitialState() {
 	    return _storesSettingsStore2['default'].getSettings();
@@ -2773,8 +2845,37 @@ webpackJsonp([0],{
 	    _storesSettingsStore2['default'].removeChangeListener(this._onChange);
 	  },
 
+	  handleLogout: function handleLogout(e) {
+	    e.preventDefault();
+
+	    (0, _actionsSettingsActions.saveSettings)({
+	      userId: null,
+	      userName: null
+	    });
+
+	    this.replaceWith('/login');
+	  },
+
 	  render: function render() {
-	    return _react2['default'].createElement('div', { className: "settings" });
+	    return _react2['default'].createElement(
+	      'div',
+	      { className: "settings" },
+	      _react2['default'].createElement(
+	        'p',
+	        null,
+	        'Logged in as ',
+	        this.state.userName
+	      ),
+	      _react2['default'].createElement(
+	        'div',
+	        { className: "btn-toolbar" },
+	        _react2['default'].createElement(
+	          'button',
+	          { className: "btn btn-primary btn-sm", onClick: this.handleLogout },
+	          'Logout'
+	        )
+	      )
+	    );
 	  }
 	});
 
