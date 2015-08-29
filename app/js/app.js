@@ -57,7 +57,7 @@ webpackJsonp([0],{
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-	var _react = __webpack_require__(17);
+	var _react = __webpack_require__(26);
 
 	var _react2 = _interopRequireDefault(_react);
 
@@ -83,7 +83,7 @@ webpackJsonp([0],{
 
 	var _componentsSettingsReact2 = _interopRequireDefault(_componentsSettingsReact);
 
-	var _storesSettingsStore = __webpack_require__(3);
+	var _storesSettingsStore = __webpack_require__(19);
 
 	var _storesSettingsStore2 = _interopRequireDefault(_storesSettingsStore);
 
@@ -132,41 +132,25 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _react = __webpack_require__(17);
+	var _react = __webpack_require__(26);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _utilsUtils = __webpack_require__(16);
+	var _utilsUtils = __webpack_require__(17);
 
-	var _storesCustomerStore = __webpack_require__(173);
-
-	var _storesCustomerStore2 = _interopRequireDefault(_storesCustomerStore);
-
-	var _storesProjectStore = __webpack_require__(175);
+	var _storesProjectStore = __webpack_require__(16);
 
 	var _storesProjectStore2 = _interopRequireDefault(_storesProjectStore);
 
-	var _storesMilestoneStore = __webpack_require__(177);
-
-	var _storesMilestoneStore2 = _interopRequireDefault(_storesMilestoneStore);
-
-	var _storesMilestoneTaskStore = __webpack_require__(178);
+	var _storesMilestoneTaskStore = __webpack_require__(23);
 
 	var _storesMilestoneTaskStore2 = _interopRequireDefault(_storesMilestoneTaskStore);
 
-	var _storesTaskTypeStore = __webpack_require__(179);
-
-	var _storesTaskTypeStore2 = _interopRequireDefault(_storesTaskTypeStore);
-
-	var _storesSettingsStore = __webpack_require__(3);
-
-	var _storesSettingsStore2 = _interopRequireDefault(_storesSettingsStore);
-
-	var _storesTaskStore = __webpack_require__(180);
+	var _storesTaskStore = __webpack_require__(25);
 
 	var _storesTaskStore2 = _interopRequireDefault(_storesTaskStore);
 
-	var _storesTimeStore = __webpack_require__(181);
+	var _storesTimeStore = __webpack_require__(3);
 
 	var _storesTimeStore2 = _interopRequireDefault(_storesTimeStore);
 
@@ -182,22 +166,10 @@ webpackJsonp([0],{
 
 	var _TaskSelectContainerReact2 = _interopRequireDefault(_TaskSelectContainerReact);
 
-	var _actionsTrackerActions = __webpack_require__(176);
+	var _actionsTrackerActions = __webpack_require__(8);
 
 	var Tracker = _react2['default'].createClass({
 		displayName: 'Tracker',
-
-		// return {
-		// 	project: ProjectStore.getProjectId(),
-		// 	milestone: MilestoneStore.getMilestoneId(),
-		// 	milestoneTask: MilestoneTaskStore.getMilestoneTaskId(),
-		// 	contactOrCompany: CustomerStore.getContactOrCompany(),
-		// 	contactOrCompanyId: CustomerStore.getContactOrCompanyId(),
-		// 	taskType: TaskTypeStore.getTaskTypeId(),
-		// 	userId: SettingsStore.getUserId(),
-		// 	description: MilestoneTaskStore.getMilestoneTaskDescription() ||
-		// 								TaskStore.getTaskDescription()
-		// }
 
 		getTrackerState: function getTrackerState() {
 			return {
@@ -322,61 +294,66 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _jquery = __webpack_require__(4);
+	var _utilsStoreUtils = __webpack_require__(4);
 
-	var _jquery2 = _interopRequireDefault(_jquery);
+	var _actionsTrackerActions = __webpack_require__(8);
 
-	var _utilsStoreUtils = __webpack_require__(5);
-
-	var _dispatcherAppDispatcher = __webpack_require__(9);
+	var _dispatcherAppDispatcher = __webpack_require__(12);
 
 	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
 
-	var _constantsSettingsConstants = __webpack_require__(13);
+	var _constantsTrackerConstants = __webpack_require__(10);
 
-	var _constantsSettingsConstants2 = _interopRequireDefault(_constantsSettingsConstants);
+	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
 
-	var _actionsSettingsActions = __webpack_require__(15);
+	var _isTiming = false;
+	var _interval;
+	var _start;
+	var _elapsed = 0;
 
-	var _users = [];
+	function _tick() {
+		var now = Math.floor(Date.now() / 1000); //in seconds
+		_elapsed = now - _start;
 
-	function _setSettings(data) {
-		var settings = _jquery2['default'].extend({}, SettingsStore.getSettings(), data);
-		localStorage.setItem('settings', JSON.stringify(settings));
+		TimeStore.emitChange();
 	}
 
-	var SettingsStore = (0, _utilsStoreUtils.createStore)({
+	var TimeStore = (0, _utilsStoreUtils.createStore)({
 
-		getSettings: function getSettings() {
-			return JSON.parse(localStorage.getItem('settings')) || {};
+		isTiming: function isTiming() {
+			return _isTiming;
 		},
 
-		getUserId: function getUserId() {
-			return parseInt(this.getSettings().userId);
-		},
-
-		isLoggedIn: function isLoggedIn() {
-			return this.getUserId() > 0;
-		},
-
-		getUsers: function getUsers() {
-			return _users;
+		getSecondsElapsed: function getSecondsElapsed() {
+			return _elapsed;
 		}
+
 	});
 
-	SettingsStore.dispatchToken = _dispatcherAppDispatcher2['default'].register(function (action) {
+	TimeStore.dispatchToken = _dispatcherAppDispatcher2['default'].register(function (action) {
 
 		switch (action.type) {
 
-			case _constantsSettingsConstants2['default'].SAVE_SETTINGS:
-				_setSettings(action.data);
-				SettingsStore.emitChange();
-				(0, _actionsSettingsActions.getUsers)();
+			case _constantsTrackerConstants2['default'].START_TIMER:
+				_start = action.timestamp;
+				_isTiming = true;
+
+				clearInterval(_interval);
+				_interval = setInterval(_tick, 1000);
+
+				TimeStore.emitChange();
 				break;
 
-			case _constantsSettingsConstants2['default'].RECEIVE_USERS:
-				_users = action.data;
-				SettingsStore.emitChange();
+			case _constantsTrackerConstants2['default'].STOP_TIMER:
+				var end = action.timestamp;
+
+				(0, _actionsTrackerActions.saveTime)(_start, end);
+
+				_elapsed = 0;
+				_isTiming = false;
+				clearInterval(_interval);
+
+				TimeStore.emitChange();
 				break;
 
 			default:
@@ -384,12 +361,12 @@ webpackJsonp([0],{
 		}
 	});
 
-	exports['default'] = SettingsStore;
+	exports['default'] = TimeStore;
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 5:
+/***/ 4:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -401,13 +378,13 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _objectAssign = __webpack_require__(6);
+	var _objectAssign = __webpack_require__(5);
 
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 
-	var _underscore = __webpack_require__(7);
+	var _underscore = __webpack_require__(6);
 
-	var _events = __webpack_require__(8);
+	var _events = __webpack_require__(7);
 
 	var CHANGE_EVENT = 'change';
 
@@ -441,7 +418,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 8:
+/***/ 7:
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -749,36 +726,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 9:
-/***/ function(module, exports, __webpack_require__) {
-
-	/*
-	 * Copyright (c) 2014-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * AppDispatcher
-	 *
-	 * A singleton that operates as the central hub for application updates.
-	 */
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-
-	var _flux = __webpack_require__(10);
-
-	exports['default'] = new _flux.Dispatcher();
-	module.exports = exports['default'];
-
-/***/ },
-
-/***/ 13:
+/***/ 8:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -786,313 +734,9 @@ webpackJsonp([0],{
 	Object.defineProperty(exports, '__esModule', {
 		value: true
 	});
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _keymirror = __webpack_require__(14);
-
-	var _keymirror2 = _interopRequireDefault(_keymirror);
-
-	exports['default'] = (0, _keymirror2['default'])({
-		SAVE_SETTINGS: null,
-		RECEIVE_USERS: null
-	});
-	module.exports = exports['default'];
-
-/***/ },
-
-/***/ 15:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-		value: true
-	});
-	exports.saveSettings = saveSettings;
-	exports.getUsers = getUsers;
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _utilsUtils = __webpack_require__(16);
-
-	var _dispatcherAppDispatcher = __webpack_require__(9);
-
-	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
-
-	var _constantsSettingsConstants = __webpack_require__(13);
-
-	var _constantsSettingsConstants2 = _interopRequireDefault(_constantsSettingsConstants);
-
-	function saveSettings(data) {
-		_dispatcherAppDispatcher2['default'].dispatch({
-			type: _constantsSettingsConstants2['default'].SAVE_SETTINGS,
-			data: data
-		});
-	}
-
-	function getUsers() {
-		(0, _utilsUtils.apiRequest)({
-			url: '/getUsers.php',
-			success: function success(data) {
-				_dispatcherAppDispatcher2['default'].dispatch({
-					type: _constantsSettingsConstants2['default'].RECEIVE_USERS,
-					data: data
-				});
-			}
-		});
-	}
-
-/***/ },
-
-/***/ 16:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-		value: true
-	});
-	exports.apiRequest = apiRequest;
-	exports.rekey = rekey;
-	exports.htmlEntities = htmlEntities;
-	exports.formatTime = formatTime;
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _jquery = __webpack_require__(4);
-
-	var _jquery2 = _interopRequireDefault(_jquery);
-
-	var _storesSettingsStore = __webpack_require__(3);
-
-	var _storesSettingsStore2 = _interopRequireDefault(_storesSettingsStore);
-
-	function apiRequest(options) {
-
-		var defaults = {
-			type: 'POST',
-			dataType: 'json',
-			data: {},
-			error: function error(xhr, status, err) {
-				console.error(options.url, status, err.toString());
-			}
-		};
-
-		var appSettings = _storesSettingsStore2['default'].getSettings();
-		if (appSettings) {
-			defaults.data = {
-				api_group: appSettings.groupId,
-				api_secret: appSettings.groupSecret
-			};
-		}
-
-		var settings = _jquery2['default'].extend(true, defaults, options);
-		if (settings.data.api_group && settings.data.api_secret) {
-			_jquery2['default'].ajax('https://www.teamleader.be/api' + options.url, settings);
-		}
-	}
-
-	function rekey(arr, lookup) {
-		for (var i = 0; i < arr.length; i++) {
-			var obj = arr[i];
-			for (var fromKey in lookup) {
-				var toKey = lookup[fromKey];
-				var value = obj[fromKey];
-				if (value) {
-					obj[toKey] = value;
-					delete obj[fromKey];
-				}
-			}
-		}
-		return arr;
-	}
-
-	function htmlEntities(string) {
-		return string.replace(/&amp;/g, '&').replace(/&#039;/g, "'");
-	}
-
-	function formatTime(secs) {
-		var h = parseInt(secs / 3600, 10);
-		var m = parseInt(secs % 3600 / 60, 10);
-		var s = parseInt(secs % 3600 % 60, 10);
-		return (h === 0 ? '' : h < 10 ? '0' + h + ':' : h + ':') + (m < 10 ? '0' + m : '' + m) + ':' + (s < 10 ? '0' + s : '' + s);
-	}
-
-/***/ },
-
-/***/ 173:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-		value: true
-	});
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _utilsStoreUtils = __webpack_require__(5);
-
-	var _dispatcherAppDispatcher = __webpack_require__(9);
-
-	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
-
-	var _constantsTrackerConstants = __webpack_require__(174);
-
-	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
-
-	var _contactOrCompany;
-	var _contactOrCompanyId;
-
-	var CustomerStore = (0, _utilsStoreUtils.createStore)({
-
-		getContactOrCompany: function getContactOrCompany() {
-			return _contactOrCompany;
-		},
-
-		getContactOrCompanyId: function getContactOrCompanyId() {
-			return _contactOrCompanyId;
-		}
-	});
-
-	CustomerStore.dispatchToken = _dispatcherAppDispatcher2['default'].register(function (action) {
-
-		switch (action.type) {
-
-			case _constantsTrackerConstants2['default'].SET_CONTACT_OR_COMPANY:
-				_contactOrCompany = action.option;
-				_contactOrCompanyId = action.id;
-				CustomerStore.emitChange();
-				break;
-
-			default:
-			//no op
-		}
-	});
-
-	exports['default'] = CustomerStore;
-	module.exports = exports['default'];
-
-/***/ },
-
-/***/ 174:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-		value: true
-	});
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _keymirror = __webpack_require__(14);
-
-	var _keymirror2 = _interopRequireDefault(_keymirror);
-
-	exports['default'] = (0, _keymirror2['default'])({
-		RECEIVE_PROJECTS: null,
-		RECEIVE_MILESTONES: null,
-		RECEIVE_MILESTONE_TASKS: null,
-		RECEIVE_TASK_TYPES: null,
-		SET_PROJECT: null,
-		SET_MILESTONE: null,
-		SET_MILESTONE_TASK: null,
-		SET_CONTACT_OR_COMPANY: null,
-		SET_TASK_TYPE: null,
-		SET_TASK_DESCRIPTION: null,
-		START_TIMER: null,
-		STOP_TIMER: null
-	});
-	module.exports = exports['default'];
-
-/***/ },
-
-/***/ 175:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-		value: true
-	});
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _underscore = __webpack_require__(7);
-
-	var _utilsStoreUtils = __webpack_require__(5);
-
-	var _dispatcherAppDispatcher = __webpack_require__(9);
-
-	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
-
-	var _constantsTrackerConstants = __webpack_require__(174);
-
-	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
-
-	var _actionsTrackerActions = __webpack_require__(176);
-
-	var _projects = [];
-	var _selected;
-
-	var ProjectStore = (0, _utilsStoreUtils.createStore)({
-
-		getProjects: function getProjects() {
-			return _projects;
-		},
-
-		getProjectId: function getProjectId() {
-			return _selected;
-		},
-
-		getProject: function getProject() {
-			return (0, _underscore.findWhere)(_projects, { id: _selected });
-		},
-
-		getProjectTitle: function getProjectTitle() {
-			var project = this.getProject();
-			return project ? project.title : null;
-		}
-	});
-
-	ProjectStore.dispatchToken = _dispatcherAppDispatcher2['default'].register(function (action) {
-
-		switch (action.type) {
-
-			case _constantsTrackerConstants2['default'].RECEIVE_PROJECTS:
-				_projects = action.data;
-				ProjectStore.emitChange();
-				break;
-
-			case _constantsTrackerConstants2['default'].SET_PROJECT:
-				_selected = parseInt(action.id);
-				//console.log('project', _selected);
-				ProjectStore.emitChange();
-
-				(0, _actionsTrackerActions.getProjectDetails)(_selected);
-				(0, _actionsTrackerActions.getMilestones)(_selected);
-				break;
-
-			default:
-			//no op
-		}
-	});
-
-	exports['default'] = ProjectStore;
-	module.exports = exports['default'];
-
-/***/ },
-
-/***/ 176:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-		value: true
-	});
+	exports.saveTime = saveTime;
+	exports.startTimer = startTimer;
+	exports.stopTimer = stopTimer;
 	exports.getProjects = getProjects;
 	exports.setProject = setProject;
 	exports.getProjectDetails = getProjectDetails;
@@ -1103,22 +747,105 @@ webpackJsonp([0],{
 	exports.getTaskTypes = getTaskTypes;
 	exports.setTaskType = setTaskType;
 	exports.setTaskDescription = setTaskDescription;
-	exports.startTimer = startTimer;
-	exports.stopTimer = stopTimer;
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _underscore = __webpack_require__(7);
+	var _underscore = __webpack_require__(6);
 
-	var _utilsUtils = __webpack_require__(16);
+	var _utilsUtils = __webpack_require__(17);
 
-	var _dispatcherAppDispatcher = __webpack_require__(9);
+	var _dispatcherAppDispatcher = __webpack_require__(12);
 
 	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
 
-	var _constantsTrackerConstants = __webpack_require__(174);
+	var _constantsTrackerConstants = __webpack_require__(10);
 
 	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
+
+	var _storesCustomerStore = __webpack_require__(22);
+
+	var _storesCustomerStore2 = _interopRequireDefault(_storesCustomerStore);
+
+	var _storesProjectStore = __webpack_require__(16);
+
+	var _storesProjectStore2 = _interopRequireDefault(_storesProjectStore);
+
+	var _storesMilestoneStore = __webpack_require__(9);
+
+	var _storesMilestoneStore2 = _interopRequireDefault(_storesMilestoneStore);
+
+	var _storesMilestoneTaskStore = __webpack_require__(23);
+
+	var _storesMilestoneTaskStore2 = _interopRequireDefault(_storesMilestoneTaskStore);
+
+	var _storesTaskTypeStore = __webpack_require__(24);
+
+	var _storesTaskTypeStore2 = _interopRequireDefault(_storesTaskTypeStore);
+
+	var _storesSettingsStore = __webpack_require__(19);
+
+	var _storesSettingsStore2 = _interopRequireDefault(_storesSettingsStore);
+
+	var _storesTaskStore = __webpack_require__(25);
+
+	var _storesTaskStore2 = _interopRequireDefault(_storesTaskStore);
+
+	var _storesTimeStore = __webpack_require__(3);
+
+	var _storesTimeStore2 = _interopRequireDefault(_storesTimeStore);
+
+	function saveTime(start, end) {
+
+		var forType = _storesCustomerStore2['default'].getContactOrCompany();
+		var forId = _storesCustomerStore2['default'].getContactOrCompanyId();
+		if (_storesMilestoneStore2['default'].getMilestoneId()) {
+			forType = 'project_milestone';
+			forId = _storesMilestoneStore2['default'].getMilestoneId();
+		}
+
+		var relatedType = 'none';
+		var relatedId;
+		if (_storesMilestoneTaskStore2['default'].getMilestoneTaskId()) {
+			relatedType = 'task';
+			relatedId = _storesMilestoneTaskStore2['default'].getMilestoneTaskId();
+		}
+
+		(0, _utilsUtils.apiRequest)({
+			url: '/addTimetracking.php',
+			data: {
+				description: _storesMilestoneTaskStore2['default'].getMilestoneTaskDescription() || _storesTaskStore2['default'].getTaskDescription() || 'No task description',
+				start_date: start,
+				end_date: end,
+				worker_id: _storesSettingsStore2['default'].getUserId(),
+				task_type_id: _storesTaskTypeStore2['default'].getTaskTypeId(),
+
+				'for': forType,
+				for_id: forId,
+				invoiceable: 1,
+				related_object_type: relatedType,
+				related_object_id: relatedId
+			},
+			success: function success(json) {
+				console.log(json);
+			}
+		});
+	}
+
+	function startTimer(timestamp) {
+		if (_storesProjectStore2['default'].getProjectId()) {
+			_dispatcherAppDispatcher2['default'].dispatch({
+				type: _constantsTrackerConstants2['default'].START_TIMER,
+				timestamp: timestamp
+			});
+		}
+	}
+
+	function stopTimer(timestamp) {
+		_dispatcherAppDispatcher2['default'].dispatch({
+			type: _constantsTrackerConstants2['default'].STOP_TIMER,
+			timestamp: timestamp
+		});
+	}
 
 	function getProjects() {
 		(0, _utilsUtils.apiRequest)({
@@ -1253,23 +980,9 @@ webpackJsonp([0],{
 		});
 	}
 
-	function startTimer(timestamp) {
-		_dispatcherAppDispatcher2['default'].dispatch({
-			type: _constantsTrackerConstants2['default'].START_TIMER,
-			timestamp: timestamp
-		});
-	}
-
-	function stopTimer(timestamp) {
-		_dispatcherAppDispatcher2['default'].dispatch({
-			type: _constantsTrackerConstants2['default'].STOP_TIMER,
-			timestamp: timestamp
-		});
-	}
-
 /***/ },
 
-/***/ 177:
+/***/ 9:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1280,21 +993,21 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _underscore = __webpack_require__(7);
+	var _underscore = __webpack_require__(6);
 
-	var _utilsStoreUtils = __webpack_require__(5);
+	var _utilsStoreUtils = __webpack_require__(4);
 
-	var _dispatcherAppDispatcher = __webpack_require__(9);
+	var _dispatcherAppDispatcher = __webpack_require__(12);
 
 	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
 
-	var _constantsTrackerConstants = __webpack_require__(174);
+	var _constantsTrackerConstants = __webpack_require__(10);
 
 	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
 
-	var _actionsTrackerActions = __webpack_require__(176);
+	var _actionsTrackerActions = __webpack_require__(8);
 
-	var _storesProjectStore = __webpack_require__(175);
+	var _storesProjectStore = __webpack_require__(16);
 
 	var _storesProjectStore2 = _interopRequireDefault(_storesProjectStore);
 
@@ -1359,7 +1072,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 178:
+/***/ 10:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1370,23 +1083,437 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _underscore = __webpack_require__(7);
+	var _keymirror = __webpack_require__(11);
 
-	var _utilsStoreUtils = __webpack_require__(5);
+	var _keymirror2 = _interopRequireDefault(_keymirror);
 
-	var _dispatcherAppDispatcher = __webpack_require__(9);
+	exports['default'] = (0, _keymirror2['default'])({
+		RECEIVE_PROJECTS: null,
+		RECEIVE_MILESTONES: null,
+		RECEIVE_MILESTONE_TASKS: null,
+		RECEIVE_TASK_TYPES: null,
+		SET_PROJECT: null,
+		SET_MILESTONE: null,
+		SET_MILESTONE_TASK: null,
+		SET_CONTACT_OR_COMPANY: null,
+		SET_TASK_TYPE: null,
+		SET_TASK_DESCRIPTION: null,
+		START_TIMER: null,
+		STOP_TIMER: null
+	});
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 12:
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+	 * Copyright (c) 2014-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * AppDispatcher
+	 *
+	 * A singleton that operates as the central hub for application updates.
+	 */
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var _flux = __webpack_require__(13);
+
+	exports['default'] = new _flux.Dispatcher();
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 16:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _underscore = __webpack_require__(6);
+
+	var _utilsStoreUtils = __webpack_require__(4);
+
+	var _dispatcherAppDispatcher = __webpack_require__(12);
 
 	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
 
-	var _constantsTrackerConstants = __webpack_require__(174);
+	var _constantsTrackerConstants = __webpack_require__(10);
 
 	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
 
-	var _storesProjectStore = __webpack_require__(175);
+	var _actionsTrackerActions = __webpack_require__(8);
+
+	var _projects = [];
+	var _selected;
+
+	var ProjectStore = (0, _utilsStoreUtils.createStore)({
+
+		getProjects: function getProjects() {
+			return _projects;
+		},
+
+		getProjectId: function getProjectId() {
+			return _selected;
+		},
+
+		getProject: function getProject() {
+			return (0, _underscore.findWhere)(_projects, { id: _selected });
+		},
+
+		getProjectTitle: function getProjectTitle() {
+			var project = this.getProject();
+			return project ? project.title : null;
+		}
+	});
+
+	ProjectStore.dispatchToken = _dispatcherAppDispatcher2['default'].register(function (action) {
+
+		switch (action.type) {
+
+			case _constantsTrackerConstants2['default'].RECEIVE_PROJECTS:
+				_projects = action.data;
+				ProjectStore.emitChange();
+				break;
+
+			case _constantsTrackerConstants2['default'].SET_PROJECT:
+				_selected = parseInt(action.id);
+				//console.log('project', _selected);
+				ProjectStore.emitChange();
+
+				(0, _actionsTrackerActions.getProjectDetails)(_selected);
+				(0, _actionsTrackerActions.getMilestones)(_selected);
+				break;
+
+			default:
+			//no op
+		}
+	});
+
+	exports['default'] = ProjectStore;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 17:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+	exports.apiRequest = apiRequest;
+	exports.rekey = rekey;
+	exports.htmlEntities = htmlEntities;
+	exports.formatTime = formatTime;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _jquery = __webpack_require__(18);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _storesSettingsStore = __webpack_require__(19);
+
+	var _storesSettingsStore2 = _interopRequireDefault(_storesSettingsStore);
+
+	function apiRequest(options) {
+
+		var defaults = {
+			type: 'POST',
+			dataType: 'json',
+			data: {},
+			error: function error(xhr, status, err) {
+				console.error(options.url, status, err.toString());
+			}
+		};
+
+		var appSettings = _storesSettingsStore2['default'].getSettings();
+		if (appSettings) {
+			defaults.data = {
+				api_group: appSettings.groupId,
+				api_secret: appSettings.groupSecret
+			};
+		}
+
+		var settings = _jquery2['default'].extend(true, defaults, options);
+		if (settings.data.api_group && settings.data.api_secret) {
+			_jquery2['default'].ajax('https://www.teamleader.be/api' + options.url, settings);
+		}
+	}
+
+	function rekey(arr, lookup) {
+		for (var i = 0; i < arr.length; i++) {
+			var obj = arr[i];
+			for (var fromKey in lookup) {
+				var toKey = lookup[fromKey];
+				var value = obj[fromKey];
+				if (value) {
+					obj[toKey] = value;
+					delete obj[fromKey];
+				}
+			}
+		}
+		return arr;
+	}
+
+	function htmlEntities(string) {
+		return string.replace(/&amp;/g, '&').replace(/&#039;/g, "'");
+	}
+
+	function formatTime(secs) {
+		var h = parseInt(secs / 3600, 10);
+		var m = parseInt(secs % 3600 / 60, 10);
+		var s = parseInt(secs % 3600 % 60, 10);
+		return (h === 0 ? '' : h < 10 ? '0' + h + ':' : h + ':') + (m < 10 ? '0' + m : '' + m) + ':' + (s < 10 ? '0' + s : '' + s);
+	}
+
+/***/ },
+
+/***/ 19:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _jquery = __webpack_require__(18);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _utilsStoreUtils = __webpack_require__(4);
+
+	var _dispatcherAppDispatcher = __webpack_require__(12);
+
+	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
+
+	var _constantsSettingsConstants = __webpack_require__(20);
+
+	var _constantsSettingsConstants2 = _interopRequireDefault(_constantsSettingsConstants);
+
+	var _actionsSettingsActions = __webpack_require__(21);
+
+	var _users = [];
+
+	function _setSettings(data) {
+		var settings = _jquery2['default'].extend({}, SettingsStore.getSettings(), data);
+		localStorage.setItem('settings', JSON.stringify(settings));
+	}
+
+	var SettingsStore = (0, _utilsStoreUtils.createStore)({
+
+		getSettings: function getSettings() {
+			return JSON.parse(localStorage.getItem('settings')) || {};
+		},
+
+		getUserId: function getUserId() {
+			return parseInt(this.getSettings().userId);
+		},
+
+		isLoggedIn: function isLoggedIn() {
+			return this.getUserId() > 0;
+		},
+
+		getUsers: function getUsers() {
+			return _users;
+		}
+	});
+
+	SettingsStore.dispatchToken = _dispatcherAppDispatcher2['default'].register(function (action) {
+
+		switch (action.type) {
+
+			case _constantsSettingsConstants2['default'].SAVE_SETTINGS:
+				_setSettings(action.data);
+				SettingsStore.emitChange();
+				(0, _actionsSettingsActions.getUsers)();
+				break;
+
+			case _constantsSettingsConstants2['default'].RECEIVE_USERS:
+				_users = action.data;
+				SettingsStore.emitChange();
+				break;
+
+			default:
+			//no op
+		}
+	});
+
+	exports['default'] = SettingsStore;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 20:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _keymirror = __webpack_require__(11);
+
+	var _keymirror2 = _interopRequireDefault(_keymirror);
+
+	exports['default'] = (0, _keymirror2['default'])({
+		SAVE_SETTINGS: null,
+		RECEIVE_USERS: null
+	});
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 21:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+	exports.saveSettings = saveSettings;
+	exports.getUsers = getUsers;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _utilsUtils = __webpack_require__(17);
+
+	var _dispatcherAppDispatcher = __webpack_require__(12);
+
+	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
+
+	var _constantsSettingsConstants = __webpack_require__(20);
+
+	var _constantsSettingsConstants2 = _interopRequireDefault(_constantsSettingsConstants);
+
+	function saveSettings(data) {
+		_dispatcherAppDispatcher2['default'].dispatch({
+			type: _constantsSettingsConstants2['default'].SAVE_SETTINGS,
+			data: data
+		});
+	}
+
+	function getUsers() {
+		(0, _utilsUtils.apiRequest)({
+			url: '/getUsers.php',
+			success: function success(data) {
+				_dispatcherAppDispatcher2['default'].dispatch({
+					type: _constantsSettingsConstants2['default'].RECEIVE_USERS,
+					data: data
+				});
+			}
+		});
+	}
+
+/***/ },
+
+/***/ 22:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _utilsStoreUtils = __webpack_require__(4);
+
+	var _dispatcherAppDispatcher = __webpack_require__(12);
+
+	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
+
+	var _constantsTrackerConstants = __webpack_require__(10);
+
+	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
+
+	var _contactOrCompany;
+	var _contactOrCompanyId;
+
+	var CustomerStore = (0, _utilsStoreUtils.createStore)({
+
+		getContactOrCompany: function getContactOrCompany() {
+			return _contactOrCompany;
+		},
+
+		getContactOrCompanyId: function getContactOrCompanyId() {
+			return _contactOrCompanyId;
+		}
+	});
+
+	CustomerStore.dispatchToken = _dispatcherAppDispatcher2['default'].register(function (action) {
+
+		switch (action.type) {
+
+			case _constantsTrackerConstants2['default'].SET_CONTACT_OR_COMPANY:
+				_contactOrCompany = action.option;
+				_contactOrCompanyId = action.id;
+				CustomerStore.emitChange();
+				break;
+
+			default:
+			//no op
+		}
+	});
+
+	exports['default'] = CustomerStore;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 23:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _underscore = __webpack_require__(6);
+
+	var _utilsStoreUtils = __webpack_require__(4);
+
+	var _dispatcherAppDispatcher = __webpack_require__(12);
+
+	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
+
+	var _constantsTrackerConstants = __webpack_require__(10);
+
+	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
+
+	var _storesProjectStore = __webpack_require__(16);
 
 	var _storesProjectStore2 = _interopRequireDefault(_storesProjectStore);
 
-	var _storesMilestoneStore = __webpack_require__(177);
+	var _storesMilestoneStore = __webpack_require__(9);
 
 	var _storesMilestoneStore2 = _interopRequireDefault(_storesMilestoneStore);
 
@@ -1452,7 +1579,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 179:
+/***/ 24:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1463,19 +1590,19 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _underscore = __webpack_require__(7);
+	var _underscore = __webpack_require__(6);
 
-	var _utilsStoreUtils = __webpack_require__(5);
+	var _utilsStoreUtils = __webpack_require__(4);
 
-	var _dispatcherAppDispatcher = __webpack_require__(9);
+	var _dispatcherAppDispatcher = __webpack_require__(12);
 
 	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
 
-	var _constantsTrackerConstants = __webpack_require__(174);
+	var _constantsTrackerConstants = __webpack_require__(10);
 
 	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
 
-	var _storesMilestoneTaskStore = __webpack_require__(178);
+	var _storesMilestoneTaskStore = __webpack_require__(23);
 
 	var _storesMilestoneTaskStore2 = _interopRequireDefault(_storesMilestoneTaskStore);
 
@@ -1544,7 +1671,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 180:
+/***/ 25:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1555,17 +1682,17 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _utilsStoreUtils = __webpack_require__(5);
+	var _utilsStoreUtils = __webpack_require__(4);
 
-	var _dispatcherAppDispatcher = __webpack_require__(9);
+	var _dispatcherAppDispatcher = __webpack_require__(12);
 
 	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
 
-	var _constantsTrackerConstants = __webpack_require__(174);
+	var _constantsTrackerConstants = __webpack_require__(10);
 
 	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
 
-	var _storesMilestoneTaskStore = __webpack_require__(178);
+	var _storesMilestoneTaskStore = __webpack_require__(23);
 
 	var _storesMilestoneTaskStore2 = _interopRequireDefault(_storesMilestoneTaskStore);
 
@@ -1598,87 +1725,6 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 181:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-		value: true
-	});
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _utilsStoreUtils = __webpack_require__(5);
-
-	var _dispatcherAppDispatcher = __webpack_require__(9);
-
-	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
-
-	var _constantsTrackerConstants = __webpack_require__(174);
-
-	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
-
-	var _isTiming = false;
-	var _interval;
-	var _start;
-	var _elapsed = 0;
-
-	function _tick() {
-		var now = Math.floor(Date.now() / 1000); //in seconds
-		_elapsed = now - _start;
-
-		TimeStore.emitChange();
-	}
-
-	var TimeStore = (0, _utilsStoreUtils.createStore)({
-
-		isTiming: function isTiming() {
-			return _isTiming;
-		},
-
-		getSecondsElapsed: function getSecondsElapsed() {
-			return _elapsed;
-		}
-
-	});
-
-	TimeStore.dispatchToken = _dispatcherAppDispatcher2['default'].register(function (action) {
-
-		switch (action.type) {
-
-			case _constantsTrackerConstants2['default'].START_TIMER:
-				_start = action.timestamp;
-				_isTiming = true;
-
-				clearInterval(_interval);
-				_interval = setInterval(_tick, 1000);
-
-				TimeStore.emitChange();
-				break;
-
-			case _constantsTrackerConstants2['default'].STOP_TIMER:
-				var end = action.timestamp;
-
-				//todo: save time tracking
-
-				_elapsed = 0;
-				_isTiming = false;
-				clearInterval(_interval);
-
-				TimeStore.emitChange();
-				break;
-
-			default:
-			//no op
-		}
-	});
-
-	exports['default'] = TimeStore;
-	module.exports = exports['default'];
-
-/***/ },
-
 /***/ 182:
 /***/ function(module, exports, __webpack_require__) {
 
@@ -1690,15 +1736,15 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _react = __webpack_require__(17);
+	var _react = __webpack_require__(26);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _underscore = __webpack_require__(7);
+	var _underscore = __webpack_require__(6);
 
-	var _actionsTrackerActions = __webpack_require__(176);
+	var _actionsTrackerActions = __webpack_require__(8);
 
-	var _storesProjectStore = __webpack_require__(175);
+	var _storesProjectStore = __webpack_require__(16);
 
 	var _storesProjectStore2 = _interopRequireDefault(_storesProjectStore);
 
@@ -1788,11 +1834,11 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _react = __webpack_require__(17);
+	var _react = __webpack_require__(26);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _utilsUtils = __webpack_require__(16);
+	var _utilsUtils = __webpack_require__(17);
 
 	var SelectInput = _react2['default'].createClass({
 		displayName: 'SelectInput',
@@ -1843,17 +1889,17 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _react = __webpack_require__(17);
+	var _react = __webpack_require__(26);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _actionsTrackerActions = __webpack_require__(176);
+	var _actionsTrackerActions = __webpack_require__(8);
 
-	var _storesProjectStore = __webpack_require__(175);
+	var _storesProjectStore = __webpack_require__(16);
 
 	var _storesProjectStore2 = _interopRequireDefault(_storesProjectStore);
 
-	var _storesMilestoneStore = __webpack_require__(177);
+	var _storesMilestoneStore = __webpack_require__(9);
 
 	var _storesMilestoneStore2 = _interopRequireDefault(_storesMilestoneStore);
 
@@ -1936,23 +1982,23 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _react = __webpack_require__(17);
+	var _react = __webpack_require__(26);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _underscore = __webpack_require__(7);
+	var _underscore = __webpack_require__(6);
 
-	var _actionsTrackerActions = __webpack_require__(176);
+	var _actionsTrackerActions = __webpack_require__(8);
 
-	var _storesMilestoneStore = __webpack_require__(177);
+	var _storesMilestoneStore = __webpack_require__(9);
 
 	var _storesMilestoneStore2 = _interopRequireDefault(_storesMilestoneStore);
 
-	var _storesMilestoneTaskStore = __webpack_require__(178);
+	var _storesMilestoneTaskStore = __webpack_require__(23);
 
 	var _storesMilestoneTaskStore2 = _interopRequireDefault(_storesMilestoneTaskStore);
 
-	var _storesTaskStore = __webpack_require__(180);
+	var _storesTaskStore = __webpack_require__(25);
 
 	var _storesTaskStore2 = _interopRequireDefault(_storesTaskStore);
 
@@ -2087,13 +2133,13 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _react = __webpack_require__(17);
+	var _react = __webpack_require__(26);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _actionsTrackerActions = __webpack_require__(176);
+	var _actionsTrackerActions = __webpack_require__(8);
 
-	var _storesTaskTypeStore = __webpack_require__(179);
+	var _storesTaskTypeStore = __webpack_require__(24);
 
 	var _storesTaskTypeStore2 = _interopRequireDefault(_storesTaskTypeStore);
 
@@ -2412,19 +2458,19 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _jquery = __webpack_require__(4);
+	var _jquery = __webpack_require__(18);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _react = __webpack_require__(17);
+	var _react = __webpack_require__(26);
 
 	var _react2 = _interopRequireDefault(_react);
 
 	var _reactRouter = __webpack_require__(187);
 
-	var _events = __webpack_require__(8);
+	var _events = __webpack_require__(7);
 
-	var _flux = __webpack_require__(10);
+	var _flux = __webpack_require__(13);
 
 	var gui = nodeRequire('nw.gui');
 
@@ -2503,21 +2549,21 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _jquery = __webpack_require__(4);
+	var _jquery = __webpack_require__(18);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _react = __webpack_require__(17);
+	var _react = __webpack_require__(26);
 
 	var _react2 = _interopRequireDefault(_react);
 
 	var _reactRouter = __webpack_require__(187);
 
-	var _storesSettingsStore = __webpack_require__(3);
+	var _storesSettingsStore = __webpack_require__(19);
 
 	var _storesSettingsStore2 = _interopRequireDefault(_storesSettingsStore);
 
-	var _actionsSettingsActions = __webpack_require__(15);
+	var _actionsSettingsActions = __webpack_require__(21);
 
 	var _TextInputReact = __webpack_require__(218);
 
@@ -2667,7 +2713,7 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-	var _react = __webpack_require__(17);
+	var _react = __webpack_require__(26);
 
 	var _react2 = _interopRequireDefault(_react);
 
@@ -2713,9 +2759,9 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _underscore = __webpack_require__(7);
+	var _underscore = __webpack_require__(6);
 
-	var _react = __webpack_require__(17);
+	var _react = __webpack_require__(26);
 
 	var _react2 = _interopRequireDefault(_react);
 
@@ -2723,11 +2769,11 @@ webpackJsonp([0],{
 
 	var _reactRouter2 = _interopRequireDefault(_reactRouter);
 
-	var _storesSettingsStore = __webpack_require__(3);
+	var _storesSettingsStore = __webpack_require__(19);
 
 	var _storesSettingsStore2 = _interopRequireDefault(_storesSettingsStore);
 
-	var _actionsSettingsActions = __webpack_require__(15);
+	var _actionsSettingsActions = __webpack_require__(21);
 
 	var _SelectInputReact = __webpack_require__(183);
 
@@ -2808,21 +2854,21 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _jquery = __webpack_require__(4);
+	var _jquery = __webpack_require__(18);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _react = __webpack_require__(17);
+	var _react = __webpack_require__(26);
 
 	var _react2 = _interopRequireDefault(_react);
 
 	var _reactRouter = __webpack_require__(187);
 
-	var _storesSettingsStore = __webpack_require__(3);
+	var _storesSettingsStore = __webpack_require__(19);
 
 	var _storesSettingsStore2 = _interopRequireDefault(_storesSettingsStore);
 
-	var _actionsSettingsActions = __webpack_require__(15);
+	var _actionsSettingsActions = __webpack_require__(21);
 
 	var Settings = _react2['default'].createClass({
 	  displayName: 'Settings',
@@ -2897,7 +2943,7 @@ webpackJsonp([0],{
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-	var _jquery = __webpack_require__(4);
+	var _jquery = __webpack_require__(18);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 

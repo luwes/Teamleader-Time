@@ -2,12 +2,8 @@
 import React from 'react';
 import { formatTime } from '../utils/Utils';
 
-import CustomerStore from '../stores/CustomerStore';
 import ProjectStore from '../stores/ProjectStore';
-import MilestoneStore from '../stores/MilestoneStore';
 import MilestoneTaskStore from '../stores/MilestoneTaskStore';
-import TaskTypeStore from '../stores/TaskTypeStore';
-import SettingsStore from '../stores/SettingsStore';
 import TaskStore from '../stores/TaskStore';
 import TimeStore from '../stores/TimeStore';
 
@@ -19,18 +15,6 @@ import { startTimer, stopTimer } from '../actions/TrackerActions';
 
 
 var Tracker = React.createClass({
-
-		// return {
-		// 	project: ProjectStore.getProjectId(),
-		// 	milestone: MilestoneStore.getMilestoneId(),
-		// 	milestoneTask: MilestoneTaskStore.getMilestoneTaskId(),
-		// 	contactOrCompany: CustomerStore.getContactOrCompany(),
-		// 	contactOrCompanyId: CustomerStore.getContactOrCompanyId(),
-		// 	taskType: TaskTypeStore.getTaskTypeId(),
-		// 	userId: SettingsStore.getUserId(),
-		// 	description: MilestoneTaskStore.getMilestoneTaskDescription() || 
-		// 								TaskStore.getTaskDescription()
-		// }
 
 	getTrackerState: function() {
 		return {
@@ -82,7 +66,8 @@ var Tracker = React.createClass({
 								{ProjectStore.getProjectTitle() || 'Untitled project'}
 							</div>
 							<div className="tracker-task">
-								{MilestoneTaskStore.getMilestoneTaskDescription() || TaskStore.getTaskDescription() || 'No task description'}
+								{MilestoneTaskStore.getMilestoneTaskDescription() || 
+									TaskStore.getTaskDescription() || 'No task description'}
 							</div>
 						</div>
 

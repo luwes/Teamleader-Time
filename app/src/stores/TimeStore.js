@@ -1,5 +1,6 @@
 
 import { createStore } from '../utils/StoreUtils';
+import { saveTime } from '../actions/TrackerActions';
 
 import AppDispatcher from '../dispatcher/AppDispatcher';
 import TrackerConstants from '../constants/TrackerConstants';
@@ -46,7 +47,7 @@ TimeStore.dispatchToken = AppDispatcher.register(action => {
 		case TrackerConstants.STOP_TIMER:
 			var end = action.timestamp;
 
-			//todo: save time tracking
+			saveTime(_start, end);
 
 			_elapsed = 0;
 			_isTiming = false;
