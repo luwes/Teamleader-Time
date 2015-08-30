@@ -5850,7 +5850,7 @@ body {
   .app header {
     position: relative;
     margin-bottom: 16px;
-    padding: 10px 20px 10px;
+    padding: 10px 18px 10px;
     border-bottom: 2px solid #1486dd; }
     .app header:before {
       position: absolute;
@@ -5862,11 +5862,9 @@ body {
       border-width: 0 10px 10px 10px;
       border-style: solid;
       border-color: transparent transparent #ffffff transparent; }
-    .app header .headerext {
-      height: 23px;
-      background-image: url("../images/extension_header.png");
-      background-repeat: no-repeat;
-      background-position: -3px 0px; }
+    .app header .logo {
+      display: inline-block;
+      margin-top: 5px; }
     .app header .timesheets-link {
       font-size: 11px;
       font-weight: bold;

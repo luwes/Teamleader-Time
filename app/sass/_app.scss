@@ -11,7 +11,7 @@
 	header {
 		position: relative;
 		margin-bottom: 16px;
-		padding: 10px 20px 10px;
+		padding: 10px 18px 10px;
 		border-bottom: 2px solid #1486dd;
 
 		&:before {
@@ -26,11 +26,9 @@
 			border-color: transparent transparent #ffffff transparent;
 		}
 
-		.headerext {
-			height: 23px;
-			background-image: url('../images/extension_header.png');
-			background-repeat: no-repeat;
-			background-position: -3px 0px;
+		.logo {
+			display: inline-block;
+			margin-top: 5px;
 		}
 
 		.timesheets-link {
