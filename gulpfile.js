@@ -46,6 +46,7 @@ gulp.task("js", function(callback) {
 var NwBuilder = require('nw-builder');
 
 var nwOptions = {
+	appName: 'Teamleader Time',
 	appDir: './app',
 	files: './app/**/**', // use the glob format
 	platforms: [ 'osx' ],
