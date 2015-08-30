@@ -2479,6 +2479,28 @@ webpackJsonp([0],{
 
 	  mixins: [_reactRouter.Navigation],
 
+	  getInitialState: function getInitialState() {
+	    this.menu = new gui.Menu();
+	    this.menu.append(new gui.MenuItem({ label: 'Preferences...', click: this.preferences }));
+	    this.menu.append(new gui.MenuItem({ type: 'separator' }));
+	    this.menu.append(new gui.MenuItem({ label: 'Quit Teamleader', click: this.quit }));
+
+	    return null;
+	  },
+
+	  home: function home(e) {
+	    e.preventDefault();
+	    this.transitionTo('/');
+	  },
+
+	  preferences: function preferences() {
+	    this.transitionTo('/settings');
+	  },
+
+	  quit: function quit() {
+	    gui.App.quit();
+	  },
+
 	  openTimesheets: function openTimesheets(e) {
 	    e.preventDefault();
 	    gui.Shell.openExternal(e.currentTarget.href);
@@ -2490,6 +2512,13 @@ webpackJsonp([0],{
 	      e.preventDefault();
 	      this.transitionTo('/');
 	    }
+	  },
+
+	  toggleMenu: function toggleMenu(e) {
+	    e.preventDefault();
+	    var el = e.currentTarget;
+	    var rect = el.getBoundingClientRect();
+	    this.menu.popup(parseInt(rect.left + rect.width), parseInt(rect.top + rect.height));
 	  },
 
 	  render: function render() {
@@ -2505,7 +2534,11 @@ webpackJsonp([0],{
 	          _react2['default'].createElement(
 	            'div',
 	            { className: "col-xs-7" },
-	            _react2['default'].createElement('div', { className: "headerext" })
+	            _react2['default'].createElement(
+	              'a',
+	              { className: "logo", onClick: this.home, href: "#" },
+	              _react2['default'].createElement('img', { src: "images/teamleader-logo.svg", alt: "" })
+	            )
 	          ),
 	          _react2['default'].createElement(
 	            'div',
@@ -2516,8 +2549,8 @@ webpackJsonp([0],{
 	              'My timesheets'
 	            ),
 	            _react2['default'].createElement(
-	              _reactRouter.Link,
-	              { to: "/settings", className: "settings-link", activeClassName: "active", onClick: this.toggleBack },
+	              'a',
+	              { className: "settings-link", onClick: this.toggleMenu, href: "#" },
 	              _react2['default'].createElement('i', { className: "fa fa-cog" })
 	            )
 	          )
@@ -2638,6 +2671,17 @@ webpackJsonp([0],{
 			return _react2['default'].createElement(
 				'div',
 				{ className: "login" },
+				_react2['default'].createElement(
+					'div',
+					{ className: "alert alert-info" },
+					'If you already have a Teamleader account and you are an admin, you can find your API key under ',
+					_react2['default'].createElement(
+						'strong',
+						null,
+						'Settings > API & Webhooks'
+					),
+					'. API access is available for every Teamleader account.'
+				),
 				_react2['default'].createElement(
 					'form',
 					{ className: "form-horizontal", onSubmit: this.handleSubmit },

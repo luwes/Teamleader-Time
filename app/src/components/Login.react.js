@@ -69,6 +69,9 @@ var Login = React.createClass({
 
 		return (
 			<div className="login">
+				<div className="alert alert-info">
+					If you already have a Teamleader account and you are an admin, you can find your API key under <strong>Settings > API &amp; Webhooks</strong>. API access is available for every Teamleader account.
+				</div>
 				<form className="form-horizontal" onSubmit={this.handleSubmit}>
 				  <div className="form-group">
 				    <label className="col-xs-3 control-label" htmlFor="group-id">Group ID</label>
