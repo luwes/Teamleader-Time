@@ -1,5 +1,6 @@
 {
   "name": "teamleader-time",
+  "description": "Time tracker app for Teamleader CRM",
   "version": "0.0.3",
   "main": "index.html",
   "window": {
