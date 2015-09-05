@@ -8,22 +8,23 @@ var window = gui.Window.get();
 var isVisible = false;
 var height = 0;
 var width = 0;
+var req;
 
 function _toggle(e) {
-	isVisible ? window.hide() : _show.apply(this, [e.x, e.y]);
-	isVisible = !isVisible;
+	isVisible ? _hide() : _show(e.x, e.y);
+}
+
+function _hide() {
+	isVisible = false;
+	window.hide();
 }
 
 function _show(x, y) {
+	isVisible = true;
   window.moveTo(x - ($('.app').width() / 2) - 6, y);
-  _fitWindowToContent();
+  _resizeLoop();
   window.show();
   window.focus();
-}
-
-function _onWindowBlur() {
-	window.hide();
-	isVisible = false;
 }
 
 function _fitWindowToContent() {
@@ -37,6 +38,13 @@ function _fitWindowToContent() {
 	}
 }
 
+function _resizeLoop() {
+	_fitWindowToContent();
+	if (isVisible) {
+		req = requestAnimationFrame(_resizeLoop);
+	}
+}
+
 export default class Panel {
 
 	constructor(App) {
@@ -44,13 +52,8 @@ export default class Panel {
     if (App.devMode) {
     	window.showDevTools();
     } else {
-   		window.on('blur', _onWindowBlur);
+   		window.on('blur', _hide);
    	}
-
-		(function animloop() {
-			requestAnimationFrame(animloop);
-			_fitWindowToContent();
-		})();
 	}
 
 	toggle(e) {

@@ -72,22 +72,23 @@ webpackJsonp([0],{
 	var isVisible = false;
 	var height = 0;
 	var width = 0;
+	var req;
 
 	function _toggle(e) {
-		isVisible ? window.hide() : _show.apply(this, [e.x, e.y]);
-		isVisible = !isVisible;
+		isVisible ? _hide() : _show(e.x, e.y);
+	}
+
+	function _hide() {
+		isVisible = false;
+		window.hide();
 	}
 
 	function _show(x, y) {
+		isVisible = true;
 		window.moveTo(x - (0, _jquery2['default'])('.app').width() / 2 - 6, y);
-		_fitWindowToContent();
+		_resizeLoop();
 		window.show();
 		window.focus();
-	}
-
-	function _onWindowBlur() {
-		window.hide();
-		isVisible = false;
 	}
 
 	function _fitWindowToContent() {
@@ -101,6 +102,13 @@ webpackJsonp([0],{
 		}
 	}
 
+	function _resizeLoop() {
+		_fitWindowToContent();
+		if (isVisible) {
+			req = requestAnimationFrame(_resizeLoop);
+		}
+	}
+
 	var Panel = (function () {
 		function Panel(App) {
 			_classCallCheck(this, Panel);
@@ -108,13 +116,8 @@ webpackJsonp([0],{
 			if (App.devMode) {
 				window.showDevTools();
 			} else {
-				window.on('blur', _onWindowBlur);
+				window.on('blur', _hide);
 			}
-
-			(function animloop() {
-				requestAnimationFrame(animloop);
-				_fitWindowToContent();
-			})();
 		}
 
 		_createClass(Panel, [{
