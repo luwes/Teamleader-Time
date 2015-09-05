@@ -25,7 +25,7 @@ export function saveTime(start, end) {
 
 	var relatedType = 'none';
 	var relatedId;
-	if (MilestoneTaskStore.getMilestoneTaskId()) {
+	if (MilestoneTaskStore.getMilestoneTaskId() > 0) {
 		relatedType = 'task';
 		relatedId = MilestoneTaskStore.getMilestoneTaskId();
 	}

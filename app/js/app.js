@@ -805,7 +805,7 @@ webpackJsonp([0],{
 
 		var relatedType = 'none';
 		var relatedId;
-		if (_storesMilestoneTaskStore2['default'].getMilestoneTaskId()) {
+		if (_storesMilestoneTaskStore2['default'].getMilestoneTaskId() > 0) {
 			relatedType = 'task';
 			relatedId = _storesMilestoneTaskStore2['default'].getMilestoneTaskId();
 		}
