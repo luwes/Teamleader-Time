@@ -52,7 +52,7 @@ var nwOptions = {
 	platforms: [ 'osx' ],
 	buildDir: './dist',
 	buildType: 'versioned',
-	version: 'v0.12.2',
+	version: 'v0.12.3',
 	macIcns: './app/images/teamleader-time.icns'
 };
 
