@@ -13,17 +13,21 @@ webpackJsonp([0],{
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-	var _Routes = __webpack_require__(1);
+	var _Panel = __webpack_require__(1);
 
-	var _Routes2 = _interopRequireDefault(_Routes);
+	var _Panel2 = _interopRequireDefault(_Panel);
 
-	var _StatusBar = __webpack_require__(221);
+	var _StatusBar = __webpack_require__(3);
 
 	var _StatusBar2 = _interopRequireDefault(_StatusBar);
 
-	var _MenuBar = __webpack_require__(222);
+	var _MenuBar = __webpack_require__(4);
 
 	var _MenuBar2 = _interopRequireDefault(_MenuBar);
+
+	var _Routes = __webpack_require__(5);
+
+	var _Routes2 = _interopRequireDefault(_Routes);
 
 	var fs = nodeRequire('fs');
 
@@ -32,7 +36,8 @@ webpackJsonp([0],{
 
 		this.devMode = fs.existsSync('.dev') && fs.readFileSync('.dev', { encoding: 'utf8' }) === '1';
 
-		this.statusBar = new _StatusBar2['default'](this);
+		this.panel = new _Panel2['default'](this);
+		this.statusBar = new _StatusBar2['default'](this.panel);
 		this.menuBar = new _MenuBar2['default']();
 		this.routes = new _Routes2['default']();
 	};
@@ -57,33 +62,178 @@ webpackJsonp([0],{
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-	var _react = __webpack_require__(26);
+	var _jquery = __webpack_require__(2);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var gui = nodeRequire('nw.gui');
+	var window = gui.Window.get();
+
+	var isVisible = false;
+	var height = 0;
+	var width = 0;
+
+	function _toggle(e) {
+		isVisible ? window.hide() : _show.apply(this, [e.x, e.y]);
+		isVisible = !isVisible;
+	}
+
+	function _show(x, y) {
+		window.moveTo(x - (0, _jquery2['default'])('.app').width() / 2 - 6, y);
+		_fitWindowToContent();
+		window.show();
+		window.focus();
+	}
+
+	function _onWindowBlur() {
+		window.hide();
+		isVisible = false;
+	}
+
+	function _fitWindowToContent() {
+		var hei = (0, _jquery2['default'])('.app').height() + 40;
+		var wid = (0, _jquery2['default'])('.app').width() + 40;
+
+		if (width != wid || height != hei) {
+			window.resizeTo(wid, hei);
+			width = wid;
+			height = hei;
+		}
+	}
+
+	var Panel = (function () {
+		function Panel(App) {
+			_classCallCheck(this, Panel);
+
+			if (App.devMode) {
+				window.showDevTools();
+			} else {
+				window.on('blur', _onWindowBlur);
+			}
+
+			(function animloop() {
+				requestAnimationFrame(animloop);
+				_fitWindowToContent();
+			})();
+		}
+
+		_createClass(Panel, [{
+			key: 'toggle',
+			value: function toggle(e) {
+				_toggle(e);
+			}
+		}]);
+
+		return Panel;
+	})();
+
+	exports['default'] = Panel;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 3:
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	var gui = nodeRequire('nw.gui');
+
+	var StatusBar = function StatusBar(panel) {
+	    _classCallCheck(this, StatusBar);
+
+	    this.tray = new gui.Tray({
+	        title: '',
+	        icon: 'images/icon@2x.png'
+	    });
+	    this.tray.on('click', panel.toggle);
+	};
+
+	exports['default'] = StatusBar;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 4:
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	var gui = nodeRequire('nw.gui');
+
+	var MenuBar = function MenuBar() {
+		_classCallCheck(this, MenuBar);
+
+		var mb = new gui.Menu({ type: 'menubar' });
+		try {
+			mb.createMacBuiltin('Teamleader Time', {
+				hideEdit: false
+			});
+			gui.Window.get().menu = mb;
+		} catch (ex) {
+			console.log(ex.message);
+		}
+	};
+
+	exports['default'] = MenuBar;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 5:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	var _react = __webpack_require__(29);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRouter = __webpack_require__(187);
+	var _reactRouter = __webpack_require__(190);
 
-	var _reactRouterLibHashHistory = __webpack_require__(214);
+	var _reactRouterLibHashHistory = __webpack_require__(217);
 
 	var _reactRouterLibHashHistory2 = _interopRequireDefault(_reactRouterLibHashHistory);
 
-	var _componentsTeamleaderTimeAppReact = __webpack_require__(216);
+	var _componentsTeamleaderTimeAppReact = __webpack_require__(219);
 
 	var _componentsTeamleaderTimeAppReact2 = _interopRequireDefault(_componentsTeamleaderTimeAppReact);
 
-	var _componentsTrackerReact = __webpack_require__(2);
+	var _componentsTrackerReact = __webpack_require__(6);
 
 	var _componentsTrackerReact2 = _interopRequireDefault(_componentsTrackerReact);
 
-	var _componentsLoginReact = __webpack_require__(217);
+	var _componentsLoginReact = __webpack_require__(220);
 
 	var _componentsLoginReact2 = _interopRequireDefault(_componentsLoginReact);
 
-	var _componentsSettingsReact = __webpack_require__(220);
+	var _componentsSettingsReact = __webpack_require__(223);
 
 	var _componentsSettingsReact2 = _interopRequireDefault(_componentsSettingsReact);
 
-	var _storesSettingsStore = __webpack_require__(19);
+	var _storesSettingsStore = __webpack_require__(22);
 
 	var _storesSettingsStore2 = _interopRequireDefault(_storesSettingsStore);
 
@@ -121,7 +271,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 2:
+/***/ 6:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -132,41 +282,41 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _react = __webpack_require__(26);
+	var _react = __webpack_require__(29);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _utilsUtils = __webpack_require__(17);
+	var _utilsUtils = __webpack_require__(21);
 
-	var _storesProjectStore = __webpack_require__(16);
+	var _storesProjectStore = __webpack_require__(20);
 
 	var _storesProjectStore2 = _interopRequireDefault(_storesProjectStore);
 
-	var _storesMilestoneTaskStore = __webpack_require__(23);
+	var _storesMilestoneTaskStore = __webpack_require__(26);
 
 	var _storesMilestoneTaskStore2 = _interopRequireDefault(_storesMilestoneTaskStore);
 
-	var _storesTaskStore = __webpack_require__(25);
+	var _storesTaskStore = __webpack_require__(28);
 
 	var _storesTaskStore2 = _interopRequireDefault(_storesTaskStore);
 
-	var _storesTimeStore = __webpack_require__(3);
+	var _storesTimeStore = __webpack_require__(7);
 
 	var _storesTimeStore2 = _interopRequireDefault(_storesTimeStore);
 
-	var _ProjectSelectContainerReact = __webpack_require__(182);
+	var _ProjectSelectContainerReact = __webpack_require__(185);
 
 	var _ProjectSelectContainerReact2 = _interopRequireDefault(_ProjectSelectContainerReact);
 
-	var _MilestoneSelectContainerReact = __webpack_require__(184);
+	var _MilestoneSelectContainerReact = __webpack_require__(187);
 
 	var _MilestoneSelectContainerReact2 = _interopRequireDefault(_MilestoneSelectContainerReact);
 
-	var _TaskSelectContainerReact = __webpack_require__(185);
+	var _TaskSelectContainerReact = __webpack_require__(188);
 
 	var _TaskSelectContainerReact2 = _interopRequireDefault(_TaskSelectContainerReact);
 
-	var _actionsTrackerActions = __webpack_require__(8);
+	var _actionsTrackerActions = __webpack_require__(12);
 
 	var Tracker = _react2['default'].createClass({
 		displayName: 'Tracker',
@@ -283,7 +433,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 3:
+/***/ 7:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -294,15 +444,15 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _utilsStoreUtils = __webpack_require__(4);
+	var _utilsStoreUtils = __webpack_require__(8);
 
-	var _actionsTrackerActions = __webpack_require__(8);
+	var _actionsTrackerActions = __webpack_require__(12);
 
-	var _dispatcherAppDispatcher = __webpack_require__(12);
+	var _dispatcherAppDispatcher = __webpack_require__(16);
 
 	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
 
-	var _constantsTrackerConstants = __webpack_require__(10);
+	var _constantsTrackerConstants = __webpack_require__(14);
 
 	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
 
@@ -366,7 +516,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 4:
+/***/ 8:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -378,13 +528,13 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _objectAssign = __webpack_require__(5);
+	var _objectAssign = __webpack_require__(9);
 
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 
-	var _underscore = __webpack_require__(6);
+	var _underscore = __webpack_require__(10);
 
-	var _events = __webpack_require__(7);
+	var _events = __webpack_require__(11);
 
 	var CHANGE_EVENT = 'change';
 
@@ -418,7 +568,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 7:
+/***/ 11:
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -726,7 +876,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 8:
+/***/ 12:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -750,47 +900,47 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _underscore = __webpack_require__(6);
+	var _underscore = __webpack_require__(10);
 
-	var _utilsUtils = __webpack_require__(17);
+	var _utilsUtils = __webpack_require__(21);
 
-	var _dispatcherAppDispatcher = __webpack_require__(12);
+	var _dispatcherAppDispatcher = __webpack_require__(16);
 
 	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
 
-	var _constantsTrackerConstants = __webpack_require__(10);
+	var _constantsTrackerConstants = __webpack_require__(14);
 
 	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
 
-	var _storesCustomerStore = __webpack_require__(22);
+	var _storesCustomerStore = __webpack_require__(25);
 
 	var _storesCustomerStore2 = _interopRequireDefault(_storesCustomerStore);
 
-	var _storesProjectStore = __webpack_require__(16);
+	var _storesProjectStore = __webpack_require__(20);
 
 	var _storesProjectStore2 = _interopRequireDefault(_storesProjectStore);
 
-	var _storesMilestoneStore = __webpack_require__(9);
+	var _storesMilestoneStore = __webpack_require__(13);
 
 	var _storesMilestoneStore2 = _interopRequireDefault(_storesMilestoneStore);
 
-	var _storesMilestoneTaskStore = __webpack_require__(23);
+	var _storesMilestoneTaskStore = __webpack_require__(26);
 
 	var _storesMilestoneTaskStore2 = _interopRequireDefault(_storesMilestoneTaskStore);
 
-	var _storesTaskTypeStore = __webpack_require__(24);
+	var _storesTaskTypeStore = __webpack_require__(27);
 
 	var _storesTaskTypeStore2 = _interopRequireDefault(_storesTaskTypeStore);
 
-	var _storesSettingsStore = __webpack_require__(19);
+	var _storesSettingsStore = __webpack_require__(22);
 
 	var _storesSettingsStore2 = _interopRequireDefault(_storesSettingsStore);
 
-	var _storesTaskStore = __webpack_require__(25);
+	var _storesTaskStore = __webpack_require__(28);
 
 	var _storesTaskStore2 = _interopRequireDefault(_storesTaskStore);
 
-	var _storesTimeStore = __webpack_require__(3);
+	var _storesTimeStore = __webpack_require__(7);
 
 	var _storesTimeStore2 = _interopRequireDefault(_storesTimeStore);
 
@@ -982,7 +1132,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 9:
+/***/ 13:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -993,21 +1143,21 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _underscore = __webpack_require__(6);
+	var _underscore = __webpack_require__(10);
 
-	var _utilsStoreUtils = __webpack_require__(4);
+	var _utilsStoreUtils = __webpack_require__(8);
 
-	var _dispatcherAppDispatcher = __webpack_require__(12);
+	var _dispatcherAppDispatcher = __webpack_require__(16);
 
 	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
 
-	var _constantsTrackerConstants = __webpack_require__(10);
+	var _constantsTrackerConstants = __webpack_require__(14);
 
 	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
 
-	var _actionsTrackerActions = __webpack_require__(8);
+	var _actionsTrackerActions = __webpack_require__(12);
 
-	var _storesProjectStore = __webpack_require__(16);
+	var _storesProjectStore = __webpack_require__(20);
 
 	var _storesProjectStore2 = _interopRequireDefault(_storesProjectStore);
 
@@ -1072,7 +1222,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 10:
+/***/ 14:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1083,7 +1233,7 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _keymirror = __webpack_require__(11);
+	var _keymirror = __webpack_require__(15);
 
 	var _keymirror2 = _interopRequireDefault(_keymirror);
 
@@ -1105,7 +1255,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 12:
+/***/ 16:
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -1127,14 +1277,14 @@ webpackJsonp([0],{
 	  value: true
 	});
 
-	var _flux = __webpack_require__(13);
+	var _flux = __webpack_require__(17);
 
 	exports['default'] = new _flux.Dispatcher();
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 16:
+/***/ 20:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1145,19 +1295,19 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _underscore = __webpack_require__(6);
+	var _underscore = __webpack_require__(10);
 
-	var _utilsStoreUtils = __webpack_require__(4);
+	var _utilsStoreUtils = __webpack_require__(8);
 
-	var _dispatcherAppDispatcher = __webpack_require__(12);
+	var _dispatcherAppDispatcher = __webpack_require__(16);
 
 	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
 
-	var _constantsTrackerConstants = __webpack_require__(10);
+	var _constantsTrackerConstants = __webpack_require__(14);
 
 	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
 
-	var _actionsTrackerActions = __webpack_require__(8);
+	var _actionsTrackerActions = __webpack_require__(12);
 
 	var _projects = [];
 	var _selected;
@@ -1210,7 +1360,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 17:
+/***/ 21:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1225,11 +1375,11 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _jquery = __webpack_require__(18);
+	var _jquery = __webpack_require__(2);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _storesSettingsStore = __webpack_require__(19);
+	var _storesSettingsStore = __webpack_require__(22);
 
 	var _storesSettingsStore2 = _interopRequireDefault(_storesSettingsStore);
 
@@ -1286,7 +1436,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 19:
+/***/ 22:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1297,21 +1447,21 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _jquery = __webpack_require__(18);
+	var _jquery = __webpack_require__(2);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _utilsStoreUtils = __webpack_require__(4);
+	var _utilsStoreUtils = __webpack_require__(8);
 
-	var _dispatcherAppDispatcher = __webpack_require__(12);
+	var _dispatcherAppDispatcher = __webpack_require__(16);
 
 	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
 
-	var _constantsSettingsConstants = __webpack_require__(20);
+	var _constantsSettingsConstants = __webpack_require__(23);
 
 	var _constantsSettingsConstants2 = _interopRequireDefault(_constantsSettingsConstants);
 
-	var _actionsSettingsActions = __webpack_require__(21);
+	var _actionsSettingsActions = __webpack_require__(24);
 
 	var _users = [];
 
@@ -1364,7 +1514,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 20:
+/***/ 23:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1375,7 +1525,7 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _keymirror = __webpack_require__(11);
+	var _keymirror = __webpack_require__(15);
 
 	var _keymirror2 = _interopRequireDefault(_keymirror);
 
@@ -1387,7 +1537,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 21:
+/***/ 24:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1400,13 +1550,13 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _utilsUtils = __webpack_require__(17);
+	var _utilsUtils = __webpack_require__(21);
 
-	var _dispatcherAppDispatcher = __webpack_require__(12);
+	var _dispatcherAppDispatcher = __webpack_require__(16);
 
 	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
 
-	var _constantsSettingsConstants = __webpack_require__(20);
+	var _constantsSettingsConstants = __webpack_require__(23);
 
 	var _constantsSettingsConstants2 = _interopRequireDefault(_constantsSettingsConstants);
 
@@ -1431,7 +1581,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 22:
+/***/ 25:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1442,13 +1592,13 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _utilsStoreUtils = __webpack_require__(4);
+	var _utilsStoreUtils = __webpack_require__(8);
 
-	var _dispatcherAppDispatcher = __webpack_require__(12);
+	var _dispatcherAppDispatcher = __webpack_require__(16);
 
 	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
 
-	var _constantsTrackerConstants = __webpack_require__(10);
+	var _constantsTrackerConstants = __webpack_require__(14);
 
 	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
 
@@ -1486,7 +1636,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 23:
+/***/ 26:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1497,23 +1647,23 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _underscore = __webpack_require__(6);
+	var _underscore = __webpack_require__(10);
 
-	var _utilsStoreUtils = __webpack_require__(4);
+	var _utilsStoreUtils = __webpack_require__(8);
 
-	var _dispatcherAppDispatcher = __webpack_require__(12);
+	var _dispatcherAppDispatcher = __webpack_require__(16);
 
 	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
 
-	var _constantsTrackerConstants = __webpack_require__(10);
+	var _constantsTrackerConstants = __webpack_require__(14);
 
 	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
 
-	var _storesProjectStore = __webpack_require__(16);
+	var _storesProjectStore = __webpack_require__(20);
 
 	var _storesProjectStore2 = _interopRequireDefault(_storesProjectStore);
 
-	var _storesMilestoneStore = __webpack_require__(9);
+	var _storesMilestoneStore = __webpack_require__(13);
 
 	var _storesMilestoneStore2 = _interopRequireDefault(_storesMilestoneStore);
 
@@ -1579,7 +1729,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 24:
+/***/ 27:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1590,19 +1740,19 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _underscore = __webpack_require__(6);
+	var _underscore = __webpack_require__(10);
 
-	var _utilsStoreUtils = __webpack_require__(4);
+	var _utilsStoreUtils = __webpack_require__(8);
 
-	var _dispatcherAppDispatcher = __webpack_require__(12);
+	var _dispatcherAppDispatcher = __webpack_require__(16);
 
 	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
 
-	var _constantsTrackerConstants = __webpack_require__(10);
+	var _constantsTrackerConstants = __webpack_require__(14);
 
 	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
 
-	var _storesMilestoneTaskStore = __webpack_require__(23);
+	var _storesMilestoneTaskStore = __webpack_require__(26);
 
 	var _storesMilestoneTaskStore2 = _interopRequireDefault(_storesMilestoneTaskStore);
 
@@ -1671,7 +1821,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 25:
+/***/ 28:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1682,17 +1832,17 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _utilsStoreUtils = __webpack_require__(4);
+	var _utilsStoreUtils = __webpack_require__(8);
 
-	var _dispatcherAppDispatcher = __webpack_require__(12);
+	var _dispatcherAppDispatcher = __webpack_require__(16);
 
 	var _dispatcherAppDispatcher2 = _interopRequireDefault(_dispatcherAppDispatcher);
 
-	var _constantsTrackerConstants = __webpack_require__(10);
+	var _constantsTrackerConstants = __webpack_require__(14);
 
 	var _constantsTrackerConstants2 = _interopRequireDefault(_constantsTrackerConstants);
 
-	var _storesMilestoneTaskStore = __webpack_require__(23);
+	var _storesMilestoneTaskStore = __webpack_require__(26);
 
 	var _storesMilestoneTaskStore2 = _interopRequireDefault(_storesMilestoneTaskStore);
 
@@ -1725,7 +1875,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 182:
+/***/ 185:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1736,19 +1886,19 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _react = __webpack_require__(26);
+	var _react = __webpack_require__(29);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _underscore = __webpack_require__(6);
+	var _underscore = __webpack_require__(10);
 
-	var _actionsTrackerActions = __webpack_require__(8);
+	var _actionsTrackerActions = __webpack_require__(12);
 
-	var _storesProjectStore = __webpack_require__(16);
+	var _storesProjectStore = __webpack_require__(20);
 
 	var _storesProjectStore2 = _interopRequireDefault(_storesProjectStore);
 
-	var _SelectInputReact = __webpack_require__(183);
+	var _SelectInputReact = __webpack_require__(186);
 
 	var _SelectInputReact2 = _interopRequireDefault(_SelectInputReact);
 
@@ -1821,7 +1971,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 183:
+/***/ 186:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1834,11 +1984,11 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _react = __webpack_require__(26);
+	var _react = __webpack_require__(29);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _utilsUtils = __webpack_require__(17);
+	var _utilsUtils = __webpack_require__(21);
 
 	var SelectInput = _react2['default'].createClass({
 		displayName: 'SelectInput',
@@ -1878,7 +2028,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 184:
+/***/ 187:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1889,21 +2039,21 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _react = __webpack_require__(26);
+	var _react = __webpack_require__(29);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _actionsTrackerActions = __webpack_require__(8);
+	var _actionsTrackerActions = __webpack_require__(12);
 
-	var _storesProjectStore = __webpack_require__(16);
+	var _storesProjectStore = __webpack_require__(20);
 
 	var _storesProjectStore2 = _interopRequireDefault(_storesProjectStore);
 
-	var _storesMilestoneStore = __webpack_require__(9);
+	var _storesMilestoneStore = __webpack_require__(13);
 
 	var _storesMilestoneStore2 = _interopRequireDefault(_storesMilestoneStore);
 
-	var _SelectInputReact = __webpack_require__(183);
+	var _SelectInputReact = __webpack_require__(186);
 
 	var _SelectInputReact2 = _interopRequireDefault(_SelectInputReact);
 
@@ -1971,7 +2121,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 185:
+/***/ 188:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1982,31 +2132,31 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _react = __webpack_require__(26);
+	var _react = __webpack_require__(29);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _underscore = __webpack_require__(6);
+	var _underscore = __webpack_require__(10);
 
-	var _actionsTrackerActions = __webpack_require__(8);
+	var _actionsTrackerActions = __webpack_require__(12);
 
-	var _storesMilestoneStore = __webpack_require__(9);
+	var _storesMilestoneStore = __webpack_require__(13);
 
 	var _storesMilestoneStore2 = _interopRequireDefault(_storesMilestoneStore);
 
-	var _storesMilestoneTaskStore = __webpack_require__(23);
+	var _storesMilestoneTaskStore = __webpack_require__(26);
 
 	var _storesMilestoneTaskStore2 = _interopRequireDefault(_storesMilestoneTaskStore);
 
-	var _storesTaskStore = __webpack_require__(25);
+	var _storesTaskStore = __webpack_require__(28);
 
 	var _storesTaskStore2 = _interopRequireDefault(_storesTaskStore);
 
-	var _SelectInputReact = __webpack_require__(183);
+	var _SelectInputReact = __webpack_require__(186);
 
 	var _SelectInputReact2 = _interopRequireDefault(_SelectInputReact);
 
-	var _TaskTypeSelectContainerReact = __webpack_require__(186);
+	var _TaskTypeSelectContainerReact = __webpack_require__(189);
 
 	var _TaskTypeSelectContainerReact2 = _interopRequireDefault(_TaskTypeSelectContainerReact);
 
@@ -2122,7 +2272,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 186:
+/***/ 189:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2133,17 +2283,17 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _react = __webpack_require__(26);
+	var _react = __webpack_require__(29);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _actionsTrackerActions = __webpack_require__(8);
+	var _actionsTrackerActions = __webpack_require__(12);
 
-	var _storesTaskTypeStore = __webpack_require__(24);
+	var _storesTaskTypeStore = __webpack_require__(27);
 
 	var _storesTaskTypeStore2 = _interopRequireDefault(_storesTaskTypeStore);
 
-	var _SelectInputReact = __webpack_require__(183);
+	var _SelectInputReact = __webpack_require__(186);
 
 	var _SelectInputReact2 = _interopRequireDefault(_SelectInputReact);
 
@@ -2198,7 +2348,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 214:
+/***/ 217:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2213,21 +2363,21 @@ webpackJsonp([0],{
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
-	var _warning = __webpack_require__(189);
+	var _warning = __webpack_require__(192);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
-	var _DOMHistory2 = __webpack_require__(215);
+	var _DOMHistory2 = __webpack_require__(218);
 
 	var _DOMHistory3 = _interopRequireDefault(_DOMHistory2);
 
-	var _NavigationTypes = __webpack_require__(202);
+	var _NavigationTypes = __webpack_require__(205);
 
 	var _NavigationTypes2 = _interopRequireDefault(_NavigationTypes);
 
-	var _DOMUtils = __webpack_require__(206);
+	var _DOMUtils = __webpack_require__(209);
 
-	var _URLUtils = __webpack_require__(194);
+	var _URLUtils = __webpack_require__(197);
 
 	var DefaultQueryKey = '_qk';
 
@@ -2398,7 +2548,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 215:
+/***/ 218:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2411,11 +2561,11 @@ webpackJsonp([0],{
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
-	var _History2 = __webpack_require__(203);
+	var _History2 = __webpack_require__(206);
 
 	var _History3 = _interopRequireDefault(_History2);
 
-	var _DOMUtils = __webpack_require__(206);
+	var _DOMUtils = __webpack_require__(209);
 
 	/**
 	 * A history interface that assumes a DOM environment.
@@ -2447,7 +2597,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 216:
+/***/ 219:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2458,19 +2608,19 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _jquery = __webpack_require__(18);
+	var _jquery = __webpack_require__(2);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _react = __webpack_require__(26);
+	var _react = __webpack_require__(29);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRouter = __webpack_require__(187);
+	var _reactRouter = __webpack_require__(190);
 
-	var _events = __webpack_require__(7);
+	var _events = __webpack_require__(11);
 
-	var _flux = __webpack_require__(13);
+	var _flux = __webpack_require__(17);
 
 	var gui = nodeRequire('nw.gui');
 
@@ -2571,7 +2721,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 217:
+/***/ 220:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2582,31 +2732,31 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _jquery = __webpack_require__(18);
+	var _jquery = __webpack_require__(2);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _react = __webpack_require__(26);
+	var _react = __webpack_require__(29);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRouter = __webpack_require__(187);
+	var _reactRouter = __webpack_require__(190);
 
-	var _storesSettingsStore = __webpack_require__(19);
+	var _storesSettingsStore = __webpack_require__(22);
 
 	var _storesSettingsStore2 = _interopRequireDefault(_storesSettingsStore);
 
-	var _actionsSettingsActions = __webpack_require__(21);
+	var _actionsSettingsActions = __webpack_require__(24);
 
-	var _TextInputReact = __webpack_require__(218);
+	var _TextInputReact = __webpack_require__(221);
 
 	var _TextInputReact2 = _interopRequireDefault(_TextInputReact);
 
-	var _SelectInputReact = __webpack_require__(183);
+	var _SelectInputReact = __webpack_require__(186);
 
 	var _SelectInputReact2 = _interopRequireDefault(_SelectInputReact);
 
-	var _UserSelectContainerReact = __webpack_require__(219);
+	var _UserSelectContainerReact = __webpack_require__(222);
 
 	var _UserSelectContainerReact2 = _interopRequireDefault(_UserSelectContainerReact);
 
@@ -2744,7 +2894,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 218:
+/***/ 221:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -2757,7 +2907,7 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-	var _react = __webpack_require__(26);
+	var _react = __webpack_require__(29);
 
 	var _react2 = _interopRequireDefault(_react);
 
@@ -2792,7 +2942,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 219:
+/***/ 222:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2803,23 +2953,23 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _underscore = __webpack_require__(6);
+	var _underscore = __webpack_require__(10);
 
-	var _react = __webpack_require__(26);
+	var _react = __webpack_require__(29);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRouter = __webpack_require__(187);
+	var _reactRouter = __webpack_require__(190);
 
 	var _reactRouter2 = _interopRequireDefault(_reactRouter);
 
-	var _storesSettingsStore = __webpack_require__(19);
+	var _storesSettingsStore = __webpack_require__(22);
 
 	var _storesSettingsStore2 = _interopRequireDefault(_storesSettingsStore);
 
-	var _actionsSettingsActions = __webpack_require__(21);
+	var _actionsSettingsActions = __webpack_require__(24);
 
-	var _SelectInputReact = __webpack_require__(183);
+	var _SelectInputReact = __webpack_require__(186);
 
 	var _SelectInputReact2 = _interopRequireDefault(_SelectInputReact);
 
@@ -2887,7 +3037,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 220:
+/***/ 223:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2898,21 +3048,21 @@ webpackJsonp([0],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _jquery = __webpack_require__(18);
+	var _jquery = __webpack_require__(2);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _react = __webpack_require__(26);
+	var _react = __webpack_require__(29);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRouter = __webpack_require__(187);
+	var _reactRouter = __webpack_require__(190);
 
-	var _storesSettingsStore = __webpack_require__(19);
+	var _storesSettingsStore = __webpack_require__(22);
 
 	var _storesSettingsStore2 = _interopRequireDefault(_storesSettingsStore);
 
-	var _actionsSettingsActions = __webpack_require__(21);
+	var _actionsSettingsActions = __webpack_require__(24);
 
 	var Settings = _react2['default'].createClass({
 	  displayName: 'Settings',
@@ -2970,120 +3120,6 @@ webpackJsonp([0],{
 	});
 
 	exports['default'] = Settings;
-	module.exports = exports['default'];
-
-/***/ },
-
-/***/ 221:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-		value: true
-	});
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	var _jquery = __webpack_require__(18);
-
-	var _jquery2 = _interopRequireDefault(_jquery);
-
-	var gui = nodeRequire('nw.gui');
-	var window = gui.Window.get();
-
-	var isVisible = false;
-	var height = 0;
-	var width = 0;
-
-	function _toggle(e) {
-		isVisible ? window.hide() : _show.apply(this, [e.x, e.y]);
-		isVisible = !isVisible;
-	}
-
-	function _show(x, y) {
-		window.moveTo(x - (0, _jquery2['default'])('.app').width() / 2 - 6, y);
-		_fitWindowToContent();
-		window.show();
-		window.focus();
-	}
-
-	function _onWindowBlur() {
-		window.hide();
-		isVisible = false;
-	}
-
-	function _fitWindowToContent() {
-		var hei = (0, _jquery2['default'])('.app').height() + 100;
-		var wid = (0, _jquery2['default'])('.app').width() + 40;
-
-		if (width != wid || height != hei) {
-			window.resizeTo(wid, hei);
-			width = wid;
-			height = hei;
-		}
-	}
-
-	var StatusBar = function StatusBar(App) {
-		_classCallCheck(this, StatusBar);
-
-		// if (!sessionStorage.initializedStatusBar) {
-		//   sessionStorage.initializedStatusBar = true;
-
-		this.tray = new gui.Tray({
-			title: '',
-			icon: 'images/icon@2x.png'
-		});
-		this.tray.on('click', _toggle);
-
-		if (App.devMode) {
-			window.showDevTools();
-		} else {
-			window.on('blur', _onWindowBlur);
-		}
-
-		(function animloop() {
-			requestAnimationFrame(animloop);
-			_fitWindowToContent();
-		})();
-		//}
-	};
-
-	exports['default'] = StatusBar;
-	module.exports = exports['default'];
-
-/***/ },
-
-/***/ 222:
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-		value: true
-	});
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	var gui = nodeRequire('nw.gui');
-
-	var MenuBar = function MenuBar() {
-		_classCallCheck(this, MenuBar);
-
-		var mb = new gui.Menu({ type: 'menubar' });
-		try {
-			mb.createMacBuiltin('Teamleader Time', {
-				hideEdit: false
-			});
-			gui.Window.get().menu = mb;
-		} catch (ex) {
-			console.log(ex.message);
-		}
-	};
-
-	exports['default'] = MenuBar;
 	module.exports = exports['default'];
 
 /***/ }

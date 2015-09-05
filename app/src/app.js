@@ -1,9 +1,10 @@
 
 var fs = nodeRequire('fs');
 
-import Routes from './Routes';
+import Panel from './Panel';
 import StatusBar from './StatusBar';
 import MenuBar from './MenuBar';
+import Routes from './Routes';
 
 class App {
 
@@ -12,7 +13,8 @@ class App {
 		this.devMode = fs.existsSync('.dev') && 
 										fs.readFileSync('.dev', {encoding: 'utf8'}) === '1';
 
-		this.statusBar = new StatusBar(this);
+		this.panel = new Panel(this);
+		this.statusBar = new StatusBar(this.panel);
 		this.menuBar = new MenuBar();
 		this.routes = new Routes();
 	}
